@@ -1,0 +1,15 @@
+:root {
+  --color-background: #4f8ff7;
+  --color-text: #ffffff;
+  --color-text-muted: rgb(255 255 255 / 65%);
+  --color-surface: rgb(255 255 255 / 10%);
+  --color-surface-active: rgb(35 84 154 / 70%);
+  --color-border: rgb(255 255 255 / 65%);
+  --color-focus: #ffffff;
+  --font-family-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius-pill: 999px;
+  --radius-panel: 1rem;
+  --shadow-panel: 0 1rem 3rem rgb(28 61 112 / 18%);
+  --page-gutter: clamp(1rem, 4vw, 3rem);
+  --content-width: 85rem;
+}

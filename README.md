@@ -1,75 +1,57 @@
-# React + TypeScript + Vite
+# Confident Developer Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The React frontend for the Confident Developer portfolio. It is built with React 19, TypeScript, Vite, and React Router.
 
-Currently, two official plugins are available:
+Portfolio content is owned by the separate backend application and is consumed only through its HTTP API. Browser code uses relative `/api/...` URLs; it does not connect to MongoDB or call a deployment-specific backend origin.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Requirements
 
-## React Compiler
+- Node.js 22 or newer
+- npm
+- The backend repository running locally on port `3000` when testing API-backed features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Local development
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+The Vite development server proxies `/api` to `http://localhost:3000` by default. Override the local target only when necessary:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+API_PROXY_TARGET=http://localhost:3000
 ```
+
+`API_PROXY_TARGET` is read by the Vite server and is not exposed to browser code.
+
+## Commands
+
+```bash
+npm run dev
+npm run typecheck
+npm run lint
+npm run build
+npm run preview
+```
+
+## Routes
+
+- `/` — Home
+- `/projects` — Projects archive
+- `/projects/:slug` — selected project
+- `/services` — Services
+- `/about` — About me
+- `/references` — References
+- `/contact` — Contact Me
+
+The shared application layout remains mounted across client-side route transitions. Production will preserve the same relative `/api` topology through a Vercel external rewrite to the backend.
+
+## Frontend architecture
+
+The application uses feature boundaries for domains that appear in more than one surface. A feature owns its domain API integration, model/types, hooks, presentation mapping, route components, and domain-specific UI. For example, Projects owns both its archive routes and its future Home preview section under `src/features/projects`.
+
+`src/pages` is reserved for route-level composition such as Home, which will assemble preview sections from several features. Cross-feature layout, feedback, and reusable UI remain in `src/components`; shared transport concerns remain outside domain features.
+
+Feature subdirectories are added only when they gain a concrete responsibility. Empty placeholders for planned domains are intentionally avoided.
