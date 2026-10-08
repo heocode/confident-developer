@@ -71,6 +71,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 ## Data
 
 - Do not hardcode project, service, or reference content directly into large JSX blocks when it can live in `src/data`.
+- Keep the stable Home Hero identity copy, timezone, and social destinations in typed frontend configuration under `src/data`. Toronto time is computed in the browser; revisit this ownership only if a managed public Profile API is implemented.
 - Define reusable TypeScript types in `src/types`.
 - Structure data so it can later be replaced by a CMS or API without major UI rewrites.
 - Treat the backend response as the source of truth for dynamic content while keeping UI-specific transformations outside presentation components.

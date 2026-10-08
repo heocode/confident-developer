@@ -24,6 +24,8 @@ a {
 }
 
 .site-shell {
+  position: relative;
+  isolation: isolate;
   min-height: 100svh;
 }
 
@@ -44,11 +46,20 @@ a {
 }
 
 .site-header {
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   padding: 1.5rem var(--page-gutter) 0;
+  pointer-events: none;
+}
+
+.site-navigation-frame {
+  transition: transform 180ms ease-out, opacity 180ms ease-out;
+  pointer-events: auto;
 }
 
 .site-navigation {
@@ -76,13 +87,15 @@ a {
 }
 
 .site-main {
-  width: min(100%, var(--content-width));
+  position: relative;
+  z-index: 1;
+  width: 100%;
   min-height: calc(100svh - 5rem);
-  margin-inline: auto;
-  padding-inline: var(--page-gutter);
 }
 
 .route-page {
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
   display: grid;
   min-height: calc(100svh - 5rem);
   align-content: center;
@@ -138,5 +151,18 @@ a {
   .site-navigation li {
     flex: 1 0 30%;
     text-align: center;
+  }
+}
+
+@media (min-width: 48.001rem) {
+  .site-navigation-frame--hidden {
+    opacity: 0;
+    transform: translateY(calc(-100% - 2rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-navigation-frame {
+    transition: none;
   }
 }

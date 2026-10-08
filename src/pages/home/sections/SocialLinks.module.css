@@ -1,0 +1,17 @@
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.links a {
+  display: grid;
+  width: 1.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+}
+
+.links img {
+  width: 1.125rem;
+  height: 1.125rem;
+}

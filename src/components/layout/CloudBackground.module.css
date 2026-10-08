@@ -1,0 +1,93 @@
+.background {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  left: 0;
+  width: var(--cloud-width);
+  height: auto;
+  animation: cloud-drift var(--cloud-duration) linear var(--cloud-delay) infinite;
+  will-change: transform;
+}
+
+.cloudOne {
+  --cloud-width: clamp(8.5rem, 13vw, 12.75rem);
+  --cloud-duration: 78s;
+  --cloud-delay: -59s;
+
+  top: 8%;
+}
+
+.cloudTwo {
+  --cloud-width: clamp(8rem, 12vw, 11.5rem);
+  --cloud-duration: 86s;
+  --cloud-delay: -20s;
+
+  top: 20%;
+}
+
+.cloudThree {
+  --cloud-width: clamp(9rem, 14vw, 13.5rem);
+  --cloud-duration: 92s;
+  --cloud-delay: -76s;
+
+  top: 49%;
+}
+
+.cloudFour {
+  --cloud-width: clamp(7.5rem, 11vw, 10.5rem);
+  --cloud-duration: 72s;
+  --cloud-delay: -33s;
+
+  top: 57%;
+}
+
+.cloudFive {
+  --cloud-width: clamp(8rem, 12vw, 11.75rem);
+  --cloud-duration: 84s;
+  --cloud-delay: -48s;
+
+  top: 76%;
+}
+
+@keyframes cloud-drift {
+  from {
+    transform: translate3d(-120%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(100vw + 20%), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud {
+    animation: none;
+    will-change: auto;
+  }
+
+  .cloudOne {
+    left: 3%;
+  }
+
+  .cloudTwo {
+    left: 76%;
+  }
+
+  .cloudThree {
+    left: 7%;
+  }
+
+  .cloudFour {
+    left: 70%;
+  }
+
+  .cloudFive {
+    left: 82%;
+  }
+}

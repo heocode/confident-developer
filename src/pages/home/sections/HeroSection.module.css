@@ -1,0 +1,162 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: clip;
+  padding: clamp(1.5rem, 3vw, 2.75rem) var(--page-gutter);
+  color: var(--color-text);
+}
+
+.identity,
+.keepBuilding {
+  position: absolute;
+  z-index: 2;
+  top: clamp(1.75rem, 3.5vw, 3.25rem);
+  margin: 0;
+  font-size: clamp(0.625rem, 0.7vw, 0.75rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.identity {
+  left: var(--page-gutter);
+  display: grid;
+}
+
+.keepBuilding {
+  right: var(--page-gutter);
+  text-align: right;
+}
+
+.portraitFrame {
+  position: absolute;
+  z-index: 1;
+  top: clamp(4.25rem, 6.5vw, 6.5rem);
+  right: clamp(7%, 11vw, 13%);
+  width: clamp(10.5rem, 18vw, 16.5rem);
+  aspect-ratio: 1;
+  isolation: isolate;
+}
+
+.portraitFrame::before {
+  position: absolute;
+  z-index: -1;
+  inset: -28%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(255 222 74 / 82%) 0%,
+    rgb(255 211 38 / 58%) 34%,
+    rgb(255 196 0 / 28%) 55%,
+    transparent 75%
+  );
+  filter: blur(1.1rem);
+  content: '';
+}
+
+.portrait {
+  width: 100%;
+  height: auto;
+}
+
+.introduction {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: min(90%, 52rem);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.introduction h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 5.5vw, 5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.introduction p {
+  margin: 0.45rem 0 0;
+  color: var(--color-text-muted);
+  font-size: clamp(0.875rem, 1.25vw, 1.125rem);
+  font-weight: 400;
+}
+
+.socials,
+.scrollPrompt,
+.clock {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.socials {
+  left: var(--page-gutter);
+}
+
+.scrollPrompt {
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  color: var(--color-text);
+  font-size: clamp(0.55rem, 0.6vw, 0.7rem);
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateX(-50%);
+}
+
+.scrollIcon {
+  display: grid;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-active);
+}
+
+.scrollIcon img {
+  width: 0.9rem;
+  transform: rotate(180deg);
+}
+
+.clock {
+  right: var(--page-gutter);
+}
+
+@media (max-width: 48rem) {
+  .portraitFrame {
+    top: 17%;
+    right: 7%;
+    width: clamp(8.5rem, 32vw, 12rem);
+  }
+
+  .introduction {
+    top: 54%;
+  }
+
+  .scrollPrompt {
+    display: none;
+  }
+}
+
+@media (max-width: 32rem) {
+  .keepBuilding {
+    display: none;
+  }
+
+  .portraitFrame {
+    top: 18%;
+    right: 50%;
+    width: 9.5rem;
+    transform: translateX(50%);
+  }
+
+  .introduction {
+    top: 58%;
+  }
+}
