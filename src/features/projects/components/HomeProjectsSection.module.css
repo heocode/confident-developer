@@ -1,26 +1,30 @@
 .section {
   position: relative;
   display: grid;
-  min-height: 100svh;
-  padding: clamp(2.5rem, 4vw, 4rem) var(--page-gutter);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(2rem, 5.1vh, 3.25rem);
+  height: 100svh;
+  min-height: 0;
+  padding: var(--viewport-edge-offset) var(--page-gutter);
   color: var(--color-text);
 }
 
 .header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0.4rem 0.8rem;
+  display: grid;
+  justify-items: center;
   text-align: center;
+}
+
+.titleGroup {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
 }
 
 .header h2,
 .header p,
 .state h3,
-.state p,
-.projectSlot h3,
-.projectSlot p {
+.state p {
   margin: 0;
 }
 
@@ -28,13 +32,18 @@
   font-size: clamp(3rem, 5vw, 4.5rem);
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: var(--letter-spacing-title);
 }
 
 .header p {
+  position: absolute;
+  bottom: 0;
+  left: calc(100% + 0.15rem);
   color: var(--color-text-muted);
   font-size: clamp(1rem, 1.7vw, 1.5rem);
   font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .state,
@@ -51,6 +60,7 @@
 
 .state h3 {
   font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  letter-spacing: var(--letter-spacing-title);
 }
 
 .state p {
@@ -69,35 +79,56 @@
 }
 
 .projectList {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.75rem);
-  width: min(100%, var(--content-width));
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(1rem, 1.75vw, 1.5625rem);
+  width: min(100%, 77.5rem);
+  height: 100%;
+  min-height: 0;
   margin-inline: auto;
 }
 
 .projectSlot {
-  display: grid;
-  min-height: 20rem;
-  padding: 2rem;
-  place-items: center;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-  text-align: center;
+  display: flex;
+  flex: 1 1 0;
+  align-items: flex-end;
+  height: 100%;
+  min-width: 0;
 }
 
-.projectSlot h3 {
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-}
-
-.projectSlot p {
-  margin-top: 0.35rem;
-  color: var(--color-text-muted);
+.projectSlot[data-primary='true'] {
+  flex-grow: 1.26;
 }
 
 @media (max-width: 48rem) {
+  .titleGroup {
+    width: 100%;
+  }
+
+  .header p {
+    position: static;
+    margin-top: 0.4rem;
+    text-align: center;
+    white-space: normal;
+  }
+
   .projectList {
-    grid-template-columns: 1fr;
+    width: calc(100% + 2 * var(--page-gutter));
+    margin-inline: calc(-1 * var(--page-gutter));
+    overflow-x: auto;
+    padding-inline: max(var(--page-gutter), calc((100% - min(82vw, 22rem)) / 2));
+    scroll-padding-inline: max(var(--page-gutter), calc((100% - min(82vw, 22rem)) / 2));
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .projectList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projectSlot,
+  .projectSlot[data-primary='true'] {
+    flex: 0 0 min(82vw, 22rem);
+    scroll-snap-align: center;
   }
 }

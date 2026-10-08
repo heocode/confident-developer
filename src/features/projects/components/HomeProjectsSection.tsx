@@ -1,4 +1,5 @@
 import styles from './HomeProjectsSection.module.css'
+import { HomeProjectCard } from './HomeProjectCard.tsx'
 import { useHomeProjects } from '../hooks/useHomeProjects.ts'
 
 export function HomeProjectsSection() {
@@ -7,8 +8,10 @@ export function HomeProjectsSection() {
   return (
     <section className={styles.section} id="home-projects" aria-labelledby="home-projects-title">
       <header className={styles.header}>
-        <h2 id="home-projects-title">HERE’S THE STUFF</h2>
-        <p>some are still in progress...</p>
+        <div className={styles.titleGroup}>
+          <h2 id="home-projects-title">HERE’S THE STUFF</h2>
+          <p>some are still in progress...</p>
+        </div>
       </header>
 
       {state.status === 'loading' && (
@@ -42,10 +45,7 @@ export function HomeProjectsSection() {
               data-primary={project.id === state.primaryProjectId || undefined}
               key={project.id}
             >
-              <article>
-                <h3>{project.title}</h3>
-                <p>{project.tagline}</p>
-              </article>
+              <HomeProjectCard isPrimary={project.id === state.primaryProjectId} project={project} />
             </li>
           ))}
         </ul>

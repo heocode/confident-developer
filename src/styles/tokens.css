@@ -7,6 +7,7 @@
   --color-border: rgb(255 255 255 / 65%);
   --color-focus: #ffffff;
   --font-family-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --letter-spacing-title: 0.01em;
   --radius-pill: 999px;
   --radius-panel: 1rem;
   --shadow-panel: 0 1rem 3rem rgb(28 61 112 / 18%);

@@ -1,0 +1,120 @@
+.card {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    width: 100%;
+    height: min(80%, 36.5rem);
+    min-height: 0;
+    overflow: hidden;
+    padding: 1.5rem 1.5rem 1.65rem;
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
+    text-align: center;
+}
+
+.primary {
+    height: min(100%, 46rem);
+    padding: 2rem 2rem 1.85rem;
+}
+
+.logo {
+  width: 4.25rem;
+  height: 4.25rem;
+    margin-inline: auto;
+    border-radius: 1.175rem;
+    object-fit: contain;
+    filter: drop-shadow(0 0.1rem 0.5rem rgb(0 0 0 / 22%));
+}
+
+.primary .logo {
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 1.15rem;
+}
+
+.identity {
+    margin-top: 0.35rem;
+}
+
+.identity h3,
+.identity p,
+.previewUnavailable {
+    margin: 0;
+}
+
+.identity h3 {
+  font-size: clamp(0.875rem, 1vw, 1rem);
+    font-weight: 600;
+    line-height: 1.15;
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.identity p {
+    max-width: 13rem;
+    margin: 0.15rem auto 0;
+    color: var(--color-text-muted);
+  font-size: clamp(0.625rem, 0.72vw, 0.7rem);
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+.primary .identity h3 {
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+}
+
+.primary .identity p {
+    max-width: 16rem;
+  font-size: clamp(0.7rem, 0.85vw, 0.8125rem);
+}
+
+.preview {
+    display: flex;
+    min-height: 0;
+  margin-top: 0.75rem;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.preview img {
+  width: min(82%, 17rem);
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.primary .preview {
+  margin-top: 1rem;
+}
+
+.primary .preview img {
+  width: min(84%, 21rem);
+}
+
+.previewUnavailable {
+    align-self: center;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
+@media (max-width: 64rem) {
+    .card {
+        height: min(78%, 34rem);
+    }
+
+    .primary {
+        height: min(100%, 42.5rem);
+    }
+
+    .primary .logo,
+    .logo {
+    width: 4rem;
+    height: 4rem;
+    }
+}
+
+@media (max-width: 48rem) {
+    .card,
+    .primary {
+        height: min(100%, 36rem);
+    }
+}

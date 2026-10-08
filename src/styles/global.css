@@ -120,6 +120,7 @@ a {
     margin: 0;
     font-size: clamp(2.5rem, 8vw, 5rem);
     line-height: 0.95;
+    letter-spacing: var(--letter-spacing-title);
 }
 
 .route-page p:not(.route-page__eyebrow) {
