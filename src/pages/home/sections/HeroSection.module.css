@@ -10,9 +10,9 @@
 .keepBuilding {
   position: absolute;
   z-index: 2;
-  top: clamp(1.75rem, 3.5vw, 3.25rem);
+  top: var(--viewport-edge-offset);
   margin: 0;
-  font-size: clamp(0.625rem, 0.7vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.82vw, 0.875rem);
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.02em;
@@ -36,10 +36,20 @@
   right: clamp(7%, 11vw, 13%);
   width: clamp(10.5rem, 18vw, 16.5rem);
   aspect-ratio: 1;
-  isolation: isolate;
 }
 
-.portraitFrame::before {
+.portraitMover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  isolation: isolate;
+  pointer-events: none;
+  transform: translate3d(var(--portrait-x, 0), var(--portrait-y, 0), 0);
+  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.portraitMover::before {
   position: absolute;
   z-index: -1;
   inset: -28%;
@@ -65,14 +75,14 @@
   z-index: 2;
   top: 50%;
   left: 50%;
-  width: min(90%, 52rem);
+  width: min(92%, 60rem);
   text-align: center;
   transform: translate(-50%, -50%);
 }
 
 .introduction h1 {
   margin: 0;
-  font-size: clamp(2.75rem, 5.5vw, 5rem);
+  font-size: clamp(3.25rem, 6.4vw, 6rem);
   font-weight: 500;
   line-height: 0.95;
   letter-spacing: -0.055em;
@@ -81,7 +91,7 @@
 .introduction p {
   margin: 0.45rem 0 0;
   color: var(--color-text-muted);
-  font-size: clamp(0.875rem, 1.25vw, 1.125rem);
+  font-size: clamp(1rem, 1.45vw, 1.375rem);
   font-weight: 400;
 }
 
@@ -90,7 +100,7 @@
 .clock {
   position: absolute;
   z-index: 2;
-  bottom: clamp(1.5rem, 3vw, 2.75rem);
+  bottom: var(--viewport-edge-offset);
 }
 
 .socials {
@@ -103,7 +113,7 @@
   justify-items: center;
   gap: 0.45rem;
   color: var(--color-text);
-  font-size: clamp(0.55rem, 0.6vw, 0.7rem);
+  font-size: clamp(0.625rem, 0.7vw, 0.8125rem);
   font-weight: 500;
   text-decoration: none;
   transform: translateX(-50%);
@@ -111,17 +121,27 @@
 
 .scrollIcon {
   display: grid;
-  width: 2.25rem;
+  width: 2.625rem;
   aspect-ratio: 1;
   place-items: center;
   border: 0.0625rem solid var(--color-border);
   border-radius: 50%;
   background: var(--color-surface-active);
+  animation: scrollActionCue 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
 }
 
 .scrollIcon img {
-  width: 0.9rem;
+  width: 1.05rem;
   transform: rotate(180deg);
+}
+
+.scrollLabel {
+  opacity: 0;
+  animation:
+    scrollActionCue 4s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    scrollLabelOpacity 4s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 
 .clock {
@@ -158,5 +178,48 @@
 
   .introduction {
     top: 58%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portraitMover {
+    transition: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .scrollIcon,
+  .scrollLabel {
+    animation: none;
+    will-change: auto;
+  }
+
+  .scrollLabel {
+    opacity: 1;
+  }
+}
+
+@keyframes scrollActionCue {
+  0%,
+  25%,
+  100% {
+    transform: translateY(0);
+  }
+
+  12.5% {
+    transform: translateY(0.45rem);
+  }
+}
+
+@keyframes scrollLabelOpacity {
+  0%,
+  25%,
+  100% {
+    opacity: 0;
+  }
+
+  6%,
+  19% {
+    opacity: 1;
   }
 }

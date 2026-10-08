@@ -11,5 +11,6 @@
   --radius-panel: 1rem;
   --shadow-panel: 0 1rem 3rem rgb(28 61 112 / 18%);
   --page-gutter: clamp(1rem, 4vw, 3rem);
+  --viewport-edge-offset: clamp(1.75rem, 2.8vw, 2.5rem);
   --content-width: 85rem;
 }

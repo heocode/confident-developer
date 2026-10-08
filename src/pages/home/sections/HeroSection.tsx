@@ -4,10 +4,19 @@ import { siteIdentity, siteSocialLinks } from '../../../data/site'
 import { SocialLinks } from './SocialLinks'
 import styles from './HeroSection.module.css'
 import { TorontoClock } from './TorontoClock'
+import { useEscapingPortrait } from './useEscapingPortrait'
 
 export function HeroSection() {
+  const { heroRef, portraitRef, handlePointerLeave, handlePointerMove } = useEscapingPortrait()
+
   return (
-    <section className={styles.hero} aria-labelledby="hero-title">
+    <section
+      className={styles.hero}
+      aria-labelledby="hero-title"
+      onPointerLeave={handlePointerLeave}
+      onPointerMove={handlePointerMove}
+      ref={heroRef}
+    >
       <p className={styles.identity}>
         <span>{siteIdentity.firstName}</span>
         <span>{siteIdentity.lastName}</span>
@@ -20,13 +29,15 @@ export function HeroSection() {
       </span>
 
       <div className={styles.portraitFrame}>
-        <img
-          className={styles.portrait}
-          src={heroPortraitUrl}
-          alt="Portrait of Vadim Iskakov"
-          width="305"
-          height="305"
-        />
+        <div className={styles.portraitMover} ref={portraitRef}>
+          <img
+            className={styles.portrait}
+            src={heroPortraitUrl}
+            alt="Portrait of Vadim Iskakov"
+            width="305"
+            height="305"
+          />
+        </div>
       </div>
 
       <div className={styles.introduction}>
@@ -42,7 +53,7 @@ export function HeroSection() {
         <span className={styles.scrollIcon} aria-hidden="true">
           <img src={arrowUrl} alt="" />
         </span>
-        <span>SCROLL TO EXPLORE</span>
+        <span className={styles.scrollLabel}>SCROLL TO EXPLORE</span>
       </a>
 
       <div className={styles.clock}>

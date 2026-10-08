@@ -17,6 +17,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - Navigation links open dedicated routes. The desktop navigation hides while scrolling down and returns while scrolling up.
 - The section control in the lower-right corner scrolls to the top. The hero scroll affordance points down.
 - Toronto time is live. `KEEP BUILDING` is decorative text.
+- The Home Hero portrait/sun moves away when a fine pointer enters its proximity radius and returns to its designed position when the pointer leaves the Hero. Disable this decorative interaction for touch/coarse pointers and `prefers-reduced-motion`.
 - Desktop project cards flip independently with a 3D tap/click interaction. The circular flip icon is an affordance for the same action.
 - Home displays three configurable featured projects. Project data must support Home selection, main-project selection, and explicit display ordering.
 - The Services preview behaves as a single-open-item accordion. Desktop activation is by hover; keyboard focus and touch must have equivalent accessible behavior.

@@ -25,8 +25,7 @@ export function TorontoClock() {
 
   return (
     <p className={styles.clock}>
-      <span>Toronto</span>
-      <span>CA</span>
+      <span>Toronto CA</span>
       <time dateTime={currentTime.toISOString()}>{formatTorontoTime(currentTime, siteIdentity.timezone)}</time>
     </p>
   )
