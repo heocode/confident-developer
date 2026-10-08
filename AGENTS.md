@@ -82,6 +82,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - Keep all Express, Mongoose, MongoDB, authentication, and server deployment code in the separate backend repository. Do not create a `server/` application in this repository.
 - Access the backend only through HTTP APIs and a typed frontend service layer. Do not connect to MongoDB from browser code.
 - Browser API requests must use relative `/api/...` URLs and must not configure or expose an absolute backend base URL. Local development uses a Vite `/api` proxy whose server-only target may be configured with `API_PROXY_TARGET` and defaults to `http://localhost:3000`. Document it in a safe `.env.example`; never commit secrets or a populated `.env`.
+- Keep generic envelope parsing, relative-path enforcement, request cancellation, and transport-error normalization in the shared HTTP client. Keep endpoint paths and public DTO ownership in their domain feature, and keep presentation formatting out of the transport layer.
 - The backend exposes portfolio resources including references, projects, services, and users. Keep frontend types aligned with the public API rather than with database implementation details.
 - Expect successful API envelopes to use `success`, `message`, and, where applicable, `data`, with public identifiers named `id` rather than `_id`.
 - Keep loading, empty, error, retry, and unavailable-backend states intentional in all data-driven UI.
@@ -124,6 +125,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 ## Code Quality
 
 - Code should pass ESLint before a task is considered complete.
+- Use the Node.js test runner for framework-independent TypeScript modules until browser or component testing introduces a concrete need for an additional test dependency.
 - Avoid unused imports, variables, and dead code.
 - Handle errors where failure is possible.
 - Add comments only when they explain non-obvious logic.

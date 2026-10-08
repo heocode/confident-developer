@@ -32,6 +32,7 @@ API_PROXY_TARGET=http://localhost:3000
 npm run dev
 npm run typecheck
 npm run lint
+npm test
 npm run build
 npm run preview
 ```
@@ -55,3 +56,9 @@ The application uses feature boundaries for domains that appear in more than one
 `src/pages` is reserved for route-level composition such as Home, which will assemble preview sections from several features. Cross-feature layout, feedback, and reusable UI remain in `src/components`; shared transport concerns remain outside domain features.
 
 Feature subdirectories are added only when they gain a concrete responsibility. Empty placeholders for planned domains are intentionally avoided.
+
+## API boundary
+
+Browser requests use the shared client in `src/api` and relative `/api/...` paths. The client unwraps successful API envelopes, forwards request cancellation, and normalizes transport failures. Each feature owns its endpoint paths and public DTOs; presentation formatting remains outside the transport layer.
+
+The Projects feature currently exposes typed functions for the Projects-page list, Home placement, and slug detail. It preserves backend ordering and media URLs exactly as returned by the API.
