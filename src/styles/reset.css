@@ -7,6 +7,7 @@
 html {
   min-width: 20rem;
   background: var(--color-background);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -37,4 +38,10 @@ ul {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
