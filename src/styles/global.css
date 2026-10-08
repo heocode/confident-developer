@@ -1,8 +1,10 @@
+@import './fonts.css';
 @import './tokens.css';
 @import './reset.css';
 
 :root {
   font-family: var(--font-family-sans);
+  font-optical-sizing: auto;
   color: var(--color-text);
   background: var(--color-background);
   font-synthesis: none;
