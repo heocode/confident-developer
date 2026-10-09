@@ -1,29 +1,77 @@
 .card {
-    display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr);
-    width: 100%;
-    height: min(80%, 36.5rem);
-    min-height: 0;
-    overflow: hidden;
-    padding: 1.5rem 1.5rem 1.65rem;
-    border: 0.0625rem solid var(--color-border);
-    border-radius: var(--radius-panel);
-    background: var(--color-surface);
-    text-align: center;
+  position: relative;
+  width: 100%;
+  height: min(80%, 36.5rem);
+  min-height: 0;
+  cursor: pointer;
+  perspective: 90rem;
 }
 
 .primary {
-    height: min(100%, 46rem);
-    padding: 2rem 2rem 1.85rem;
+  height: min(100%, 46rem);
+}
+
+.cardInner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.flipped .cardInner {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: 1.5rem 1.5rem 1.65rem;
+  text-align: center;
+}
+
+.back {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.9rem 3.25rem;
+  transform: rotateY(180deg);
+  text-align: left;
+  pointer-events: none;
+}
+
+.flipped .front {
+  pointer-events: none;
+}
+
+.flipped .back {
+  pointer-events: auto;
+}
+
+.primary .front {
+  padding: 2rem 2rem 1.85rem;
+}
+
+.primary .back {
+  padding: 1rem 1rem 4rem;
 }
 
 .logo {
   width: 4.25rem;
   height: 4.25rem;
-    margin-inline: auto;
-    border-radius: 1.175rem;
-    object-fit: contain;
-    filter: drop-shadow(0 0.1rem 0.5rem rgb(0 0 0 / 22%));
+  margin-inline: auto;
+  border-radius: 1.175rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.1rem 0.5rem rgb(0 0 0 / 22%));
 }
 
 .primary .logo {
@@ -33,29 +81,34 @@
 }
 
 .identity {
-    margin-top: 0.35rem;
+  margin-top: 0.35rem;
 }
 
 .identity h3,
 .identity p,
-.previewUnavailable {
-    margin: 0;
+.previewUnavailable,
+.backIdentity h3,
+.backIdentity p,
+.backIdentity time,
+.summary,
+.breakdown h4 {
+  margin: 0;
 }
 
 .identity h3 {
   font-size: clamp(0.875rem, 1vw, 1rem);
-    font-weight: 600;
-    line-height: 1.15;
+  font-weight: 600;
+  line-height: 1.15;
   letter-spacing: var(--letter-spacing-title);
 }
 
 .identity p {
-    max-width: 13rem;
-    margin: 0.15rem auto 0;
-    color: var(--color-text-muted);
+  max-width: 13rem;
+  margin: 0.15rem auto 0;
+  color: var(--color-text-muted);
   font-size: clamp(0.625rem, 0.72vw, 0.7rem);
-    font-weight: 500;
-    line-height: 1.1;
+  font-weight: 500;
+  line-height: 1.1;
 }
 
 .primary .identity h3 {
@@ -63,23 +116,23 @@
 }
 
 .primary .identity p {
-    max-width: 16rem;
+  max-width: 16rem;
   font-size: clamp(0.7rem, 0.85vw, 0.8125rem);
 }
 
 .preview {
-    display: flex;
-    min-height: 0;
+  display: flex;
+  min-height: 0;
   margin-top: 0.75rem;
-    align-items: flex-end;
-    justify-content: center;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .preview img {
   width: min(82%, 17rem);
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .primary .preview {
@@ -91,30 +144,210 @@
 }
 
 .previewUnavailable {
-    align-self: center;
-    color: var(--color-text-muted);
-    font-size: 0.875rem;
+  align-self: center;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.backHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.backLogo {
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 1rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.1rem 0.45rem rgb(0 0 0 / 20%));
+}
+
+.primary .backLogo {
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 1.25rem;
+}
+
+.backIdentity {
+  min-width: 0;
+}
+
+.backIdentity h3 {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.15rem, 1.55vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.backIdentity p {
+  margin-top: 0.25rem;
+  font-size: clamp(0.75rem, 1vw, 1rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.backIdentity time {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-text-muted);
+  font-size: clamp(0.65rem, 0.85vw, 0.875rem);
+  font-weight: 500;
+}
+
+.primary .backIdentity h3 {
+  font-size: clamp(1.5rem, 2.1vw, 2rem);
+}
+
+.primary .backIdentity p {
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+}
+
+.primary .backIdentity time {
+  font-size: clamp(0.8rem, 1.05vw, 1rem);
+}
+
+.summary {
+  margin-top: clamp(0.65rem, 1.4vh, 1rem);
+  font-size: clamp(0.68rem, 0.88vw, 0.85rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.primary .summary {
+  font-size: clamp(0.85rem, 1.2vw, 1.15rem);
+}
+
+.breakdown {
+  margin-top: clamp(0.65rem, 1.4vh, 1rem);
+}
+
+.breakdown h4 {
+  color: var(--color-text-muted);
+  font-size: clamp(0.65rem, 0.82vw, 0.8rem);
+  font-weight: 500;
+}
+
+.breakdown ul {
+  display: grid;
+  gap: clamp(0.55rem, 1.1vh, 0.9rem);
+  margin-top: 0.45rem;
+}
+
+.breakdownLabel {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: clamp(0.67rem, 0.86vw, 0.84rem);
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.primary .breakdownLabel {
+  font-size: clamp(0.85rem, 1.15vw, 1.1rem);
+}
+
+.breakdownTrack {
+  height: 0.25rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 45%);
+}
+
+.breakdownTrack span {
+  display: block;
+  width: var(--breakdown-percentage);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-text);
+}
+
+.flipButton {
+  position: absolute;
+  z-index: 3;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  width: 2.083rem;
+  height: 2.083rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.flipButton img {
+  width: 100%;
+  height: 100%;
+}
+
+.primary .flipButton {
+  bottom: 1rem;
+  left: 1rem;
+  width: 2.625rem;
+  height: 2.625rem;
 }
 
 @media (max-width: 64rem) {
-    .card {
-        height: min(78%, 34rem);
-    }
+  .card {
+    height: min(78%, 34rem);
+  }
 
-    .primary {
-        height: min(100%, 42.5rem);
-    }
+  .primary {
+    height: min(100%, 42.5rem);
+  }
 
-    .primary .logo,
-    .logo {
+  .primary .logo,
+  .logo {
     width: 4rem;
     height: 4rem;
-    }
+  }
+
+  .back,
+  .primary .back {
+    padding: 0.8rem 0.75rem 3.25rem;
+  }
+
+  .primary .backLogo,
+  .backLogo {
+    width: 4.25rem;
+    height: 4.25rem;
+  }
 }
 
 @media (max-width: 48rem) {
-    .card,
-    .primary {
-        height: min(100%, 36rem);
-    }
+  .card,
+  .primary {
+    height: min(100%, 36rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardInner,
+  .flipped .cardInner {
+    transform: none;
+    transition: none;
+  }
+
+  .face {
+    transform: none;
+    transition: opacity 120ms ease-out;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+  }
+
+  .back,
+  .flipped .front {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .flipped .back {
+    visibility: visible;
+    opacity: 1;
+  }
 }
