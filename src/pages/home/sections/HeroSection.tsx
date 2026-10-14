@@ -17,18 +17,18 @@ export function HeroSection() {
       onPointerMove={handlePointerMove}
       ref={heroRef}
     >
-      <p className={styles.identity}>
+      <p className={`${styles.identity} ${styles.exitContent}`}>
         <span>{siteIdentity.firstName}</span>
         <span>{siteIdentity.lastName}</span>
       </p>
 
-      <span className={styles.keepBuilding} aria-hidden="true">
+      <span className={`${styles.keepBuilding} ${styles.exitContent}`} aria-hidden="true">
         KEEP
         <br />
         BUILDING
       </span>
 
-      <div className={styles.portraitFrame}>
+      <div className={`${styles.portraitFrame} ${styles.exitContent}`}>
         <div className={styles.portraitMover} ref={portraitRef}>
           <img
             className={styles.portrait}
@@ -40,23 +40,27 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className={styles.introduction}>
+      <div className={`${styles.introduction} ${styles.exitContent}`}>
         <h1 id="hero-title">{siteIdentity.heroTitle}</h1>
         <p>{siteIdentity.headline}</p>
       </div>
 
-      <div className={styles.socials}>
+      <div className={`${styles.socials} ${styles.exitContent}`}>
         <SocialLinks links={siteSocialLinks} />
       </div>
 
-      <a className={styles.scrollPrompt} href="#home-projects" aria-label="Scroll to the projects preview">
+      <a
+        className={`${styles.scrollPrompt} ${styles.exitContent}`}
+        href="#home-projects"
+        aria-label="Scroll to the projects preview"
+      >
         <span className={styles.scrollIcon} aria-hidden="true">
           <img src={arrowUrl} alt="" />
         </span>
         <span className={styles.scrollLabel}>SCROLL TO EXPLORE</span>
       </a>
 
-      <div className={styles.clock}>
+      <div className={`${styles.clock} ${styles.exitContent}`}>
         <TorontoClock />
       </div>
     </section>

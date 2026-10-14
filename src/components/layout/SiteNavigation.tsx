@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
+import { siteIdentity } from '../../data/site'
+
 const navigationItems = [
   { label: 'Home', to: '/' },
   { label: 'Projects', to: '/projects' },
@@ -12,14 +14,25 @@ const navigationItems = [
 
 export function SiteNavigation() {
   const location = useLocation()
+  const navigationRef = useRef<HTMLElement>(null)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [visibility, setVisibility] = useState({ isHidden: false, pathname: location.pathname })
   const lastMeasuredScrollPosition = useRef(0)
   const animationFrame = useRef<number | null>(null)
-  const isHidden = visibility.pathname === location.pathname && visibility.isHidden
+  const isHidden = !isMenuOpen && visibility.pathname === location.pathname && visibility.isHidden
+  const navigationFrameClassName = [
+    'site-navigation-frame',
+    isHidden ? 'site-navigation-frame--hidden' : '',
+    isMenuOpen ? 'site-navigation-frame--menu-open' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   useEffect(() => {
     lastMeasuredScrollPosition.current = window.scrollY
     const routeResetFrame = window.requestAnimationFrame(() => {
+      setIsMenuOpen(false)
       setVisibility({ isHidden: false, pathname: location.pathname })
     })
 
@@ -52,13 +65,71 @@ export function SiteNavigation() {
     }
   }, [location.pathname])
 
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const mobileNavigationQuery = window.matchMedia('(max-width: 48rem)')
+    const previousBodyOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const closeMenuAtDesktopSize = (event: MediaQueryListEvent) => {
+      if (!event.matches) setIsMenuOpen(false)
+    }
+
+    const closeMenuFromOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !navigationRef.current?.contains(event.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    const closeMenuFromKeyboard = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setIsMenuOpen(false)
+      menuButtonRef.current?.focus()
+    }
+
+    mobileNavigationQuery.addEventListener('change', closeMenuAtDesktopSize)
+    document.addEventListener('pointerdown', closeMenuFromOutside)
+    document.addEventListener('keydown', closeMenuFromKeyboard)
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow
+      mobileNavigationQuery.removeEventListener('change', closeMenuAtDesktopSize)
+      document.removeEventListener('pointerdown', closeMenuFromOutside)
+      document.removeEventListener('keydown', closeMenuFromKeyboard)
+    }
+  }, [isMenuOpen])
+
   return (
     <nav
-      className={isHidden ? 'site-navigation-frame site-navigation-frame--hidden' : 'site-navigation-frame'}
+      className={navigationFrameClassName}
       aria-label="Primary navigation"
       onFocusCapture={() => setVisibility({ isHidden: false, pathname: location.pathname })}
+      ref={navigationRef}
     >
-      <ul className="site-navigation">
+      <span className="site-navigation-brand" aria-hidden="true">
+        <span>{siteIdentity.firstName}</span>
+        <span>{siteIdentity.lastName}</span>
+      </span>
+
+      <button
+        className="site-navigation-toggle"
+        type="button"
+        aria-controls="primary-navigation"
+        aria-expanded={isMenuOpen}
+        aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        onClick={() => setIsMenuOpen((currentState) => !currentState)}
+        ref={menuButtonRef}
+      >
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+      </button>
+
+      <ul
+        className={isMenuOpen ? 'site-navigation site-navigation--open' : 'site-navigation'}
+        id="primary-navigation"
+      >
         {navigationItems.map(({ label, to }) => (
           <li key={to}>
             <NavLink
@@ -66,6 +137,7 @@ export function SiteNavigation() {
                 isActive ? 'site-navigation__link site-navigation__link--active' : 'site-navigation__link'
               }
               end={to === '/'}
+              onClick={() => setIsMenuOpen(false)}
               to={to}
             >
               {label}

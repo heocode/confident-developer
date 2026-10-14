@@ -1,14 +1,14 @@
 .card {
   position: relative;
   width: 100%;
-  height: min(80%, 36.5rem);
+  height: 80%;
   min-height: 0;
   cursor: pointer;
   perspective: 90rem;
 }
 
 .primary {
-  height: min(100%, 46rem);
+  height: 100%;
 }
 
 .cardInner {
@@ -294,11 +294,11 @@
 
 @media (max-width: 64rem) {
   .card {
-    height: min(78%, 34rem);
+    height: 78%;
   }
 
   .primary {
-    height: min(100%, 42.5rem);
+    height: 100%;
   }
 
   .primary .logo,
@@ -322,7 +322,66 @@
 @media (max-width: 48rem) {
   .card,
   .primary {
-    height: min(100%, 36rem);
+    height: 100%;
+  }
+
+  .front,
+  .primary .front {
+    padding: 1.5rem 1.5rem 1.65rem;
+  }
+
+  .identity h3,
+  .primary .identity h3 {
+    font-size: 1.125rem;
+  }
+
+  .identity p,
+  .primary .identity p {
+    max-width: 16rem;
+    font-size: 0.8125rem;
+  }
+
+  .preview,
+  .primary .preview {
+    margin-top: 0.875rem;
+  }
+
+  .preview img,
+  .primary .preview img {
+    width: min(84%, 21rem);
+  }
+
+  .backIdentity h3,
+  .primary .backIdentity h3 {
+    font-size: 1.5rem;
+  }
+
+  .backIdentity p,
+  .primary .backIdentity p {
+    font-size: 1rem;
+  }
+
+  .backIdentity time,
+  .primary .backIdentity time {
+    font-size: 0.8rem;
+  }
+
+  .summary,
+  .primary .summary {
+    font-size: 0.85rem;
+  }
+
+  .breakdownLabel,
+  .primary .breakdownLabel {
+    font-size: 0.85rem;
+  }
+
+  .flipButton,
+  .primary .flipButton {
+    bottom: 0.75rem;
+    left: 0.75rem;
+    width: 2.083rem;
+    height: 2.083rem;
   }
 }
 

@@ -6,6 +6,10 @@
   color: var(--color-text);
 }
 
+:global([data-home-intro-motion]) .exitContent {
+  opacity: var(--home-hero-opacity, 1);
+}
+
 .identity,
 .keepBuilding {
   position: absolute;
@@ -127,8 +131,11 @@
   border: 0.0625rem solid var(--color-border);
   border-radius: 50%;
   background: var(--color-surface-active);
-  animation: scrollActionCue 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  will-change: transform;
+  opacity: 0;
+  animation:
+    scrollActionCue 4s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    scrollCueOpacity 4s ease-in-out infinite;
+  will-change: opacity, transform;
 }
 
 .scrollIcon img {
@@ -140,7 +147,7 @@
   opacity: 0;
   animation:
     scrollActionCue 4s cubic-bezier(0.45, 0, 0.55, 1) infinite,
-    scrollLabelOpacity 4s ease-in-out infinite;
+    scrollCueOpacity 4s ease-in-out infinite;
   will-change: opacity, transform;
 }
 
@@ -149,6 +156,11 @@
 }
 
 @media (max-width: 48rem) {
+  .identity,
+  .keepBuilding {
+    display: none;
+  }
+
   .portraitFrame {
     top: 17%;
     right: 7%;
@@ -165,10 +177,6 @@
 }
 
 @media (max-width: 32rem) {
-  .keepBuilding {
-    display: none;
-  }
-
   .portraitFrame {
     top: 18%;
     right: 50%;
@@ -191,11 +199,8 @@
   .scrollIcon,
   .scrollLabel {
     animation: none;
-    will-change: auto;
-  }
-
-  .scrollLabel {
     opacity: 1;
+    will-change: auto;
   }
 }
 
@@ -211,7 +216,7 @@
   }
 }
 
-@keyframes scrollLabelOpacity {
+@keyframes scrollCueOpacity {
   0%,
   25%,
   100% {

@@ -13,8 +13,9 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - The six primary routes are Home, Projects, Services, About Me, References, and Contact Me.
 - Build Home first. Treat its sections as a preview of the dedicated routes rather than duplicating the complete content of those pages.
 - Home uses normal document scrolling. Its major sections are designed as `100vh` sections, with the footer incorporated into the final contact section.
+- The Home Hero-to-Projects transition keeps both sections in normal document flow: Hero content fades near the section boundary, then the Projects heading and project cards enter sequentially from below according to scroll progress. Do not turn the Hero into a pinned Projects background or add transition dimming and blur.
 - Use Inter throughout the product, varying only size, weight, line height, and other typographic properties required by the designs.
-- Navigation links open dedicated routes. The desktop navigation hides while scrolling down and returns while scrolling up.
+- Navigation links open dedicated routes. The desktop navigation hides while scrolling down and returns while scrolling up. On mobile, the fixed identity and burger control hide and return together using the same scroll-direction behavior.
 - The section control in the lower-right corner scrolls to the top. The hero scroll affordance points down.
 - Toronto time is live. `KEEP BUILDING` is decorative text.
 - The Home Hero portrait/sun moves away when a fine pointer enters its proximity radius and returns to its designed position when the pointer leaves the Hero. Disable this decorative interaction for touch/coarse pointers and `prefers-reduced-motion`.
