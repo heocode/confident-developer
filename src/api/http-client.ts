@@ -5,6 +5,11 @@ export interface ApiRequestOptions {
   signal?: AbortSignal
 }
 
+export interface ApiMutationOptions<TBody> extends ApiRequestOptions {
+  body: TBody
+  method: 'DELETE' | 'POST' | 'PUT'
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
@@ -36,17 +41,15 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-export async function getApiData<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
+async function requestApiData<T>(path: string, init: RequestInit): Promise<T> {
   assertRelativeApiPath(path)
 
   let response: Response
 
   try {
     response = await fetch(path, {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
+      ...init,
       credentials: 'same-origin',
-      signal: options.signal,
     })
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') throw error
@@ -78,4 +81,27 @@ export async function getApiData<T>(path: string, options: ApiRequestOptions = {
   }
 
   return payload.data
+}
+
+export function getApiData<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
+  return requestApiData<T>(path, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+    signal: options.signal,
+  })
+}
+
+export function sendApiData<TResponse, TBody>(
+  path: string,
+  options: ApiMutationOptions<TBody>,
+): Promise<TResponse> {
+  return requestApiData<TResponse>(path, {
+    method: options.method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(options.body),
+    signal: options.signal,
+  })
 }
