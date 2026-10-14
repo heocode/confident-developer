@@ -48,10 +48,12 @@
 }
 
 .surface {
+  --service-content-gap: clamp(1.25rem, 2vw, 2rem);
+
   display: grid;
-  grid-template-columns: max-content max-content minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
   align-items: center;
-  gap: clamp(1.25rem, 2vw, 2rem);
+  gap: var(--service-content-gap);
   width: max-content;
   max-width: calc(100vw - var(--page-gutter));
   height: 100%;
@@ -60,6 +62,13 @@
   border: 0.0625rem solid var(--color-service-border);
   border-left: 0;
   border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+}
+
+.lead {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  gap: var(--service-content-gap);
 }
 
 .product {
@@ -124,7 +133,7 @@
 
 @media (max-width: 64rem) {
   .surface {
-    gap: clamp(0.85rem, 1.6vw, 1.25rem);
+    --service-content-gap: clamp(0.85rem, 1.6vw, 1.25rem);
   }
 
   .title {
@@ -138,59 +147,100 @@
 
 @media (max-width: 48rem) {
   .section {
-    gap: clamp(1.5rem, 4.5svh, 2.5rem);
+    gap: clamp(3rem, 9svh, 6.5rem);
+    padding-top: clamp(4rem, 7.8svh, 5rem);
   }
 
   .item {
-    height: clamp(6rem, 14svh, 8rem);
+    --mobile-service-compact-height: clamp(5.75rem, min(25.4vw, 14svh), 8.25rem);
+    --mobile-service-edge-gap: clamp(1rem, 4vw, 1.25rem);
+
+    height: var(--mobile-service-compact-height);
+    transition: height 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
   }
 
-  .surface,
-  .active .surface {
-    grid-template-columns: minmax(0, 1fr) max-content;
-    grid-template-rows: auto auto;
-    align-content: center;
-    width: calc(100vw - var(--page-gutter));
+  .item.active {
+    height: calc(clamp(9.5rem, min(40vw, 22svh), 12.75rem) + var(--mobile-service-edge-gap));
+  }
+
+  .surface {
+    --mobile-service-padding: var(--mobile-service-edge-gap);
+    --service-content-gap: 0.75rem;
+
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--mobile-service-compact-height) minmax(0, 1fr);
+    align-content: start;
+    width: var(--mobile-service-width);
     max-width: none;
-    padding-right: var(--page-gutter);
-    column-gap: 0.75rem;
+    padding: 0 var(--mobile-service-padding);
     row-gap: 0;
+    transition: width 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
+  }
+
+  .active .surface {
+    width: calc(100vw - var(--page-gutter));
+  }
+
+  .product {
+    --mobile-service-width: 90.5vw;
+  }
+
+  .mobile {
+    --mobile-service-width: 86.5vw;
+  }
+
+  .web {
+    --mobile-service-width: 88.5vw;
+  }
+
+  .backend {
+    --mobile-service-width: 85vw;
   }
 
   .title {
-    font-size: clamp(1.35rem, 6vw, 2rem);
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.25;
     white-space: normal;
   }
 
+  .lead {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-self: center;
+    width: calc(
+      var(--mobile-service-width) - var(--mobile-service-padding) - var(--mobile-service-padding)
+    );
+  }
+
   .icon {
-    grid-column: 2;
-    grid-row: 1 / span 2;
+    align-self: center;
     max-width: 4.25rem;
     max-height: 4.25rem;
   }
 
   .description {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 2;
     width: 100%;
     max-height: 0;
-    font-size: clamp(0.72rem, 3vw, 0.85rem);
-    transition: max-height 260ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    font-size: clamp(0.9rem, 4vw, 1.25rem);
+    line-height: 1.2;
+    transition: max-height 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
   }
 
   .active .description {
     width: 100%;
-    max-height: 3.25rem;
+    max-height: calc(5rem + var(--mobile-service-edge-gap));
   }
 
   .descriptionText {
     width: 100%;
-    transform: translate3d(0.5rem, 0, 0);
+    padding: 0.25rem 0 var(--mobile-service-edge-gap);
+    transform: translate3d(0, -0.5rem, 0);
   }
 
   .active .descriptionText {
     transform: translate3d(0, 0, 0);
-    transition-delay: 100ms;
+    transition-delay: 130ms;
   }
 }
 

@@ -21,7 +21,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - The Home Hero portrait/sun moves away when a fine pointer enters its proximity radius and returns to its designed position when the pointer leaves the Hero. Disable this decorative interaction for touch/coarse pointers and `prefers-reduced-motion`.
 - Desktop project cards flip independently with a 3D tap/click interaction. The circular flip icon is an affordance for the same action.
 - Home displays three configurable featured projects. Project data must support Home selection, main-project selection, and explicit display ordering.
-- The Services preview starts collapsed and allows at most one open item. Desktop rows use full-width hover zones and remain responsive while scrolling moves them beneath a stationary fine pointer; keyboard focus and touch must have equivalent accessible behavior.
+- The Services preview starts collapsed and allows at most one open item. Desktop rows use full-width hover zones, expand horizontally, and remain responsive while scrolling moves them beneath a stationary fine pointer. Mobile rows expand downward on tap, widen toward the right gutter, and move the following rows through normal layout; keyboard focus must provide equivalent accessible behavior.
 - The References section is a real, scrollable guestbook backed by MongoDB, with pagination or incremental loading.
 - Submitting a reference starts with a message field. `Enter` continues to the details modal, while `Shift+Enter` inserts a newline. All modal fields are required.
 - The profile card uses real GitHub data. Its resume button downloads the resume, and its likes and views are real persisted interactions.
