@@ -12,6 +12,11 @@ export const siteIdentity = {
   lastName: 'Iskakov',
   headline: 'Product-Focused Software Developer',
   heroTitle: 'I BUILD STUFF',
+  profile: {
+    role: 'confident developer',
+    handle: '@heoposit',
+    avatarAlt: 'Vadim Iskakov',
+  },
   timezone: 'America/Toronto',
 } as const
 

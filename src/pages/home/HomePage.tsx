@@ -1,4 +1,5 @@
 import { HomeProjectsSection } from '../../features/projects/components/HomeProjectsSection'
+import { HomeProfileSection } from '../../features/profile/components/HomeProfileSection.tsx'
 import { HomeServicesSection } from '../../features/services/components/HomeServicesSection'
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { useHomeIntroTransition } from './hooks/useHomeIntroTransition'
@@ -14,6 +15,7 @@ export function HomePage() {
       <HeroSection />
       <HomeProjectsSection sectionRef={projectsSectionRef} />
       <HomeServicesSection sectionRef={servicesSectionRef} />
+      <HomeProfileSection />
       <ScrollToTopButton />
     </div>
   )
