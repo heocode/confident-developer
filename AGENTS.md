@@ -16,9 +16,9 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - The Home Hero-to-Projects transition keeps both sections in normal document flow: Hero content fades near the section boundary, then the Projects heading and project cards enter sequentially from below according to scroll progress. Do not turn the Hero into a pinned Projects background or add transition dimming and blur.
 - Use Inter throughout the product, varying only size, weight, line height, and other typographic properties required by the designs.
 - Navigation links open dedicated routes. The desktop navigation hides while scrolling down and returns while scrolling up. On mobile, the fixed identity and burger control hide and return together using the same scroll-direction behavior.
-- The section control in the lower-right corner scrolls to the top. The hero scroll affordance points down.
+- The section control in the lower-right corner scrolls to the top. The hero scroll affordance points down and plays two synchronized downward cues before each pause.
 - Toronto time is live. `KEEP BUILDING` is decorative text.
-- The Home Hero portrait/sun moves away when a fine pointer enters its proximity radius and returns to its designed position when the pointer leaves the Hero. Disable this decorative interaction for touch/coarse pointers and `prefers-reduced-motion`.
+- The Home Hero portrait/sun follows a subtle idle arc, moves away when a fine pointer enters its proximity radius, and returns to its designed position when the pointer leaves the Hero. Disable these decorative movements for touch/coarse pointers and `prefers-reduced-motion`.
 - Desktop project cards flip independently with a 3D tap/click interaction. The circular flip icon is an affordance for the same action.
 - Home displays three configurable featured projects. Project data must support Home selection, main-project selection, and explicit display ordering.
 - The Services preview starts collapsed and allows at most one open item. Desktop rows use full-width hover zones, expand horizontally, and remain responsive while scrolling moves them beneath a stationary fine pointer. Mobile rows expand downward on tap, widen toward the right gutter, and move the following rows through normal layout; keyboard focus must provide equivalent accessible behavior.

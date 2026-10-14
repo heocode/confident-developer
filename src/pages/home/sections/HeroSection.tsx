@@ -30,13 +30,15 @@ export function HeroSection() {
 
       <div className={`${styles.portraitFrame} ${styles.exitContent}`}>
         <div className={styles.portraitMover} ref={portraitRef}>
-          <img
-            className={styles.portrait}
-            src={heroPortraitUrl}
-            alt="Portrait of Vadim Iskakov"
-            width="305"
-            height="305"
-          />
+          <div className={styles.portraitFloater}>
+            <img
+              className={styles.portrait}
+              src={heroPortraitUrl}
+              alt="Portrait of Vadim Iskakov"
+              width="305"
+              height="305"
+            />
+          </div>
         </div>
       </div>
 
