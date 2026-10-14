@@ -8,6 +8,9 @@
     "src/api/**/*.ts",
     "src/features/projects/api/**/*.ts",
     "src/features/projects/model/**/*.ts",
+    "src/features/services/api/**/*.ts",
+    "src/features/services/model/**/*.ts",
+    "src/features/services/presentation/**/*.ts",
     "src/pages/home/**/*.ts",
     "test/**/*.ts"
   ]

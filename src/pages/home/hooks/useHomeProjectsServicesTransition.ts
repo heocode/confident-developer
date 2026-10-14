@@ -25,7 +25,7 @@ function removeMotionStyles(
   })
 }
 
-export function useHomeProjectsServicesTransition(serviceItemCount: number) {
+export function useHomeProjectsServicesTransition() {
   const projectsSectionRef = useRef<HTMLElement>(null)
   const servicesSectionRef = useRef<HTMLElement>(null)
 
@@ -34,7 +34,7 @@ export function useHomeProjectsServicesTransition(serviceItemCount: number) {
     const servicesSection = servicesSectionRef.current
     if (!projectsSection || !servicesSection) return
 
-    const serviceItems = Array.from(
+    let serviceItems = Array.from(
       servicesSection.querySelectorAll<HTMLElement>(SERVICE_ITEM_SELECTOR),
     )
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -100,7 +100,16 @@ export function useHomeProjectsServicesTransition(serviceItemCount: number) {
       scheduleTransitionUpdate()
     }
 
+    const serviceItemsObserver = new MutationObserver(() => {
+      serviceItems = Array.from(
+        servicesSection.querySelectorAll<HTMLElement>(SERVICE_ITEM_SELECTOR),
+      )
+      previousProgress = -1
+      scheduleTransitionUpdate()
+    })
+
     updateTransition()
+    serviceItemsObserver.observe(servicesSection, { childList: true, subtree: true })
     window.addEventListener('scroll', scheduleTransitionUpdate, { passive: true })
     window.addEventListener('resize', scheduleTransitionUpdate)
     reducedMotionQuery.addEventListener('change', handleMotionPreferenceChange)
@@ -109,10 +118,11 @@ export function useHomeProjectsServicesTransition(serviceItemCount: number) {
       window.removeEventListener('scroll', scheduleTransitionUpdate)
       window.removeEventListener('resize', scheduleTransitionUpdate)
       reducedMotionQuery.removeEventListener('change', handleMotionPreferenceChange)
+      serviceItemsObserver.disconnect()
       if (animationFrame !== null) window.cancelAnimationFrame(animationFrame)
       removeMotionStyles(projectsSection, servicesSection, serviceItems)
     }
-  }, [serviceItemCount])
+  }, [])
 
   return { projectsSectionRef, servicesSectionRef }
 }
