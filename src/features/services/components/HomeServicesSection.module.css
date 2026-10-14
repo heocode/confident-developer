@@ -15,6 +15,11 @@
   text-align: center;
 }
 
+:global([data-home-services-motion]) .header {
+  opacity: var(--home-services-title-opacity, 1);
+  transform: translate3d(0, var(--home-services-title-offset, 0), 0);
+}
+
 .header h2 {
   margin: 0;
   font-size: clamp(3rem, 5vw, 4.5rem);
@@ -29,6 +34,11 @@
 
 .item {
   height: clamp(5.5rem, 15.625svh, 10rem);
+}
+
+:global([data-home-services-motion]) .item {
+  opacity: var(--home-service-item-opacity, 1);
+  transform: translate3d(0, var(--home-service-item-offset, 0), 0);
 }
 
 .trigger {
@@ -245,6 +255,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :global([data-home-services-motion]) .header,
+  :global([data-home-services-motion]) .item {
+    opacity: 1;
+    transform: none;
+  }
+
   .surface,
   .description,
   .descriptionText {

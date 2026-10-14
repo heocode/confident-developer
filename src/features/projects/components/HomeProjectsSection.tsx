@@ -1,12 +1,23 @@
+import type { Ref } from 'react'
+
 import styles from './HomeProjectsSection.module.css'
 import { HomeProjectCard } from './HomeProjectCard.tsx'
 import { useHomeProjects } from '../hooks/useHomeProjects.ts'
 
-export function HomeProjectsSection() {
+interface HomeProjectsSectionProps {
+  sectionRef?: Ref<HTMLElement>
+}
+
+export function HomeProjectsSection({ sectionRef }: HomeProjectsSectionProps) {
   const { retry, state } = useHomeProjects()
 
   return (
-    <section className={styles.section} id="home-projects" aria-labelledby="home-projects-title">
+    <section
+      className={styles.section}
+      id="home-projects"
+      aria-labelledby="home-projects-title"
+      ref={sectionRef}
+    >
       <header className={styles.header}>
         <div className={styles.titleGroup}>
           <h2 id="home-projects-title">HERE’S THE STUFF</h2>

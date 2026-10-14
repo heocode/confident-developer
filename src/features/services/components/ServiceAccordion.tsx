@@ -63,7 +63,11 @@ export function ServiceAccordion({ services }: ServiceAccordionProps) {
         const descriptionId = `home-service-${service.id}-description`
 
         return (
-          <li className={`${styles.item} ${isActive ? styles.active : ''}`} key={service.id}>
+          <li
+            className={`${styles.item} ${isActive ? styles.active : ''}`}
+            data-home-service-entrance-item=""
+            key={service.id}
+          >
             <button
               className={styles.trigger}
               type="button"
