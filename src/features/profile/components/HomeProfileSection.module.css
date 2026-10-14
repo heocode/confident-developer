@@ -14,6 +14,11 @@
   text-align: center;
 }
 
+:global([data-home-profile-motion]) .header {
+  opacity: var(--home-profile-title-opacity, 1);
+  transform: translate3d(0, var(--home-profile-title-offset, 0), 0);
+}
+
 .header h2 {
   margin: 0;
   font-size: clamp(3rem, 5vw, 4.5rem);
@@ -27,6 +32,11 @@
   min-height: 0;
   align-items: start;
   justify-items: center;
+}
+
+:global([data-home-profile-motion]) .content {
+  opacity: var(--home-profile-card-opacity, 1);
+  transform: translate3d(0, var(--home-profile-card-offset, 0), 0);
 }
 
 .card {
@@ -451,6 +461,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :global([data-home-profile-motion]) .header,
+  :global([data-home-profile-motion]) .content {
+    opacity: 1;
+    transform: none;
+  }
+
   .likeButton img {
     transition: none;
   }

@@ -1,14 +1,25 @@
+import type { Ref } from 'react'
+
 import { useHomeProfile } from '../hooks/useHomeProfile.ts'
 import { useProfileViewTracking } from '../hooks/useProfileViewTracking.ts'
 import styles from './HomeProfileSection.module.css'
 import { ProfileCard } from './ProfileCard.tsx'
 
-export function HomeProfileSection() {
+interface HomeProfileSectionProps {
+  sectionRef?: Ref<HTMLElement>
+}
+
+export function HomeProfileSection({ sectionRef }: HomeProfileSectionProps) {
   const { recordView, retry, state, toggleLike } = useHomeProfile()
   const cardRef = useProfileViewTracking(state.status === 'ready', recordView)
 
   return (
-    <section className={styles.section} id="home-profile" aria-labelledby="home-profile-title">
+    <section
+      className={styles.section}
+      id="home-profile"
+      aria-labelledby="home-profile-title"
+      ref={sectionRef}
+    >
       <header className={styles.header}>
         <h2 id="home-profile-title">WHO BUILDS THE STUFF</h2>
       </header>

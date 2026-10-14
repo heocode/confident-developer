@@ -30,6 +30,8 @@
 
 .list {
   align-self: start;
+  opacity: var(--home-services-exit-opacity, 1);
+  transform: translate3d(0, var(--home-services-exit-offset, 0), 0);
 }
 
 .state {
@@ -74,6 +76,19 @@
 :global([data-home-services-motion]) .state {
   opacity: var(--home-service-item-opacity, 1);
   transform: translate3d(0, var(--home-service-item-offset, 0), 0);
+}
+
+:global([data-home-services-motion]) .state {
+  opacity: calc(
+    var(--home-service-item-opacity, 1) * var(--home-services-exit-opacity, 1)
+  );
+  transform: translate3d(
+    0,
+    calc(
+      var(--home-service-item-offset, 0) + var(--home-services-exit-offset, 0)
+    ),
+    0
+  );
 }
 
 .trigger {
@@ -290,6 +305,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .list,
   :global([data-home-services-motion]) .header,
   :global([data-home-services-motion]) .item,
   :global([data-home-services-motion]) .state {

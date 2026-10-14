@@ -4,18 +4,20 @@ import { HomeServicesSection } from '../../features/services/components/HomeServ
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { useHomeIntroTransition } from './hooks/useHomeIntroTransition'
 import { useHomeProjectsServicesTransition } from './hooks/useHomeProjectsServicesTransition.ts'
+import { useHomeServicesProfileTransition } from './hooks/useHomeServicesProfileTransition.ts'
 import { HeroSection } from './sections/HeroSection'
 
 export function HomePage() {
   const transitionRef = useHomeIntroTransition()
   const { projectsSectionRef, servicesSectionRef } = useHomeProjectsServicesTransition()
+  const profileSectionRef = useHomeServicesProfileTransition(servicesSectionRef)
 
   return (
     <div ref={transitionRef}>
       <HeroSection />
       <HomeProjectsSection sectionRef={projectsSectionRef} />
       <HomeServicesSection sectionRef={servicesSectionRef} />
-      <HomeProfileSection />
+      <HomeProfileSection sectionRef={profileSectionRef} />
       <ScrollToTopButton />
     </div>
   )

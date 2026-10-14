@@ -16,13 +16,13 @@ export function useProfileViewTracking(enabled: boolean, recordView: () => void)
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0]
-        if (!entry?.isIntersecting || entry.intersectionRatio < 0.55) return
+        if (!entry?.isIntersecting || entry.intersectionRatio < 0.9) return
 
         hasTrackedViewRef.current = true
         observer.disconnect()
         recordView()
       },
-      { threshold: [0.55] },
+      { threshold: [0.9] },
     )
 
     observer.observe(card)
