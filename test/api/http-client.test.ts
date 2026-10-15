@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { afterEach, describe, it } from 'node:test'
 
 import { ApiError } from '../../src/api/api-error.ts'
-import { sendApiData } from '../../src/api/http-client.ts'
+import { getApiData, sendApiCommand, sendApiData } from '../../src/api/http-client.ts'
 
 const originalFetch = globalThis.fetch
 
@@ -59,6 +59,31 @@ describe('HTTP client mutations', () => {
       /relative \/api/,
     )
     assert.equal(requested, false)
+  })
+
+  it('merges endpoint headers and accepts successful commands without data', async () => {
+    let requestedInit: RequestInit | undefined
+
+    globalThis.fetch = async (_input, init) => {
+      requestedInit = init
+      return jsonResponse({ success: true, message: 'Deleted.' })
+    }
+
+    await sendApiCommand('/api/v1/example', {
+      method: 'DELETE',
+      headers: { 'X-Management-Token': 'token' },
+    })
+
+    assert.deepEqual(requestedInit?.headers, {
+      'X-Management-Token': 'token',
+      Accept: 'application/json',
+    })
+    assert.equal(requestedInit?.body, undefined)
+
+    await assert.rejects(
+      getApiData('/api/v1/example'),
+      (error: unknown) => error instanceof ApiError && error.kind === 'invalid-response',
+    )
   })
 
   it('normalizes HTTP and network errors without swallowing aborts', async () => {

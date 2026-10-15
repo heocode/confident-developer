@@ -2,11 +2,16 @@ import { ApiError } from './api-error.ts'
 import type { ApiEnvelope } from './api.types.ts'
 
 export interface ApiRequestOptions {
+  headers?: Readonly<Record<string, string>>
   signal?: AbortSignal
 }
 
 export interface ApiMutationOptions<TBody> extends ApiRequestOptions {
   body: TBody
+  method: 'DELETE' | 'POST' | 'PUT'
+}
+
+export interface ApiCommandOptions extends ApiRequestOptions {
   method: 'DELETE' | 'POST' | 'PUT'
 }
 
@@ -18,12 +23,13 @@ function hasMessage(value: unknown): value is { message: string } {
   return isRecord(value) && typeof value.message === 'string'
 }
 
-function isSuccessfulEnvelope<T>(value: unknown): value is ApiEnvelope<T> {
+function isSuccessfulEnvelope(value: unknown): value is Pick<ApiEnvelope<unknown>, 'message' | 'success'> {
+  return isRecord(value) && value.success === true && typeof value.message === 'string'
+}
+
+function isSuccessfulDataEnvelope<T>(value: unknown): value is ApiEnvelope<T> {
   return (
-    isRecord(value) &&
-    value.success === true &&
-    typeof value.message === 'string' &&
-    Object.hasOwn(value, 'data')
+    isSuccessfulEnvelope(value) && Object.hasOwn(value, 'data')
   )
 }
 
@@ -41,7 +47,7 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-async function requestApiData<T>(path: string, init: RequestInit): Promise<T> {
+async function requestApiEnvelope(path: string, init: RequestInit) {
   assertRelativeApiPath(path)
 
   let response: Response
@@ -71,12 +77,24 @@ async function requestApiData<T>(path: string, init: RequestInit): Promise<T> {
     )
   }
 
-  if (!isSuccessfulEnvelope<T>(payload)) {
+  if (!isSuccessfulEnvelope(payload)) {
     const message = hasMessage(payload) && payload.message.trim() ? payload.message : 'The API returned an invalid response.'
 
     throw new ApiError(message, {
       kind: 'invalid-response',
       status: response.status,
+    })
+  }
+
+  return payload
+}
+
+async function requestApiData<T>(path: string, init: RequestInit): Promise<T> {
+  const payload = await requestApiEnvelope(path, init)
+
+  if (!isSuccessfulDataEnvelope<T>(payload)) {
+    throw new ApiError('The API returned an invalid response.', {
+      kind: 'invalid-response',
     })
   }
 
@@ -86,7 +104,7 @@ async function requestApiData<T>(path: string, init: RequestInit): Promise<T> {
 export function getApiData<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
   return requestApiData<T>(path, {
     method: 'GET',
-    headers: { Accept: 'application/json' },
+    headers: { ...options.headers, Accept: 'application/json' },
     signal: options.signal,
   })
 }
@@ -98,10 +116,22 @@ export function sendApiData<TResponse, TBody>(
   return requestApiData<TResponse>(path, {
     method: options.method,
     headers: {
+      ...options.headers,
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(options.body),
+    signal: options.signal,
+  })
+}
+
+export async function sendApiCommand(
+  path: string,
+  options: ApiCommandOptions,
+): Promise<void> {
+  await requestApiEnvelope(path, {
+    method: options.method,
+    headers: { ...options.headers, Accept: 'application/json' },
     signal: options.signal,
   })
 }

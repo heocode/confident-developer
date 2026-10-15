@@ -28,6 +28,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - Home Profile statistics come from the backend's latest persisted GitHub snapshot through `GET /api/v1/github-summary`; never request GitHub directly from the browser or replace a temporarily stale snapshot with hardcoded counts. Profile-post content and persisted likes/views come from the public Profile Post API. Register a view only after the profile card actually enters the viewport, not when Home initially loads.
 - The References section is a real, scrollable guestbook backed by MongoDB, with pagination or incremental loading.
 - Submitting a reference starts with a message field. `Enter` continues to the details modal, while `Shift+Enter` inserts a newline. All modal fields are required.
+- References use the public `/api/v1/references` contract and preserve backend ordering. Retain the one-time submission management token in versioned local browser storage with only its reference ID; never persist the submitter's email or testimonial alongside it, and send the token only through the ownership header required by the status and deletion endpoints.
 - The profile card uses real GitHub data. Its resume button downloads the resume, and its likes and views are real persisted interactions.
 - The final `HIT ME UP` call to action opens the contact panel shown in the approved design.
 
