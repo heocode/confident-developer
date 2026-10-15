@@ -5,11 +5,18 @@ import styles from './HomeReferencesSection.module.css'
 import { ReferenceRating } from './ReferenceRating.tsx'
 
 interface OwnedReferenceCardProps {
+  disabled: boolean
   reference: OwnedReference
+  onRequestRemoval: () => void
 }
 
-export function OwnedReferenceCard({ reference }: OwnedReferenceCardProps) {
+export function OwnedReferenceCard({
+  disabled,
+  reference,
+  onRequestRemoval,
+}: OwnedReferenceCardProps) {
   const submittedDate = formatReferenceDate(reference.submittedAt)
+  const isRejected = reference.status === 'rejected'
 
   return (
     <article className={styles.referenceCard}>
@@ -19,9 +26,49 @@ export function OwnedReferenceCard({ reference }: OwnedReferenceCardProps) {
         <header className={styles.referenceHeader}>
           <div className={styles.authorLine}>
             <h3>{reference.name}</h3>
-            <p>
-              {reference.company} · {reference.position} · Pending review
-            </p>
+            <div className={styles.authorMeta}>
+              <span>{reference.company}</span>
+              <span className={styles.metaItem}>{reference.position}</span>
+              <span className={styles.statusGroup}>
+                {isRejected ? (
+                  <span className={styles.rejectedStatus}>Rejected</span>
+                ) : (
+                  <span className={styles.pendingStatus}>Pending review</span>
+                )}
+
+                {isRejected ? (
+                  <button
+                    className={styles.rejectedAction}
+                    type="button"
+                    disabled={disabled}
+                    onClick={onRequestRemoval}
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <span className={styles.ownershipControl}>
+                    <button
+                      className={styles.ownershipInfo}
+                      type="button"
+                      aria-label="Reference submission status and actions"
+                    >
+                      i
+                    </button>
+                    <span className={styles.ownershipPopover} role="status">
+                      <span className={styles.ownershipPopoverSurface}>
+                        <span>
+                          Your reference was submitted <strong>successfully</strong>. It won’t
+                          be visible publicly until it’s approved.
+                        </span>
+                        <button type="button" disabled={disabled} onClick={onRequestRemoval}>
+                          Withdraw
+                        </button>
+                      </span>
+                    </span>
+                  </span>
+                )}
+              </span>
+            </div>
           </div>
 
           {submittedDate && <time dateTime={reference.submittedAt}>{submittedDate}</time>}

@@ -14,18 +14,22 @@ interface ReferenceListProps {
   items: PublicReference[]
   pagination: ReferencePagination
   isLoadingMore: boolean
+  isOwnedReferenceRemoving?: boolean
   loadMoreErrorMessage: string | null
   ownedReference?: OwnedReference
   onLoadNextPage: () => void
+  onRequestOwnedReferenceRemoval?: () => void
 }
 
 export function ReferenceList({
   items,
   pagination,
   isLoadingMore,
+  isOwnedReferenceRemoving = false,
   loadMoreErrorMessage,
   ownedReference,
   onLoadNextPage,
+  onRequestOwnedReferenceRemoval,
 }: ReferenceListProps) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -50,7 +54,13 @@ export function ReferenceList({
   return (
     <div className={styles.viewport} ref={viewportRef}>
       <div className={styles.list}>
-        {ownedReference && <OwnedReferenceCard reference={ownedReference} />}
+        {ownedReference && onRequestOwnedReferenceRemoval && (
+          <OwnedReferenceCard
+            disabled={isOwnedReferenceRemoving}
+            reference={ownedReference}
+            onRequestRemoval={onRequestOwnedReferenceRemoval}
+          />
+        )}
         {items.map((reference) => (
           <ReferenceCard reference={reference} key={reference.id} />
         ))}

@@ -8,7 +8,7 @@
 
 .composer {
   display: grid;
-  height: 4.0625rem;
+  min-height: 4.0625rem;
   grid-template-columns: minmax(0, 1fr) 3rem;
   align-items: center;
   gap: 1rem;
@@ -20,8 +20,9 @@
 
 .composer textarea {
   width: 100%;
-  max-height: 2.75rem;
+  max-height: min(9rem, 24svh);
   padding: 0;
+  overflow-y: hidden;
   border: 0;
   outline: 0;
   color: var(--color-text);
@@ -31,6 +32,8 @@
   font-weight: 500;
   line-height: 1.35;
   resize: none;
+  scrollbar-color: rgb(255 255 255 / 50%) transparent;
+  scrollbar-width: thin;
 }
 
 .composer textarea::placeholder {
@@ -42,6 +45,7 @@
   display: grid;
   width: 3rem;
   aspect-ratio: 1;
+  align-self: end;
   place-items: center;
   padding: 0;
   border: 0.0815rem solid rgb(255 255 255 / 50%);
@@ -49,6 +53,7 @@
   color: var(--color-text);
   background: rgb(80 106 150 / 65%);
   cursor: pointer;
+  transition: background-color 140ms ease-out;
 }
 
 .composer button img {
@@ -57,6 +62,16 @@
 
 .composer button:disabled {
   cursor: default;
+}
+
+.composer button:focus-visible {
+  background: var(--color-surface-active);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .composer button:not(:disabled):hover {
+    background: var(--color-surface-active);
+  }
 }
 
 .composerDisabled {
@@ -86,6 +101,30 @@
   text-align: center;
 }
 
+.persistenceRecovery {
+  position: absolute;
+  right: 1.5rem;
+  bottom: calc(100% + 0.35rem);
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--color-error);
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+.persistenceRecovery button {
+  padding: 0;
+  border: 0;
+  color: var(--color-text);
+  background: transparent;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .modal {
   width: min(34.375rem, calc(100vw - 2rem));
   height: min(52.5rem, calc(100svh - 2rem));
@@ -113,6 +152,114 @@
   font-weight: 600;
   line-height: 1.15;
   text-align: center;
+}
+
+.removalModal {
+  position: fixed;
+  width: min(25rem, calc(100vw - 2rem));
+  height: fit-content;
+  max-height: calc(100svh - 2rem);
+  min-height: 0;
+  margin: auto;
+  padding: 1.75rem;
+  overflow: visible;
+  text-align: center;
+}
+
+.removalModal h3 {
+  margin-bottom: 0.75rem;
+}
+
+.closeButton {
+  position: fixed;
+  z-index: 1;
+  top: var(--viewport-edge-offset);
+  right: calc(var(--page-gutter) + var(--modal-scrollbar-compensation, 0px));
+  display: grid;
+  width: 3rem;
+  aspect-ratio: 1;
+  place-items: center;
+  padding: 0;
+  border: 0.125rem solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-active);
+  box-shadow: var(--shadow-panel);
+  cursor: pointer;
+}
+
+.closeButton span,
+.closeButton span::after {
+  display: block;
+  width: 1.125rem;
+  height: 0.1875rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.closeButton span::after {
+  transform: rotate(90deg);
+}
+
+.closeButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.removalModal > p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.removalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.removalActions button {
+  min-height: 2.875rem;
+  padding: 0.65rem 1rem;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  background: rgb(80 106 150 / 65%);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 140ms ease-out;
+}
+
+.removalActions .destructiveButton {
+  border-color: var(--color-error);
+  color: var(--color-error);
+  background: transparent;
+}
+
+.removalActions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.removalActions button:first-child:focus-visible {
+  background: rgb(43 70 111 / 82%);
+}
+
+.removalActions .destructiveButton:focus-visible {
+  background: rgb(255 154 168 / 18%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .removalActions button:first-child:not(:disabled):hover {
+    background: rgb(43 70 111 / 82%);
+  }
+
+  .removalActions .destructiveButton:not(:disabled):hover {
+    background: rgb(255 154 168 / 18%);
+  }
 }
 
 .modalForm {
@@ -212,7 +359,6 @@
 .ratingStarSelected {
   display: block;
   opacity: 0.5;
-  transition: opacity 140ms ease-out, filter 140ms ease-out;
 }
 
 .ratingStarSelected {
@@ -290,6 +436,10 @@
     width: 2.5rem;
   }
 
+  .composer textarea {
+    max-height: min(7.5rem, 20svh);
+  }
+
   .modal {
     padding: 1.25rem 1rem;
   }
@@ -316,8 +466,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ratingStar,
-  .ratingStarSelected {
+  .composer button,
+  .removalActions button {
     transition: none;
   }
 }

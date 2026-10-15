@@ -19,9 +19,10 @@ export function ReferenceCard({ reference }: ReferenceCardProps) {
         <header className={styles.referenceHeader}>
           <div className={styles.authorLine}>
             <h3>{reference.name}</h3>
-            <p>
-              {reference.company} · {reference.position}
-            </p>
+            <div className={styles.authorMeta}>
+              <span>{reference.company}</span>
+              <span className={styles.metaItem}>{reference.position}</span>
+            </div>
           </div>
 
           {publishedDate && <time dateTime={reference.publishedAt}>{publishedDate}</time>}

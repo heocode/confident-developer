@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import starIconUrl from '../../../assets/icons/references/star.svg'
 import styles from './ReferenceSubmission.module.css'
 
@@ -17,14 +19,20 @@ export function ReferenceRatingInput({
   onChange,
 }: ReferenceRatingInputProps) {
   const errorId = `${name}-rating-error`
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null)
+  const previewRating = hoveredRating ?? value
 
   return (
     <fieldset className={styles.ratingField} aria-describedby={errorMessage ? errorId : undefined}>
       <legend>{label}</legend>
 
-      <div className={styles.ratingChoices}>
+      <div className={styles.ratingChoices} onMouseLeave={() => setHoveredRating(null)}>
         {[1, 2, 3, 4, 5].map((rating) => (
-          <label className={styles.ratingChoice} key={rating}>
+          <label
+            className={styles.ratingChoice}
+            key={rating}
+            onMouseEnter={() => setHoveredRating(rating)}
+          >
             <input
               type="radio"
               name={name}
@@ -33,7 +41,9 @@ export function ReferenceRatingInput({
               onChange={() => onChange(rating)}
             />
             <img
-              className={rating <= value ? styles.ratingStarSelected : styles.ratingStar}
+              className={
+                rating <= previewRating ? styles.ratingStarSelected : styles.ratingStar
+              }
               src={starIconUrl}
               alt=""
             />

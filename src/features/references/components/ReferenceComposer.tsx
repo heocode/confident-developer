@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 
 import sendIconUrl from '../../../assets/icons/references/send.svg'
 import styles from './ReferenceSubmission.module.css'
@@ -11,6 +11,14 @@ interface ReferenceComposerProps {
   onContinue: () => void
 }
 
+function resizeTextarea(textarea: HTMLTextAreaElement) {
+  textarea.style.height = 'auto'
+  const maxHeight = Number.parseFloat(window.getComputedStyle(textarea).maxHeight)
+  const nextHeight = Math.min(textarea.scrollHeight, maxHeight)
+  textarea.style.height = `${nextHeight}px`
+  textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden'
+}
+
 export function ReferenceComposer({
   disabled,
   errorMessage,
@@ -19,6 +27,19 @@ export function ReferenceComposer({
   onContinue,
 }: ReferenceComposerProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useLayoutEffect(() => {
+    if (textareaRef.current) resizeTextarea(textareaRef.current)
+  }, [value])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (textareaRef.current) resizeTextarea(textareaRef.current)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className={styles.composerShell}>

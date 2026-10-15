@@ -12,6 +12,7 @@ import submissionStyles from './ReferenceSubmission.module.css'
 import { ReferenceComposer } from './ReferenceComposer.tsx'
 import { ReferenceEmptyState } from './ReferenceEmptyState.tsx'
 import { ReferenceList } from './ReferenceList.tsx'
+import { ReferenceRemovalModal } from './ReferenceRemovalModal.tsx'
 import { ReferenceSubmissionModal } from './ReferenceSubmissionModal.tsx'
 
 const EMPTY_PAGINATION = {
@@ -24,15 +25,27 @@ const EMPTY_PAGINATION = {
 export function HomeReferencesSection() {
   const { loadNextPage, retry, state: referencesState } = useHomeReferences()
   const {
-    clearError: clearSubmissionError,
+    clearSubmissionError,
+    clearWithdrawError,
+    restore,
     state: submissionState,
     submit,
+    withdraw,
   } = useReferenceSubmission()
   const [composerError, setComposerError] = useState<string | null>(null)
   const [draft, setDraft] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const pendingReference =
-    submissionState.status === 'success' ? submissionState.reference : undefined
+  const [isRemovalModalOpen, setIsRemovalModalOpen] = useState(false)
+  const ownedReference =
+    submissionState.status === 'owned' ||
+    submissionState.status === 'withdrawing' ||
+    submissionState.status === 'withdraw-error'
+      ? submissionState.reference
+      : undefined
+  const isRestoringOwnership = submissionState.status === 'restoring'
+  const isRemovingReference = submissionState.status === 'withdrawing'
+  const isComposerDisabled =
+    submissionState.status !== 'idle' && submissionState.status !== 'submission-error'
 
   function openSubmissionModal() {
     const error = validateReferenceTestimonial(draft)
@@ -62,7 +75,7 @@ export function HomeReferencesSection() {
     return submitted
   }
 
-  const referenceFeed = pendingReference ? (
+  const referenceFeed = ownedReference ? (
     <ReferenceList
       items={referencesState.status === 'ready' ? referencesState.items : []}
       pagination={
@@ -72,8 +85,13 @@ export function HomeReferencesSection() {
       loadMoreErrorMessage={
         referencesState.status === 'ready' ? referencesState.loadMoreErrorMessage : null
       }
-      ownedReference={pendingReference}
+      isOwnedReferenceRemoving={isRemovingReference}
+      ownedReference={ownedReference}
       onLoadNextPage={loadNextPage}
+      onRequestOwnedReferenceRemoval={() => {
+        clearWithdrawError()
+        setIsRemovalModalOpen(true)
+      }}
     />
   ) : null
 
@@ -90,23 +108,35 @@ export function HomeReferencesSection() {
       <div className={styles.panel}>
         {referenceFeed}
 
-        {!referenceFeed && referencesState.status === 'loading' && (
+        {!referenceFeed && isRestoringOwnership && (
+          <div className={styles.state} role="status" aria-live="polite">
+            <p>Restoring your reference…</p>
+          </div>
+        )}
+
+        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'loading' && (
           <div className={styles.state} role="status" aria-live="polite">
             <p>Loading references…</p>
           </div>
         )}
 
-        {!referenceFeed && referencesState.status === 'empty' && referencesState.emptyState && (
-          <ReferenceEmptyState emptyState={referencesState.emptyState} />
-        )}
+        {!referenceFeed &&
+          !isRestoringOwnership &&
+          referencesState.status === 'empty' &&
+          referencesState.emptyState && (
+            <ReferenceEmptyState emptyState={referencesState.emptyState} />
+          )}
 
-        {!referenceFeed && referencesState.status === 'empty' && !referencesState.emptyState && (
-          <div className={styles.state}>
-            <h3>No references yet</h3>
-          </div>
-        )}
+        {!referenceFeed &&
+          !isRestoringOwnership &&
+          referencesState.status === 'empty' &&
+          !referencesState.emptyState && (
+            <div className={styles.state}>
+              <h3>No references yet</h3>
+            </div>
+          )}
 
-        {!referenceFeed && referencesState.status === 'error' && (
+        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'error' && (
           <div className={styles.state} role="alert">
             <h3>References are unavailable</h3>
             <p>{referencesState.message}</p>
@@ -116,7 +146,7 @@ export function HomeReferencesSection() {
           </div>
         )}
 
-        {!referenceFeed && referencesState.status === 'ready' && (
+        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'ready' && (
           <ReferenceList
             items={referencesState.items}
             pagination={referencesState.pagination}
@@ -128,7 +158,7 @@ export function HomeReferencesSection() {
 
         <div className={submissionStyles.submissionControls}>
           <ReferenceComposer
-            disabled={Boolean(pendingReference)}
+            disabled={isComposerDisabled}
             errorMessage={composerError}
             value={draft}
             onChange={(value) => {
@@ -138,10 +168,19 @@ export function HomeReferencesSection() {
             onContinue={openSubmissionModal}
           />
 
-          {submissionState.status === 'success' && !submissionState.ownershipSaved && (
+          {submissionState.status === 'owned' && !submissionState.ownershipSaved && (
             <p className={submissionStyles.persistenceWarning} role="status">
               Your reference was submitted, but this browser could not save withdrawal access.
             </p>
+          )}
+
+          {submissionState.status === 'restore-error' && (
+            <div className={submissionStyles.persistenceRecovery} role="alert">
+              <span>{submissionState.message}</span>
+              <button type="button" onClick={() => void restore()}>
+                Try again
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -150,7 +189,7 @@ export function HomeReferencesSection() {
         isOpen={isModalOpen}
         isSubmitting={submissionState.status === 'submitting'}
         submissionErrorMessage={
-          submissionState.status === 'error' ? submissionState.message : null
+          submissionState.status === 'submission-error' ? submissionState.message : null
         }
         testimonial={draft}
         onClose={() => {
@@ -158,6 +197,20 @@ export function HomeReferencesSection() {
           setIsModalOpen(false)
         }}
         onSubmit={handleSubmission}
+      />
+
+      <ReferenceRemovalModal
+        errorMessage={
+          submissionState.status === 'withdraw-error' ? submissionState.message : null
+        }
+        isOpen={isRemovalModalOpen && Boolean(ownedReference)}
+        isRemoving={isRemovingReference}
+        status={ownedReference?.status ?? null}
+        onClose={() => {
+          clearWithdrawError()
+          setIsRemovalModalOpen(false)
+        }}
+        onConfirm={withdraw}
       />
     </section>
   )

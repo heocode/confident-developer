@@ -49,7 +49,7 @@ a {
     position: fixed;
     z-index: 20;
     top: 0;
-    right: 0;
+    right: var(--modal-scrollbar-compensation, 0px);
     left: 0;
     display: flex;
     justify-content: center;

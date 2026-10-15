@@ -5,6 +5,7 @@ import {
   hasReferenceSubmissionErrors,
   validateReferenceSubmission,
 } from '../model/reference-submission-form.ts'
+import { useReferenceModalPageLock } from '../hooks/useReferenceModalPageLock.ts'
 import type {
   ReferenceSubmissionDetails,
   ReferenceSubmissionErrors,
@@ -94,6 +95,7 @@ export function ReferenceSubmissionModal({
   )
   const [turnstileRevision, setTurnstileRevision] = useState(0)
   const [turnstileToken, setTurnstileToken] = useState('')
+  useReferenceModalPageLock(isOpen)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -101,16 +103,6 @@ export function ReferenceSubmissionModal({
 
     if (isOpen && !dialog.open) dialog.showModal()
     if (!isOpen && dialog.open) dialog.close()
-  }, [isOpen])
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    const previousOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    return () => {
-      document.documentElement.style.overflow = previousOverflow
-    }
   }, [isOpen])
 
   function clearFieldError(field: ReferenceSubmissionField) {
@@ -193,6 +185,16 @@ export function ReferenceSubmissionModal({
         if (!isInside) closeModal()
       }}
     >
+      <button
+        className={styles.closeButton}
+        type="button"
+        aria-label="Close reference form"
+        disabled={isSubmitting}
+        onClick={closeModal}
+      >
+        <span aria-hidden="true" />
+      </button>
+
       <h3 id="reference-submission-title">Few more details before publishing</h3>
 
       <form className={styles.modalForm} noValidate onSubmit={handleSubmit}>
