@@ -21,7 +21,21 @@ export interface PublicReference {
   publishedAt: string
 }
 
+export interface ReferenceEmptyState {
+  author: {
+    displayName: string
+    handle: string
+    avatar: {
+      url: string
+      alt: string
+    }
+  }
+  message: string
+  updatedAt: string
+}
+
 export interface PublicReferencePage {
+  emptyState: ReferenceEmptyState | null
   items: PublicReference[]
   pagination: ReferencePagination
 }

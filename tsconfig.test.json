@@ -13,6 +13,7 @@
     "src/features/projects/model/**/*.ts",
     "src/features/references/api/**/*.ts",
     "src/features/references/model/**/*.ts",
+    "src/features/references/presentation/**/*.ts",
     "src/features/references/storage/**/*.ts",
     "src/features/services/api/**/*.ts",
     "src/features/services/model/**/*.ts",

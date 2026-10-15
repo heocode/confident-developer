@@ -9,6 +9,7 @@ import {
 } from '../../../src/features/references/api/references-api.ts'
 import type {
   PublicReference,
+  ReferenceEmptyState,
   ReferenceSubmissionOwnership,
   SubmitReferenceInput,
 } from '../../../src/features/references/model/reference.types.ts'
@@ -25,6 +26,19 @@ const publicReference: PublicReference = {
   testimonial: 'Vadim turns ideas into reliable products.',
   ratings: { overall: 5, technical: 5, communication: 5 },
   publishedAt: '2026-10-14T12:00:00.000Z',
+}
+
+const emptyState: ReferenceEmptyState = {
+  author: {
+    displayName: 'Vadim Iskakov',
+    handle: 'heoposit',
+    avatar: {
+      url: 'https://res.cloudinary.com/example/image/upload/avatar.webp',
+      alt: 'Vadim Iskakov',
+    },
+  },
+  message: 'It feels empty, but that is only for now!',
+  updatedAt: '2026-10-15T12:00:00.000Z',
 }
 
 const submission: SubmitReferenceInput = {
@@ -67,6 +81,7 @@ describe('References API', () => {
         success: true,
         message: 'References retrieved successfully.',
         data: {
+          emptyState: null,
           items: references,
           pagination: { page: 2, limit: 5, totalItems: 7, totalPages: 2 },
         },
@@ -77,7 +92,26 @@ describe('References API', () => {
 
     assert.equal(requestedInput, '/api/v1/references?page=2&limit=5')
     assert.equal(requestedSignal, controller.signal)
+    assert.equal(result.emptyState, null)
     assert.deepEqual(result.items.map(({ id }) => id), references.map(({ id }) => id))
+  })
+
+  it('returns the backend-composed empty state with its public profile identity', async () => {
+    globalThis.fetch = async () =>
+      jsonResponse({
+        success: true,
+        message: 'References retrieved successfully.',
+        data: {
+          emptyState,
+          items: [],
+          pagination: { page: 1, limit: 10, totalItems: 0, totalPages: 0 },
+        },
+      })
+
+    const result = await getReferencesPage({ page: 1, limit: 10 })
+
+    assert.deepEqual(result.emptyState, emptyState)
+    assert.deepEqual(result.items, [])
   })
 
   it('submits the exact public input body', async () => {

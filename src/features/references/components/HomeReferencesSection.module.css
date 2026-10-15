@@ -1,0 +1,355 @@
+.section {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(2rem, 3.9svh, 2.5rem);
+  height: 100svh;
+  min-height: 0;
+  padding: clamp(2rem, 3.9svh, 2.5rem) var(--page-gutter)
+    clamp(3rem, 7.4svh, 4.75rem);
+  overflow: hidden;
+  color: var(--color-text);
+}
+
+.header {
+  text-align: center;
+}
+
+.header h2 {
+  width: min(100%, 56.9375rem);
+  margin: 0 auto;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.panel {
+  display: grid;
+  width: min(100%, 62.9375rem);
+  height: 100%;
+  max-height: 43.75rem;
+  min-height: 0;
+  padding: clamp(1.25rem, 3.61vw, 3.25rem);
+  justify-self: center;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: 1.548rem;
+  background: rgb(255 255 255 / 12%);
+  box-shadow: var(--shadow-panel);
+}
+
+.viewport,
+.emptyViewport,
+.state {
+  min-height: 0;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: 1.548rem;
+}
+
+.viewport {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: rgb(255 255 255 / 50%) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.emptyViewport {
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(0.625rem, 1.5vw, 1.25rem);
+}
+
+.emptyReferenceCard {
+  display: grid;
+  width: 100%;
+  grid-template-columns: clamp(4rem, 6.1vw, 5.46875rem) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.5rem, 1.1vw, 0.875rem);
+  min-width: 0;
+}
+
+.emptyAvatarWrapper {
+  position: relative;
+  width: clamp(4rem, 6.1vw, 5.46875rem);
+  aspect-ratio: 1;
+}
+
+.emptyAvatarWrapper .avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.presenceIndicator {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  width: clamp(0.625rem, 1vw, 0.875rem);
+  aspect-ratio: 1;
+  border: 0.125rem solid #73a7ef;
+  border-radius: 50%;
+  background: #38d873;
+}
+
+.list {
+  display: grid;
+  min-height: 100%;
+  padding: clamp(2rem, 5.9svh, 3.75rem) clamp(0.625rem, 1.5vw, 1.25rem);
+  align-content: center;
+  gap: clamp(4rem, 8svh, 6rem);
+}
+
+.referenceCard {
+  display: grid;
+  grid-template-columns: clamp(4rem, 6.1vw, 5.46875rem) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(0.5rem, 1.1vw, 0.875rem);
+  min-width: 0;
+}
+
+.avatar {
+  width: clamp(4rem, 6.1vw, 5.46875rem);
+  height: auto;
+}
+
+.referenceBody {
+  min-width: 0;
+}
+
+.referenceHeader {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.authorLine {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.authorLine h3,
+.authorLine p,
+.referenceHeader time,
+.testimonial,
+.ratingLabel,
+.paginationStatus p,
+.state h3,
+.state p {
+  margin: 0;
+}
+
+.authorLine h3 {
+  font-size: clamp(1.125rem, 1.63vw, 1.4665rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.authorLine p {
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 1.42vw, 1.271rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.referenceHeader time {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: clamp(0.8125rem, 1.2vw, 1.075rem);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.testimonial {
+  max-width: 31rem;
+  margin-top: 0.125rem;
+  font-size: clamp(1rem, 1.42vw, 1.271rem);
+  font-weight: 500;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.ratings {
+  display: grid;
+  gap: 0.625rem;
+  margin-top: 0.625rem;
+}
+
+.rating {
+  display: grid;
+  justify-items: start;
+  gap: 0.1875rem;
+}
+
+.ratingLabel {
+  font-size: 0.767rem;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stars {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.starActive,
+.starInactive {
+  display: block;
+  width: clamp(1.875rem, 2.67vw, 2.4rem);
+  aspect-ratio: 42 / 40;
+  background: #ffb547;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+.starInactive {
+  background: rgb(255 255 255 / 35%);
+}
+
+.paginationStatus {
+  display: grid;
+  justify-items: center;
+  padding: 0 1rem 1rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.paginationStatus:empty {
+  display: none;
+}
+
+.paginationStatus div {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.paginationStatus button,
+.state button {
+  padding: 0.7rem 1.2rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  background: var(--color-surface-active);
+  cursor: pointer;
+}
+
+.sentinel {
+  width: 100%;
+  height: 0.0625rem;
+}
+
+.state {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.state h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.state p {
+  max-width: 30rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 48rem) {
+  .section {
+    gap: clamp(1.5rem, 4svh, 2.5rem);
+    padding-top: clamp(4rem, 7.8svh, 5rem);
+    padding-bottom: var(--viewport-edge-offset);
+  }
+
+  .header h2 {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+    line-height: 1.02;
+  }
+
+  .panel {
+    padding: clamp(0.75rem, 3.5vw, 1.25rem);
+  }
+
+  .list {
+    padding: clamp(1.5rem, 4svh, 2.5rem) clamp(0.75rem, 3.5vw, 1.25rem);
+    align-content: start;
+    gap: 3rem;
+  }
+
+  .emptyViewport {
+    padding: clamp(0.75rem, 3.5vw, 1.25rem);
+  }
+
+  .referenceCard {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 0.625rem;
+  }
+
+  .avatar {
+    width: 3.5rem;
+  }
+
+  .emptyReferenceCard {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 0.625rem;
+  }
+
+  .emptyAvatarWrapper {
+    width: 3.5rem;
+  }
+
+  .referenceHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .authorLine h3 {
+    font-size: 1rem;
+  }
+
+  .authorLine p,
+  .testimonial {
+    font-size: 0.875rem;
+  }
+
+  .referenceHeader time {
+    font-size: 0.75rem;
+  }
+
+  .testimonial {
+    margin-top: 0.4rem;
+  }
+
+  .ratings {
+    gap: 0.5rem;
+  }
+
+  .ratingLabel {
+    font-size: 0.65rem;
+  }
+
+  .starActive,
+  .starInactive {
+    width: clamp(1.35rem, 7vw, 1.875rem);
+  }
+}

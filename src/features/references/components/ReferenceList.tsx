@@ -1,0 +1,68 @@
+import { useEffect, useRef } from 'react'
+
+import { hasNextReferencePage } from '../model/reference-list-state.ts'
+import type { PublicReference, ReferencePagination } from '../model/reference.types.ts'
+import styles from './HomeReferencesSection.module.css'
+import { ReferenceCard } from './ReferenceCard.tsx'
+
+interface ReferenceListProps {
+  items: PublicReference[]
+  pagination: ReferencePagination
+  isLoadingMore: boolean
+  loadMoreErrorMessage: string | null
+  onLoadNextPage: () => void
+}
+
+export function ReferenceList({
+  items,
+  pagination,
+  isLoadingMore,
+  loadMoreErrorMessage,
+  onLoadNextPage,
+}: ReferenceListProps) {
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const hasNextPage = hasNextReferencePage(pagination)
+
+  useEffect(() => {
+    const root = viewportRef.current
+    const sentinel = sentinelRef.current
+    if (!root || !sentinel || !hasNextPage || isLoadingMore || loadMoreErrorMessage) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) onLoadNextPage()
+      },
+      { root, rootMargin: '10rem 0px' },
+    )
+
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [hasNextPage, isLoadingMore, loadMoreErrorMessage, onLoadNextPage])
+
+  return (
+    <div className={styles.viewport} ref={viewportRef}>
+      <div className={styles.list}>
+        {items.map((reference) => (
+          <ReferenceCard reference={reference} key={reference.id} />
+        ))}
+      </div>
+
+      <div className={styles.paginationStatus} aria-live="polite">
+        {isLoadingMore && <p>Loading more references…</p>}
+        {loadMoreErrorMessage && (
+          <div role="alert">
+            <p>{loadMoreErrorMessage}</p>
+            <button type="button" onClick={onLoadNextPage}>
+              Try again
+            </button>
+          </div>
+        )}
+      </div>
+
+      {hasNextPage && !loadMoreErrorMessage && (
+        <div className={styles.sentinel} ref={sentinelRef} aria-hidden="true" />
+      )}
+    </div>
+  )
+}

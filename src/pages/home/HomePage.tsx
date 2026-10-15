@@ -1,6 +1,7 @@
 import { HomeProjectsSection } from '../../features/projects/components/HomeProjectsSection'
 import { HomeProfileSection } from '../../features/profile/components/HomeProfileSection.tsx'
 import { HomeServicesSection } from '../../features/services/components/HomeServicesSection'
+import { HomeReferencesSection } from '../../features/references/components/HomeReferencesSection.tsx'
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { useHomeIntroTransition } from './hooks/useHomeIntroTransition'
 import { useHomeProjectsServicesTransition } from './hooks/useHomeProjectsServicesTransition.ts'
@@ -18,6 +19,7 @@ export function HomePage() {
       <HomeProjectsSection sectionRef={projectsSectionRef} />
       <HomeServicesSection sectionRef={servicesSectionRef} />
       <HomeProfileSection sectionRef={profileSectionRef} />
+      <HomeReferencesSection />
       <ScrollToTopButton />
     </div>
   )
