@@ -36,6 +36,7 @@ export function HomeReferencesSection() {
   const [draft, setDraft] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isRemovalModalOpen, setIsRemovalModalOpen] = useState(false)
+  const [isSubmissionNoticeVisible, setIsSubmissionNoticeVisible] = useState(false)
   const ownedReference =
     submissionState.status === 'owned' ||
     submissionState.status === 'withdrawing' ||
@@ -70,6 +71,7 @@ export function HomeReferencesSection() {
     if (submitted) {
       setDraft('')
       setIsModalOpen(false)
+      setIsSubmissionNoticeVisible(true)
     }
 
     return submitted
@@ -158,6 +160,7 @@ export function HomeReferencesSection() {
 
         <div className={submissionStyles.submissionControls}>
           <ReferenceComposer
+            canContinue={!validateReferenceTestimonial(draft)}
             disabled={isComposerDisabled}
             errorMessage={composerError}
             value={draft}
@@ -212,6 +215,18 @@ export function HomeReferencesSection() {
         }}
         onConfirm={withdraw}
       />
+
+      {isSubmissionNoticeVisible && (
+        <div
+          className={styles.submissionNotice}
+          role="status"
+          aria-live="polite"
+          onAnimationEnd={() => setIsSubmissionNoticeVisible(false)}
+        >
+          <strong>Reference sent for review</strong>
+          <span>We’ll publish it here once it’s approved.</span>
+        </div>
+      )}
     </section>
   )
 }

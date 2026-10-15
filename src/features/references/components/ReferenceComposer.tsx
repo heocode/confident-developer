@@ -4,6 +4,7 @@ import sendIconUrl from '../../../assets/icons/references/send.svg'
 import styles from './ReferenceSubmission.module.css'
 
 interface ReferenceComposerProps {
+  canContinue: boolean
   disabled: boolean
   errorMessage: string | null
   value: string
@@ -20,6 +21,7 @@ function resizeTextarea(textarea: HTMLTextAreaElement) {
 }
 
 export function ReferenceComposer({
+  canContinue,
   disabled,
   errorMessage,
   value,
@@ -73,16 +75,23 @@ export function ReferenceComposer({
           }}
         />
 
-        <button type="submit" disabled={disabled} aria-label="Continue publishing reference">
+        <button
+          type="submit"
+          disabled={disabled || !canContinue}
+          aria-label="Continue publishing reference"
+        >
           <img src={sendIconUrl} alt="" />
         </button>
       </form>
 
-      {errorMessage && (
-        <p className={styles.composerError} id="reference-composer-error" role="alert">
-          {errorMessage}
-        </p>
-      )}
+      <p
+        className={styles.composerError}
+        id="reference-composer-error"
+        role={errorMessage ? 'alert' : undefined}
+        aria-hidden={errorMessage ? undefined : true}
+      >
+        {errorMessage}
+      </p>
     </div>
   )
 }

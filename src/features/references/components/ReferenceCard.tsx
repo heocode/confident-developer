@@ -17,7 +17,7 @@ export function ReferenceCard({ reference }: ReferenceCardProps) {
 
       <div className={styles.referenceBody}>
         <header className={styles.referenceHeader}>
-          <div className={styles.authorLine}>
+          <div className={`${styles.authorLine} ${styles.referenceAuthorLine}`}>
             <h3>{reference.name}</h3>
             <div className={styles.authorMeta}>
               <span>{reference.company}</span>

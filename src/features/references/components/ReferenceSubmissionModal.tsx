@@ -95,6 +95,12 @@ export function ReferenceSubmissionModal({
   )
   const [turnstileRevision, setTurnstileRevision] = useState(0)
   const [turnstileToken, setTurnstileToken] = useState('')
+  const isFormComplete =
+    details.name.trim().length > 0 &&
+    details.email.trim().length > 0 &&
+    details.company.trim().length > 0 &&
+    details.position.trim().length > 0 &&
+    Object.values(details.ratings).every((rating) => rating > 0)
   useReferenceModalPageLock(isOpen)
 
   useEffect(() => {
@@ -290,7 +296,8 @@ export function ReferenceSubmissionModal({
         <button
           className={styles.publishButton}
           type="submit"
-          disabled={isSubmitting || !TURNSTILE_SITE_KEY}
+          aria-busy={isSubmitting}
+          disabled={isSubmitting || !isFormComplete || !TURNSTILE_SITE_KEY}
         >
           {isSubmitting ? 'Publishing…' : 'Publish'}
         </button>

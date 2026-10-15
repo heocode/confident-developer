@@ -1,4 +1,5 @@
 import referenceAvatarUrl from '../../../assets/icons/references/reference-avatar.svg'
+import infoIconUrl from '../../../assets/icons/references/info.svg'
 import type { OwnedReference } from '../model/reference.types.ts'
 import { formatReferenceDate } from '../presentation/reference-formatters.ts'
 import styles from './HomeReferencesSection.module.css'
@@ -24,7 +25,7 @@ export function OwnedReferenceCard({
 
       <div className={styles.referenceBody}>
         <header className={styles.referenceHeader}>
-          <div className={styles.authorLine}>
+          <div className={`${styles.authorLine} ${styles.referenceAuthorLine}`}>
             <h3>{reference.name}</h3>
             <div className={styles.authorMeta}>
               <span>{reference.company}</span>
@@ -52,7 +53,7 @@ export function OwnedReferenceCard({
                       type="button"
                       aria-label="Reference submission status and actions"
                     >
-                      i
+                      <img src={infoIconUrl} alt="" />
                     </button>
                     <span className={styles.ownershipPopover} role="status">
                       <span className={styles.ownershipPopoverSurface}>

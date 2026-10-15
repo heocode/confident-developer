@@ -11,6 +11,69 @@
   color: var(--color-text);
 }
 
+.submissionNotice {
+  position: fixed;
+  z-index: 30;
+  top: var(--viewport-edge-offset);
+  left: 50%;
+  display: grid;
+  width: min(28rem, calc(100vw - 2rem));
+  gap: 0.25rem;
+  padding: 0.875rem 1.125rem;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: 0.875rem;
+  color: var(--color-text);
+  background: rgb(43 70 111 / 96%);
+  box-shadow: var(--shadow-panel);
+  text-align: center;
+  pointer-events: none;
+  animation: submission-notice-lifecycle 4.5s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.submissionNotice strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.submissionNotice span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+@keyframes submission-notice-lifecycle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - var(--viewport-edge-offset)));
+  }
+
+  12%,
+  82% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - var(--viewport-edge-offset)));
+  }
+}
+
+@keyframes submission-notice-fade-lifecycle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  8%,
+  90% {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+}
+
 .header {
   text-align: center;
 }
@@ -32,10 +95,10 @@
   height: 100%;
   max-height: 43.75rem;
   min-height: 0;
-  padding: clamp(1.25rem, 3.61vw, 3.25rem);
+  padding: clamp(1.75rem, 3.61vw, 3.25rem) clamp(1.25rem, 3.61vw, 3.25rem);
   justify-self: center;
   border: 0.0815rem solid rgb(255 255 255 / 50%);
-  border-radius: 1.548rem;
+  border-radius: 0.875rem;
   background: rgb(255 255 255 / 12%);
   box-shadow: var(--shadow-panel);
 }
@@ -45,7 +108,7 @@
 .state {
   min-height: 0;
   border: 0.0815rem solid rgb(255 255 255 / 50%);
-  border-radius: 1.548rem;
+  border-radius: 0.875rem;
 }
 
 .viewport {
@@ -132,11 +195,11 @@
 .authorLine {
   position: relative;
   display: flex;
+  width: 100%;
   min-width: 0;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   column-gap: 0.5rem;
-  row-gap: 0.2rem;
 }
 
 .authorMeta,
@@ -147,22 +210,41 @@
 }
 
 .authorMeta {
-  flex-wrap: wrap;
-  column-gap: 0.4rem;
-  row-gap: 0.15rem;
+  --metadata-separator-gap: 0.5rem;
+
+  max-width: 100%;
+  flex-wrap: nowrap;
+  gap: var(--metadata-separator-gap);
 }
 
 .authorMeta > span:not(.statusGroup) {
+  overflow: hidden;
   text-transform: capitalize;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metaItem,
+.statusGroup {
+  position: relative;
+  min-width: 0;
+  padding-left: var(--metadata-separator-gap);
 }
 
 .metaItem::before,
 .statusGroup::before {
-  margin-right: 0.4rem;
-  content: '·';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.0625rem;
+  height: 0.75rem;
+  background: rgb(255 255 255 / 32%);
+  content: "";
+  transform: translate(-50%, -50%);
 }
 
 .statusGroup {
+  flex: none;
   gap: 0.4rem;
 }
 
@@ -183,19 +265,25 @@
 
 .ownershipInfo {
   display: grid;
-  width: 1.375rem;
-  height: 1.375rem;
+  width: 1rem;
+  height: 1rem;
   place-items: center;
   padding: 0;
-  border: 0.09375rem solid rgb(255 255 255 / 55%);
+  border: 0;
   border-radius: 50%;
-  color: var(--color-text-muted);
   background: transparent;
-  font: inherit;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  line-height: 1;
   cursor: help;
+}
+
+.ownershipInfo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ownershipInfo:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: 0.125rem;
 }
 
 .ownershipPopover {
@@ -237,7 +325,7 @@
   border: 0.45rem solid transparent;
   border-top-color: var(--ownership-popover-background);
   clip-path: inset(0 0 0 100%);
-  content: '';
+  content: "";
   transform: translateX(-50%);
   transition: clip-path 280ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: clip-path;
@@ -296,8 +384,8 @@
 .ownershipControl:hover .ownershipPopoverSurface > button,
 .ownershipControl:focus-within .ownershipPopoverSurface > span,
 .ownershipControl:focus-within .ownershipPopoverSurface > button {
-  animation: ownership-popover-content-reveal 260ms cubic-bezier(0.22, 1, 0.36, 1)
-    220ms both;
+  animation: ownership-popover-content-reveal 260ms
+    cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
 }
 
 .ownershipPopover button:disabled,
@@ -486,7 +574,7 @@
   }
 
   .panel {
-    padding: clamp(0.75rem, 3.5vw, 1.25rem);
+    padding: 1.75rem clamp(0.75rem, 3.5vw, 1.25rem);
   }
 
   .list {
@@ -524,22 +612,56 @@
   }
 
   .ownershipPopover {
-    top: calc(100% + 0.5rem);
-    bottom: auto;
-    left: 0;
-    transform: translateX(-70%);
+    position: fixed;
+    z-index: 20;
+    top: auto;
+    bottom: calc(var(--viewport-edge-offset) + 4.5rem);
+    left: 50%;
+    width: min(19rem, calc(100vw - 2rem));
+    transform: translateX(-50%);
   }
 
   .ownershipPopover::after {
-    top: auto;
-    bottom: 100%;
-    left: 70%;
-    border-top-color: transparent;
-    border-bottom-color: var(--ownership-popover-background);
+    display: none;
+  }
+
+  .ownershipPopoverSurface {
+    max-height: calc(100svh - 8rem);
+    overflow-y: auto;
   }
 
   .authorLine h3 {
     font-size: 0.875rem;
+  }
+
+  .referenceAuthorLine {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.0625rem;
+  }
+
+  .referenceCard .referenceHeader {
+    gap: 0.0625rem;
+  }
+
+  .referenceAuthorLine h3 {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .authorMeta {
+    --metadata-separator-gap: 0.375rem;
+
+    width: 100%;
+    flex: 1 1 auto;
+    font-size: 0.6875rem;
+  }
+
+  .authorMeta > span:not(.statusGroup) {
+    flex: 0 1 auto;
+    min-width: 0;
   }
 
   .authorLine p,
@@ -570,6 +692,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .submissionNotice {
+    animation-name: submission-notice-fade-lifecycle;
+    animation-timing-function: linear;
+  }
+
   .ownershipPopover,
   .ownershipPopover::after,
   .ownershipPopoverSurface,
