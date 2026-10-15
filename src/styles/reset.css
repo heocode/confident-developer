@@ -8,6 +8,7 @@ html {
   min-width: 20rem;
   background: var(--color-background);
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
