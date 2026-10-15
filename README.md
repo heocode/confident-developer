@@ -26,6 +26,15 @@ API_PROXY_TARGET=http://localhost:3000
 
 `API_PROXY_TARGET` is read by the Vite server and is not exposed to browser code.
 
+Reference submissions also require a public Cloudflare Turnstile site key:
+
+```text
+VITE_TURNSTILE_SITE_KEY=
+```
+
+Keep the corresponding secret key only in the backend environment. For local end-to-end
+testing, use Cloudflare's official test site key together with its matching backend test secret.
+
 ## Commands
 
 ```bash

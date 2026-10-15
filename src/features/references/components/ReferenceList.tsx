@@ -1,8 +1,13 @@
 import { useEffect, useRef } from 'react'
 
 import { hasNextReferencePage } from '../model/reference-list-state.ts'
-import type { PublicReference, ReferencePagination } from '../model/reference.types.ts'
+import type {
+  OwnedReference,
+  PublicReference,
+  ReferencePagination,
+} from '../model/reference.types.ts'
 import styles from './HomeReferencesSection.module.css'
+import { OwnedReferenceCard } from './OwnedReferenceCard.tsx'
 import { ReferenceCard } from './ReferenceCard.tsx'
 
 interface ReferenceListProps {
@@ -10,6 +15,7 @@ interface ReferenceListProps {
   pagination: ReferencePagination
   isLoadingMore: boolean
   loadMoreErrorMessage: string | null
+  ownedReference?: OwnedReference
   onLoadNextPage: () => void
 }
 
@@ -18,6 +24,7 @@ export function ReferenceList({
   pagination,
   isLoadingMore,
   loadMoreErrorMessage,
+  ownedReference,
   onLoadNextPage,
 }: ReferenceListProps) {
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -43,6 +50,7 @@ export function ReferenceList({
   return (
     <div className={styles.viewport} ref={viewportRef}>
       <div className={styles.list}>
+        {ownedReference && <OwnedReferenceCard reference={ownedReference} />}
         {items.map((reference) => (
           <ReferenceCard reference={reference} key={reference.id} />
         ))}

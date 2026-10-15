@@ -30,6 +30,8 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - Submitting a reference starts with a message field. `Enter` continues to the details modal, while `Shift+Enter` inserts a newline. All modal fields are required.
 - References use the public `/api/v1/references` contract and preserve backend ordering. Retain the one-time submission management token in versioned local browser storage with only its reference ID; never persist the submitter's email or testimonial alongside it, and send the token only through the ownership header required by the status and deletion endpoints.
 - When no approved references exist, render the backend-composed `emptyState` from the same public References response, including its Site Profile identity, managed avatar URL, message, and content date. Do not duplicate that content in frontend configuration or replace it with a hardcoded fallback.
+- Reference submissions use an explicitly rendered Cloudflare Turnstile widget with the `reference_submit` action and interaction-only appearance. Configure its public site key through `VITE_TURNSTILE_SITE_KEY`; keep the secret key and token verification exclusively on the backend.
+- After a successful submission, show the returned owned reference as a separate pending item without changing the backend order of public references. Disable another submission while that owned pending item is active so its one stored management credential cannot be overwritten.
 - The profile card uses real GitHub data. Its resume button downloads the resume, and its likes and views are real persisted interactions.
 - The final `HIT ME UP` call to action opens the contact panel shown in the approved design.
 
