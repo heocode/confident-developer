@@ -5,6 +5,7 @@ import { HomeReferencesSection } from '../../features/references/components/Home
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { useHomeIntroTransition } from './hooks/useHomeIntroTransition'
 import { useHomeProjectsServicesTransition } from './hooks/useHomeProjectsServicesTransition.ts'
+import { useHomeProfileReferencesTransition } from './hooks/useHomeProfileReferencesTransition.ts'
 import { useHomeServicesProfileTransition } from './hooks/useHomeServicesProfileTransition.ts'
 import { HeroSection } from './sections/HeroSection'
 
@@ -12,6 +13,7 @@ export function HomePage() {
   const transitionRef = useHomeIntroTransition()
   const { projectsSectionRef, servicesSectionRef } = useHomeProjectsServicesTransition()
   const profileSectionRef = useHomeServicesProfileTransition(servicesSectionRef)
+  const referencesSectionRef = useHomeProfileReferencesTransition(profileSectionRef)
 
   return (
     <div ref={transitionRef}>
@@ -19,7 +21,7 @@ export function HomePage() {
       <HomeProjectsSection sectionRef={projectsSectionRef} />
       <HomeServicesSection sectionRef={servicesSectionRef} />
       <HomeProfileSection sectionRef={profileSectionRef} />
-      <HomeReferencesSection />
+      <HomeReferencesSection sectionRef={referencesSectionRef} />
       <ScrollToTopButton />
     </div>
   )

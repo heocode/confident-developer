@@ -32,11 +32,21 @@
   min-height: 0;
   align-items: start;
   justify-items: center;
+  opacity: var(--home-profile-exit-opacity, 1);
+  transform: translate3d(0, var(--home-profile-exit-offset, 0), 0);
 }
 
 :global([data-home-profile-motion]) .content {
-  opacity: var(--home-profile-card-opacity, 1);
-  transform: translate3d(0, var(--home-profile-card-offset, 0), 0);
+  opacity: calc(
+    var(--home-profile-card-opacity, 1) * var(--home-profile-exit-opacity, 1)
+  );
+  transform: translate3d(
+    0,
+    calc(
+      var(--home-profile-card-offset, 0) + var(--home-profile-exit-offset, 0)
+    ),
+    0
+  );
 }
 
 .card {

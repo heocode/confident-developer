@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { Ref } from 'react'
 
 import { useHomeReferences } from '../hooks/useHomeReferences.ts'
 import { useReferenceSubmission } from '../hooks/useReferenceSubmission.ts'
@@ -22,7 +23,11 @@ const EMPTY_PAGINATION = {
   totalPages: 0,
 }
 
-export function HomeReferencesSection() {
+interface HomeReferencesSectionProps {
+  sectionRef?: Ref<HTMLElement>
+}
+
+export function HomeReferencesSection({ sectionRef }: HomeReferencesSectionProps) {
   const { loadNextPage, retry, state: referencesState } = useHomeReferences()
   const {
     clearSubmissionError,
@@ -102,6 +107,7 @@ export function HomeReferencesSection() {
       className={styles.section}
       id="home-references"
       aria-labelledby="home-references-title"
+      ref={sectionRef}
     >
       <header className={styles.header}>
         <h2 id="home-references-title">WHAT PEOPLE SAY ABOUT THE STUFF</h2>

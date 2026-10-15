@@ -78,6 +78,11 @@
   text-align: center;
 }
 
+:global([data-home-references-motion]) .header {
+  opacity: var(--home-references-title-opacity, 1);
+  transform: translate3d(0, var(--home-references-title-offset, 0), 0);
+}
+
 .header h2 {
   width: min(100%, 56.9375rem);
   margin: 0 auto;
@@ -101,6 +106,11 @@
   border-radius: 0.875rem;
   background: rgb(255 255 255 / 12%);
   box-shadow: var(--shadow-panel);
+}
+
+:global([data-home-references-motion]) .panel {
+  opacity: var(--home-references-panel-opacity, 1);
+  transform: translate3d(0, var(--home-references-panel-offset, 0), 0);
 }
 
 .viewport,
@@ -692,6 +702,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :global([data-home-references-motion]) .header,
+  :global([data-home-references-motion]) .panel {
+    opacity: 1;
+    transform: none;
+  }
+
   .submissionNotice {
     animation-name: submission-notice-fade-lifecycle;
     animation-timing-function: linear;
