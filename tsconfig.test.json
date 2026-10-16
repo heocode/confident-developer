@@ -6,6 +6,9 @@
   },
   "include": [
     "src/api/**/*.ts",
+    "src/features/contact/api/**/*.ts",
+    "src/features/contact/model/**/*.ts",
+    "src/features/contact/presentation/**/*.ts",
     "src/features/profile/api/**/*.ts",
     "src/features/profile/model/**/*.ts",
     "src/features/profile/presentation/**/*.ts",

@@ -11,7 +11,8 @@ export interface ApiMutationOptions<TBody> extends ApiRequestOptions {
   method: 'DELETE' | 'POST' | 'PUT'
 }
 
-export interface ApiCommandOptions extends ApiRequestOptions {
+export interface ApiCommandOptions<TBody = undefined> extends ApiRequestOptions {
+  body?: TBody
   method: 'DELETE' | 'POST' | 'PUT'
 }
 
@@ -125,13 +126,20 @@ export function sendApiData<TResponse, TBody>(
   })
 }
 
-export async function sendApiCommand(
+export async function sendApiCommand<TBody = undefined>(
   path: string,
-  options: ApiCommandOptions,
+  options: ApiCommandOptions<TBody>,
 ): Promise<void> {
+  const hasBody = options.body !== undefined
+
   await requestApiEnvelope(path, {
     method: options.method,
-    headers: { ...options.headers, Accept: 'application/json' },
+    headers: {
+      ...options.headers,
+      Accept: 'application/json',
+      ...(hasBody ? { 'Content-Type': 'application/json' } : {}),
+    },
+    body: hasBody ? JSON.stringify(options.body) : undefined,
     signal: options.signal,
   })
 }

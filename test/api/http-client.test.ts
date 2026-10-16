@@ -86,6 +86,34 @@ describe('HTTP client mutations', () => {
     )
   })
 
+  it('sends JSON command bodies without requiring response data', async () => {
+    const controller = new AbortController()
+    let requestedInput: RequestInfo | URL | undefined
+    let requestedInit: RequestInit | undefined
+
+    globalThis.fetch = async (input, init) => {
+      requestedInput = input
+      requestedInit = init
+      return jsonResponse({ success: true, message: 'Accepted.' }, { status: 201 })
+    }
+
+    await sendApiCommand('/api/v1/contact', {
+      method: 'POST',
+      body: { message: 'Build something useful.' },
+      signal: controller.signal,
+    })
+
+    assert.equal(requestedInput, '/api/v1/contact')
+    assert.equal(requestedInit?.method, 'POST')
+    assert.equal(requestedInit?.credentials, 'same-origin')
+    assert.equal(requestedInit?.body, JSON.stringify({ message: 'Build something useful.' }))
+    assert.equal(requestedInit?.signal, controller.signal)
+    assert.deepEqual(requestedInit?.headers, {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    })
+  })
+
   it('normalizes HTTP and network errors without swallowing aborts', async () => {
     globalThis.fetch = async () =>
       jsonResponse({ success: false, message: 'Revision is stale.' }, { status: 409 })
