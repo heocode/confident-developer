@@ -1,9 +1,11 @@
 const TURNSTILE_SCRIPT_ID = 'cloudflare-turnstile-script'
 const TURNSTILE_SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
 
+export type TurnstileAction = 'contact_submit' | 'reference_submit'
+
 export interface TurnstileRenderOptions {
   sitekey: string
-  action: string
+  action: TurnstileAction
   appearance: 'interaction-only'
   callback: (token: string) => void
   'error-callback': () => void

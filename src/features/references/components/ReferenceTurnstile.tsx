@@ -1,6 +1,4 @@
-import { useEffect, useRef } from 'react'
-
-import { loadTurnstile } from '../anti-spam/turnstile.ts'
+import { TurnstileWidget } from '../../../components/anti-spam/TurnstileWidget.tsx'
 import styles from './ReferenceSubmission.module.css'
 
 interface ReferenceTurnstileProps {
@@ -16,45 +14,14 @@ export function ReferenceTurnstile({
   onError,
   onToken,
 }: ReferenceTurnstileProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const onErrorRef = useRef(onError)
-  const onTokenRef = useRef(onToken)
-
-  useEffect(() => {
-    onErrorRef.current = onError
-    onTokenRef.current = onToken
-  }, [onError, onToken])
-
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    let disposed = false
-    let widgetId: string | null = null
-
-    void loadTurnstile()
-      .then((turnstile) => {
-        if (disposed) return
-        widgetId = turnstile.render(container, {
-          sitekey: siteKey,
-          action: 'reference_submit',
-          appearance: 'interaction-only',
-          callback: (token) => onTokenRef.current(token),
-          'error-callback': () => onErrorRef.current(),
-          'expired-callback': () => onTokenRef.current(''),
-          'timeout-callback': () => onTokenRef.current(''),
-        })
-      })
-      .catch(() => {
-        if (!disposed) onErrorRef.current()
-      })
-
-    return () => {
-      disposed = true
-      if (widgetId && window.turnstile) window.turnstile.remove(widgetId)
-      container.replaceChildren()
-    }
-  }, [revision, siteKey])
-
-  return <div className={styles.turnstileSlot} ref={containerRef} />
+  return (
+    <TurnstileWidget
+      action="reference_submit"
+      className={styles.turnstileSlot}
+      revision={revision}
+      siteKey={siteKey}
+      onError={onError}
+      onToken={onToken}
+    />
+  )
 }
