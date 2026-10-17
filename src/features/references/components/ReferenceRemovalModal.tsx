@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import { useReferenceModalPageLock } from '../hooks/useReferenceModalPageLock.ts'
+import { DialogCloseButton } from '../../../components/dialog/DialogCloseButton.tsx'
+import { useModalPageLock } from '../../../components/dialog/useModalPageLock.ts'
 import type { OwnedReferenceStatus } from '../model/reference.types.ts'
 import styles from './ReferenceSubmission.module.css'
 
@@ -23,7 +24,7 @@ export function ReferenceRemovalModal({
 }: ReferenceRemovalModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const isRejected = status === 'rejected'
-  useReferenceModalPageLock(isOpen)
+  useModalPageLock(isOpen)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -63,15 +64,12 @@ export function ReferenceRemovalModal({
         if (!isInside) closeModal()
       }}
     >
-      <button
+      <DialogCloseButton
         className={styles.closeButton}
-        type="button"
-        aria-label="Close confirmation"
         disabled={isRemoving}
+        label="Close confirmation"
         onClick={closeModal}
-      >
-        <span aria-hidden="true" />
-      </button>
+      />
 
       <h3 id="reference-removal-title">
         {isRejected ? 'Delete this reference?' : 'Withdraw this reference?'}

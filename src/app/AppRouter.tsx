@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { AppLayout } from '../components/layout/AppLayout'
+import { ContactRoute } from '../features/contact/routes/ContactRoute.tsx'
 import { ProjectDetailRoute } from '../features/projects/routes/ProjectDetailRoute'
 import { ProjectsIndexRoute, ProjectsRoute } from '../features/projects/routes/ProjectsRoute'
 import { HomePage } from '../pages/home/HomePage'
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       { path: 'services', element: <PlaceholderPage title="Services" /> },
       { path: 'about', element: <PlaceholderPage title="About me" /> },
       { path: 'references', element: <PlaceholderPage title="References" /> },
-      { path: 'contact', element: <PlaceholderPage title="Contact Me" /> },
+      { path: 'contact', element: <ContactRoute /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

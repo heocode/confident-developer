@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { DialogCloseButton } from '../../../components/dialog/DialogCloseButton.tsx'
+import { useModalPageLock } from '../../../components/dialog/useModalPageLock.ts'
 import {
   EMPTY_REFERENCE_SUBMISSION_DETAILS,
   hasReferenceSubmissionErrors,
   validateReferenceSubmission,
 } from '../model/reference-submission-form.ts'
-import { useReferenceModalPageLock } from '../hooks/useReferenceModalPageLock.ts'
 import type {
   ReferenceSubmissionDetails,
   ReferenceSubmissionErrors,
@@ -101,7 +102,7 @@ export function ReferenceSubmissionModal({
     details.company.trim().length > 0 &&
     details.position.trim().length > 0 &&
     Object.values(details.ratings).every((rating) => rating > 0)
-  useReferenceModalPageLock(isOpen)
+  useModalPageLock(isOpen)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -191,15 +192,12 @@ export function ReferenceSubmissionModal({
         if (!isInside) closeModal()
       }}
     >
-      <button
+      <DialogCloseButton
         className={styles.closeButton}
-        type="button"
-        aria-label="Close reference form"
         disabled={isSubmitting}
+        label="Close reference form"
         onClick={closeModal}
-      >
-        <span aria-hidden="true" />
-      </button>
+      />
 
       <h3 id="reference-submission-title">Few more details before publishing</h3>
 

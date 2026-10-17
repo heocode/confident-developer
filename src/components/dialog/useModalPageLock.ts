@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export function useReferenceModalPageLock(isOpen: boolean) {
+export function useModalPageLock(isOpen: boolean) {
   useEffect(() => {
     if (!isOpen) return
 

@@ -169,36 +169,6 @@
   z-index: 1;
   top: var(--viewport-edge-offset);
   right: calc(var(--page-gutter) + var(--modal-scrollbar-compensation, 0px));
-  display: grid;
-  width: 3rem;
-  aspect-ratio: 1;
-  place-items: center;
-  padding: 0;
-  border: 0.125rem solid var(--color-border);
-  border-radius: 50%;
-  background: var(--color-surface-active);
-  box-shadow: var(--shadow-panel);
-  cursor: pointer;
-}
-
-.closeButton span,
-.closeButton span::after {
-  display: block;
-  width: 1.125rem;
-  height: 0.1875rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-text);
-  content: '';
-  transform: rotate(45deg);
-}
-
-.closeButton span::after {
-  transform: rotate(90deg);
-}
-
-.closeButton:disabled {
-  cursor: wait;
-  opacity: 0.65;
 }
 
 .removalModal > p {
@@ -475,16 +445,13 @@
   }
 
   .closeButton {
+    --dialog-close-size: 2.25rem;
+    --dialog-close-border-width: 0.09375rem;
+    --dialog-close-icon-width: 0.875rem;
+    --dialog-close-icon-height: 0.125rem;
+
     top: 0.75rem;
     right: calc(0.75rem + var(--modal-scrollbar-compensation, 0px));
-    width: 2.25rem;
-    border-width: 0.09375rem;
-  }
-
-  .closeButton span,
-  .closeButton span::after {
-    width: 0.875rem;
-    height: 0.125rem;
   }
 
   .textFields {
