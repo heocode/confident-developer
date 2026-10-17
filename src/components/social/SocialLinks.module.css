@@ -1,0 +1,17 @@
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--social-links-gap, 0.9rem);
+}
+
+.links a {
+  display: grid;
+  width: var(--social-link-size, 1.8rem);
+  aspect-ratio: 1;
+  place-items: center;
+}
+
+.links img {
+  width: var(--social-icon-size, 1.35rem);
+  height: var(--social-icon-size, 1.35rem);
+}

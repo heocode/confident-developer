@@ -1,7 +1,7 @@
 import arrowUrl from '../../../assets/icons/actions/arrow.svg'
 import heroPortraitUrl from '../../../assets/images/profile/hero-portrait-sun.png'
+import { SocialLinks } from '../../../components/social/SocialLinks.tsx'
 import { siteIdentity, siteSocialLinks } from '../../../data/site'
-import { SocialLinks } from './SocialLinks'
 import styles from './HeroSection.module.css'
 import { TorontoClock } from './TorontoClock'
 import { useEscapingPortrait } from './useEscapingPortrait'

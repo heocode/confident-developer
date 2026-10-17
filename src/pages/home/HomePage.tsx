@@ -1,3 +1,4 @@
+import { ContactSection } from '../../features/contact/components/ContactSection.tsx'
 import { HomeProjectsSection } from '../../features/projects/components/HomeProjectsSection'
 import { HomeProfileSection } from '../../features/profile/components/HomeProfileSection.tsx'
 import { HomeServicesSection } from '../../features/services/components/HomeServicesSection'
@@ -22,6 +23,7 @@ export function HomePage() {
       <HomeServicesSection sectionRef={servicesSectionRef} />
       <HomeProfileSection sectionRef={profileSectionRef} />
       <HomeReferencesSection sectionRef={referencesSectionRef} />
+      <ContactSection headingLevel="h2" id="home-contact" />
       <ScrollToTopButton />
     </div>
   )
