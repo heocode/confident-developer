@@ -13,6 +13,7 @@ function createProject(id: string, primary = false): PublicProject {
     summary: `${id} summary`,
     position: 'Developer',
     themeColor: null,
+    projectsPageTheme: null,
     timeline: { startDate: '2026-01-01T00:00:00.000Z', endDate: null },
     home: { featured: true, primary },
     buildBreakdown: [],

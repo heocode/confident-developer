@@ -21,6 +21,11 @@ export interface BuildBreakdownItem {
   percentage: number
 }
 
+export interface ProjectsPageTheme {
+  tabColor: string
+  panelColor: string
+}
+
 export interface PublicProject {
   id: string
   slug: string
@@ -29,6 +34,7 @@ export interface PublicProject {
   summary: string
   position: string
   themeColor: string | null
+  projectsPageTheme: ProjectsPageTheme | null
   timeline: {
     startDate: string
     endDate: string | null

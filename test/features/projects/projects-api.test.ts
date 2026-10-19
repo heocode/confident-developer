@@ -19,6 +19,7 @@ const project: PublicProject = {
   summary: 'Test-only content that does not duplicate backend records.',
   position: 'Developer',
   themeColor: '#336699',
+  projectsPageTheme: { tabColor: '#15418A', panelColor: '#394E70' },
   timeline: {
     startDate: '2026-06-01T00:00:00.000Z',
     endDate: null,
@@ -79,6 +80,10 @@ describe('Projects API', () => {
     assert.equal(requestedInit?.credentials, 'same-origin')
     assert.deepEqual(requestedInit?.headers, { Accept: 'application/json' })
     assert.deepEqual(result.map(({ slug }) => slug), ['project-alpha', 'project-beta'])
+    assert.deepEqual(result[0]?.projectsPageTheme, {
+      tabColor: '#15418A',
+      panelColor: '#394E70',
+    })
   })
 
   it('requests Home placement and forwards the AbortSignal', async () => {
