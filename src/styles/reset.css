@@ -7,6 +7,7 @@
 html {
   min-width: 20rem;
   background: var(--color-background);
+  overscroll-behavior-y: none;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
 }
@@ -15,6 +16,7 @@ body {
   min-width: 20rem;
   min-height: 100vh;
   margin: 0;
+  overscroll-behavior-y: none;
 }
 
 button,

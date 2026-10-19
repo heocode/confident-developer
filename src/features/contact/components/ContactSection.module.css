@@ -29,6 +29,11 @@
   letter-spacing: var(--letter-spacing-title);
 }
 
+:global([data-home-contact-motion]) .callToAction h2 {
+  opacity: var(--home-contact-title-opacity, 1);
+  transform: translate3d(0, var(--home-contact-title-offset, 0), 0);
+}
+
 .callToAction button {
   width: min(44.6528vw, 40.1875rem);
   min-width: min(100%, 18rem);
@@ -44,6 +49,11 @@
   cursor: pointer;
 }
 
+:global([data-home-contact-motion]) .callToAction button {
+  opacity: var(--home-contact-button-opacity, 1);
+  transform: translate3d(0, var(--home-contact-button-offset, 0), 0);
+}
+
 .landscape {
   position: absolute;
   z-index: 0;
@@ -56,6 +66,11 @@
   user-select: none;
 }
 
+:global([data-home-contact-motion]) .landscape {
+  opacity: var(--home-contact-bottom-opacity, 1);
+  transform: translate3d(0, var(--home-contact-bottom-offset, 0), 0);
+}
+
 .footer {
   position: absolute;
   z-index: 2;
@@ -64,6 +79,11 @@
   left: var(--viewport-edge-offset);
   min-height: 2rem;
   pointer-events: none;
+}
+
+:global([data-home-contact-motion]) .footer {
+  opacity: var(--home-contact-bottom-opacity, 1);
+  transform: translate3d(0, var(--home-contact-bottom-offset, 0), 0);
 }
 
 .footer > * {
@@ -150,5 +170,15 @@
 
   .footer p {
     position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-home-contact-motion]) .callToAction h2,
+  :global([data-home-contact-motion]) .callToAction button,
+  :global([data-home-contact-motion]) .landscape,
+  :global([data-home-contact-motion]) .footer {
+    opacity: 1;
+    transform: none;
   }
 }
