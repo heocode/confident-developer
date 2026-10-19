@@ -11,7 +11,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 ## Current Product Scope
 
 - The six primary routes are Home, Projects, Services, About Me, References, and Contact Me.
-- Build Home first. Treat its sections as a preview of the dedicated routes rather than duplicating the complete content of those pages.
+- Home is feature-complete for the approved scope. Treat its sections as previews of the dedicated routes rather than duplicating the complete content of those pages; further Home changes should be visual polish or bug fixes unless a new product requirement is agreed.
 - Home uses normal document scrolling. Its major sections are designed as `100vh` sections, with the footer incorporated into the final contact section.
 - The Home Hero-to-Projects transition keeps both sections in normal document flow: Hero content fades near the section boundary, then the Projects heading and project cards enter sequentially from below according to scroll progress. Do not turn the Hero into a pinned Projects background or add transition dimming and blur.
 - The Home Projects-to-Services transition also remains in normal document flow: project content exits upward, the Services heading receives a distinct title-only phase, and the service rows then enter sequentially from below. Keep the final section spacing unchanged and create the separation through scroll phases rather than spacer content.
@@ -119,7 +119,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - Rive may be used for supplied animation assets when the relevant section is implemented.
 - Honor `prefers-reduced-motion`. Use an intentionally composed static version of the same background, stop continuous motion, and replace spatial transitions such as 3D flips with an immediate state change or restrained crossfade.
 - Do not invent hover, active, transition, or loading behavior where the design has not yet defined it. Confirm it when implementing the relevant component.
-- Mobile project cards will use an equal-sized, swipeable carousel with centered snapping and independent tap-to-flip behavior. Use the approved Rolex reference and later responsive examples when that work begins.
+- Mobile project cards use an equal-sized, swipeable carousel with centered snapping and independent tap-to-flip behavior, following the approved Rolex reference and responsive examples.
 
 ## Asset Management
 
