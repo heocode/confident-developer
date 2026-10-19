@@ -14,9 +14,22 @@
   background: #fff;
 }
 
+.drawer[open] {
+  animation: contact-drawer-enter 460ms cubic-bezier(0.22, 1, 0.36, 1) 40ms both;
+}
+
 .drawer::backdrop {
   background: rgb(30 30 30 / 65%);
   backdrop-filter: blur(0.78125rem);
+  animation: contact-backdrop-enter 360ms ease-out both;
+}
+
+.drawerContent {
+  min-height: 100%;
+}
+
+.drawer[open] .drawerContent {
+  animation: contact-content-enter 280ms ease-out 180ms both;
 }
 
 .closeButton {
@@ -28,6 +41,10 @@
   z-index: 1;
   top: 1.25rem;
   right: calc(1.25rem + var(--modal-scrollbar-compensation, 0px));
+}
+
+.drawer[open] .closeButton {
+  animation: contact-close-enter 200ms ease-out 80ms both;
 }
 
 .form {
@@ -248,6 +265,50 @@
   border: 0;
 }
 
+@keyframes contact-drawer-enter {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes contact-backdrop-enter {
+  from {
+    background: rgb(30 30 30 / 0%);
+    backdrop-filter: blur(0);
+  }
+
+  to {
+    background: rgb(30 30 30 / 65%);
+    backdrop-filter: blur(0.78125rem);
+  }
+}
+
+@keyframes contact-content-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(1rem, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes contact-close-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 48rem) {
   .drawer {
     width: 100vw;
@@ -300,5 +361,27 @@
 
   .choices {
     gap-block: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer[open],
+  .drawer::backdrop,
+  .drawer[open] .drawerContent,
+  .drawer[open] .closeButton {
+    animation: none;
+  }
+
+  .drawer[open] {
+    transform: none;
+  }
+
+  .drawer[open] .drawerContent {
+    opacity: 1;
+    transform: none;
+  }
+
+  .drawer[open] .closeButton {
+    opacity: 1;
   }
 }
