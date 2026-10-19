@@ -37,6 +37,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 - The profile card uses real GitHub data. Its resume button downloads the resume, and its likes and views are real persisted interactions.
 - The final `HIT ME UP` call to action opens the contact panel shown in the approved design.
 - The contact panel opens as one calm overlapping composition: the overlay begins immediately, the drawer follows from the right, and its content fades in before the drawer settles. Reduced-motion mode presents the completed state immediately.
+- On mobile portrait viewports, the contact panel keeps the full default form and submit action within one screen by using a compact two-column identity row and reduced control spacing; internal scrolling remains available for unusually short viewports, validation feedback, and security challenges.
 
 ## General Principles
 
