@@ -38,3 +38,22 @@
   height: 100%;
   min-height: 0;
 }
+
+@media (max-width: 48rem) {
+  .browser {
+    --browser-frame-inline-padding: 0rem;
+    --browser-frame-bottom-padding: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .frame {
+    overflow: hidden;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0.9413rem 0.9413rem 0 0;
+  }
+
+  .viewport {
+    overflow: hidden;
+  }
+}

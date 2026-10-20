@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import type { ProjectScreenshotPresentation } from '../presentation/projects-page.ts'
 import {
@@ -11,15 +11,30 @@ interface ElementSize {
   width: number
 }
 
+const DESKTOP_PROJECTS_QUERY = '(min-width: 48.0625rem)'
+
 export function useProjectGalleryLayout(
   screenshots: ProjectScreenshotPresentation[],
   isEnabled: boolean,
 ) {
   const galleryRef = useRef<HTMLElement>(null)
   const [containerSize, setContainerSize] = useState<ElementSize | null>(null)
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia(DESKTOP_PROJECTS_QUERY).matches,
+  )
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_PROJECTS_QUERY)
+    const updateViewportMode = () => setIsDesktop(mediaQuery.matches)
+
+    updateViewportMode()
+    mediaQuery.addEventListener('change', updateViewportMode)
+
+    return () => mediaQuery.removeEventListener('change', updateViewportMode)
+  }, [])
 
   useLayoutEffect(() => {
-    if (!isEnabled) return
+    if (!isEnabled || !isDesktop) return
 
     const container = galleryRef.current?.parentElement
 
@@ -45,17 +60,17 @@ export function useProjectGalleryLayout(
     resizeObserver.observe(container)
 
     return () => resizeObserver.disconnect()
-  }, [isEnabled])
+  }, [isDesktop, isEnabled])
 
   const layout = useMemo<ProjectGalleryLayout | null>(() => {
-    if (!isEnabled || !containerSize) return null
+    if (!isEnabled || !isDesktop || !containerSize) return null
 
     return calculateProjectGalleryLayout({
       containerHeight: containerSize.height,
       containerWidth: containerSize.width,
       screenshots,
     })
-  }, [containerSize, isEnabled, screenshots])
+  }, [containerSize, isDesktop, isEnabled, screenshots])
 
-  return { galleryRef, layout }
+  return { galleryRef, isDesktop, layout }
 }

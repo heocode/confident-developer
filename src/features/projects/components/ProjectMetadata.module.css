@@ -88,3 +88,34 @@
     font-size: 1rem;
   }
 }
+
+@media (max-width: 48rem) {
+  .metadata {
+    width: var(--project-mobile-slide-width);
+    height: 100%;
+    flex: 0 0 var(--project-mobile-slide-width);
+    overflow: hidden;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .scope {
+    padding: clamp(1rem, 3svh, 1.75rem) clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .facts > div {
+    padding: clamp(1rem, 3svh, 1.75rem) clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .scope h2,
+  .scope p,
+  .linksSection h2,
+  .facts dt,
+  .facts dd {
+    font-size: clamp(0.875rem, min(4vw, 2.1svh), 1.5rem);
+  }
+
+  .scope p {
+    line-height: 1.22;
+  }
+}

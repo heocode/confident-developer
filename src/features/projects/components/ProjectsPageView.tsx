@@ -115,6 +115,7 @@ export function ProjectsPageView({ onRetryDetail, onRetryProjects, state }: Proj
       >
         <div
           className={project.screenshots.length > 3 ? `${styles.content} ${styles.overflowContent}` : styles.content}
+          key={project.slug}
           style={projectContentStyle}
         >
           <ProjectGallery projectTitle={project.title} screenshots={project.screenshots} />

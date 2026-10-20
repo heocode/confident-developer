@@ -33,3 +33,25 @@
     padding-top: clamp(7rem, 13.2813svh, 8.5rem);
   }
 }
+
+@media (max-width: 48rem) {
+  .page {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    overflow: hidden;
+  }
+
+  .title {
+    max-width: calc(100% - 3rem);
+    margin-inline: 1.5rem;
+    font-size: clamp(2rem, 9vw, 4rem);
+    white-space: nowrap;
+  }
+
+  .content {
+    width: 100%;
+    max-height: none;
+  }
+}

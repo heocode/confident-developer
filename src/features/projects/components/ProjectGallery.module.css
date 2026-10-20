@@ -51,3 +51,40 @@
   line-height: 1.4;
   text-align: center;
 }
+
+@media (max-width: 48rem) {
+  .galleryRegion {
+    width: auto;
+    max-width: none;
+    flex: 0 0 auto;
+  }
+
+  .gallery,
+  .overflow {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    grid-auto-columns: none;
+    grid-auto-flow: initial;
+    gap: 3.75vw;
+    overflow: visible;
+  }
+
+  .slide {
+    width: var(--project-mobile-slide-width);
+    height: 100%;
+    flex: 0 0 var(--project-mobile-slide-width);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .expandedSlide {
+    width: auto;
+    min-width: var(--project-mobile-slide-width);
+    max-width: 160vw;
+    flex-basis: auto;
+    aspect-ratio: var(--project-mobile-screenshot-aspect-ratio);
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}

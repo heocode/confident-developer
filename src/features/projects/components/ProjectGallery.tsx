@@ -10,6 +10,12 @@ interface ProjectGalleryProps {
   screenshots: ProjectScreenshotPresentation[]
 }
 
+type ProjectScreenshotStyle = CSSProperties & {
+  '--project-mobile-screenshot-aspect-ratio': number
+}
+
+const MOBILE_EXPANDED_SCREENSHOT_ASPECT_RATIO = 0.8
+
 function createGalleryStyle(
   screenshots: ProjectScreenshotPresentation[],
   screenshotWidths?: number[],
@@ -29,9 +35,19 @@ function ProjectScreenshot({
   screenshot: ProjectScreenshotPresentation
 }) {
   const [hasFailed, setHasFailed] = useState(false)
+  const isExpandedScreenshot =
+    screenshot.aspectRatio > MOBILE_EXPANDED_SCREENSHOT_ASPECT_RATIO
+  const screenshotStyle: ProjectScreenshotStyle = {
+    '--project-mobile-screenshot-aspect-ratio': screenshot.aspectRatio,
+  }
 
   return (
-    <li className={styles.slide}>
+    <li
+      className={
+        isExpandedScreenshot ? `${styles.slide} ${styles.expandedSlide}` : styles.slide
+      }
+      style={screenshotStyle}
+    >
       {hasFailed ? (
         <p className={styles.imageError} role="status">
           Screenshot unavailable
@@ -55,18 +71,23 @@ function ProjectScreenshot({
 
 export function ProjectGallery({ projectTitle, screenshots }: ProjectGalleryProps) {
   const hasOverflow = screenshots.length > 3
-  const { galleryRef, layout } = useProjectGalleryLayout(screenshots, !hasOverflow)
+  const { galleryRef, isDesktop, layout } = useProjectGalleryLayout(screenshots, !hasOverflow)
+  const usesDesktopOverflow = isDesktop && hasOverflow
 
   return (
     <section
       className={styles.galleryRegion}
       aria-label={`${projectTitle} screenshots`}
       ref={galleryRef}
-      style={layout ? { width: layout.galleryWidth } : undefined}
+      style={isDesktop && layout ? { width: layout.galleryWidth } : undefined}
     >
       <ul
-        className={hasOverflow ? `${styles.gallery} ${styles.overflow}` : styles.gallery}
-        style={hasOverflow ? undefined : createGalleryStyle(screenshots, layout?.screenshotWidths)}
+        className={usesDesktopOverflow ? `${styles.gallery} ${styles.overflow}` : styles.gallery}
+        style={
+          isDesktop && !hasOverflow
+            ? createGalleryStyle(screenshots, layout?.screenshotWidths)
+            : undefined
+        }
       >
         {screenshots.map((screenshot, index) => (
           <ProjectScreenshot index={index} key={screenshot.id} screenshot={screenshot} />

@@ -101,6 +101,37 @@
   z-index: 3;
 }
 
+@media (max-width: 48rem) {
+  .tabs {
+    width: calc(100% - clamp(2rem, 8vw, 2.5rem));
+    margin-left: clamp(2rem, 8vw, 2.5rem);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    width: 5.125rem;
+    flex: 0 0 auto;
+    gap: 0.625rem;
+    padding-right: 0.875rem;
+    padding-left: 0.875rem;
+  }
+
+  .active {
+    width: 9.25rem;
+  }
+
+  .title {
+    font-size: clamp(1.125rem, 4vw, 1.5rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tab,
   .title {
