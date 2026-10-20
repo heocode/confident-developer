@@ -110,6 +110,42 @@ describe('Projects page presentation', () => {
     assert.deepEqual(result.selectedProject?.screenshots.map(({ id }) => id), ['portrait', 'landscape'])
     assert.equal(result.selectedProject?.screenshots[0].aspectRatio, 490 / 1060)
     assert.equal(result.selectedProject?.screenshots[1].aspectRatio, 1070 / 1060)
+    assert.equal(result.selectedProject?.screenshots[0].layoutWeight, 490 / 1060)
+    assert.equal(result.selectedProject?.screenshots[1].layoutWeight, 1070 / 1060)
+  })
+
+  it('keeps equal screenshot proportions at equal layout weights', () => {
+    const detail = {
+      ...createDetail('first'),
+      screenshots: [
+        createMedia('first-screen', 490, 1060),
+        createMedia('second-screen', 490, 1060),
+        createMedia('third-screen', 490, 1060),
+      ],
+    }
+
+    const result = createProjectsPagePresentation([createProject('first')], detail)
+
+    assert.ok(result?.selectedProject)
+    assert.deepEqual(
+      result.selectedProject.screenshots.map(({ layoutWeight }) => layoutWeight),
+      [490 / 1060, 490 / 1060, 490 / 1060],
+    )
+  })
+
+  it('limits extreme screenshot proportions to readable layout weights', () => {
+    const detail = {
+      ...createDetail('first'),
+      screenshots: [createMedia('extra-narrow', 10, 1000), createMedia('extra-wide', 1000, 10)],
+    }
+
+    const result = createProjectsPagePresentation([createProject('first')], detail)
+
+    assert.ok(result?.selectedProject)
+    assert.deepEqual(
+      result.selectedProject.screenshots.map(({ layoutWeight }) => layoutWeight),
+      [0.45, 1.8],
+    )
   })
 
   it('does not mutate API arrays while creating presentation values', () => {
@@ -122,7 +158,16 @@ describe('Projects page presentation', () => {
     assert.notEqual(result.tabs, projects)
     assert.notEqual(result.selectedProject.links, detail.links)
     assert.notEqual(result.selectedProject.screenshots, detail.screenshots)
-    assert.deepEqual(detail.screenshots.map((screenshot) => Object.keys(screenshot).includes('aspectRatio')), [false, false])
+    assert.deepEqual(
+      detail.screenshots.map((screenshot) => ({
+        hasAspectRatio: Object.keys(screenshot).includes('aspectRatio'),
+        hasLayoutWeight: Object.keys(screenshot).includes('layoutWeight'),
+      })),
+      [
+        { hasAspectRatio: false, hasLayoutWeight: false },
+        { hasAspectRatio: false, hasLayoutWeight: false },
+      ],
+    )
   })
 
   it('returns null when the ordered project list is empty', () => {

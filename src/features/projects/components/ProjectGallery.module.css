@@ -1,4 +1,5 @@
 .galleryRegion {
+  max-width: 100%;
   height: 100%;
   min-width: 0;
   min-height: 0;
@@ -6,10 +7,10 @@
 
 .gallery {
   display: grid;
+  width: 100%;
   height: 100%;
   min-height: 0;
-  grid-template-columns: repeat(var(--gallery-count), minmax(0, 1fr));
-  gap: 0.625rem;
+  gap: var(--project-content-gap);
 }
 
 .overflow {
@@ -29,7 +30,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 0.9375rem 1rem;
+  padding: var(--project-panel-padding-block) var(--project-panel-padding-inline);
   border-radius: 0.8236rem;
   background: var(--project-panel-color);
 }

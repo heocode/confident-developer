@@ -3,8 +3,12 @@
   height: 100%;
   min-width: 0;
   min-height: 0;
+  grid-template-columns: auto minmax(var(--project-metadata-min-width), 1fr);
+  gap: var(--project-content-gap);
+}
+
+.overflowContent {
   grid-template-columns: minmax(0, 1fr) clamp(20rem, 31.3%, 25.625rem);
-  gap: 0.625rem;
 }
 
 .standaloneFeedback {

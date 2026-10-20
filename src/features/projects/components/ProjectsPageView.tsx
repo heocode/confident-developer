@@ -1,4 +1,7 @@
+import type { CSSProperties } from 'react'
+
 import type { ProjectRouteState } from '../presentation/projects-page-state.ts'
+import { PROJECT_GALLERY_LAYOUT_TOKENS } from '../presentation/project-gallery-layout.ts'
 import { createProjectBrowserShellPresentation } from '../presentation/projects-page.ts'
 import { ProjectBrowser } from './ProjectBrowser.tsx'
 import { ProjectGallery } from './ProjectGallery.tsx'
@@ -10,6 +13,20 @@ interface ProjectsPageViewProps {
   onRetryDetail: () => void
   onRetryProjects: () => void
   state: ProjectRouteState
+}
+
+type ProjectContentStyle = CSSProperties & {
+  '--project-content-gap': string
+  '--project-metadata-min-width': string
+  '--project-panel-padding-block': string
+  '--project-panel-padding-inline': string
+}
+
+const projectContentStyle: ProjectContentStyle = {
+  '--project-content-gap': `${PROJECT_GALLERY_LAYOUT_TOKENS.gap}px`,
+  '--project-metadata-min-width': `${PROJECT_GALLERY_LAYOUT_TOKENS.metadataMinWidth}px`,
+  '--project-panel-padding-block': `${PROJECT_GALLERY_LAYOUT_TOKENS.panelBlockPadding}px`,
+  '--project-panel-padding-inline': `${PROJECT_GALLERY_LAYOUT_TOKENS.panelInlinePadding}px`,
 }
 
 function feedbackForState(
@@ -96,7 +113,10 @@ export function ProjectsPageView({ onRetryDetail, onRetryProjects, state }: Proj
         tabs={state.presentation.tabs}
         theme={project.theme}
       >
-        <div className={styles.content}>
+        <div
+          className={project.screenshots.length > 3 ? `${styles.content} ${styles.overflowContent}` : styles.content}
+          style={projectContentStyle}
+        >
           <ProjectGallery projectTitle={project.title} screenshots={project.screenshots} />
           <ProjectMetadata project={project} />
         </div>

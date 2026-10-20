@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { CSSProperties } from 'react'
 
+import { useProjectGalleryLayout } from '../hooks/useProjectGalleryLayout.ts'
 import type { ProjectScreenshotPresentation } from '../presentation/projects-page.ts'
 import styles from './ProjectGallery.module.css'
 
@@ -9,7 +10,16 @@ interface ProjectGalleryProps {
   screenshots: ProjectScreenshotPresentation[]
 }
 
-type GalleryStyle = CSSProperties & { '--gallery-count': number }
+function createGalleryStyle(
+  screenshots: ProjectScreenshotPresentation[],
+  screenshotWidths?: number[],
+): CSSProperties {
+  return {
+    gridTemplateColumns: screenshotWidths
+      ? screenshotWidths.map((width) => `${width}px`).join(' ')
+      : screenshots.map((screenshot) => `minmax(0, ${screenshot.layoutWeight}fr)`).join(' '),
+  }
+}
 
 function ProjectScreenshot({
   index,
@@ -45,12 +55,18 @@ function ProjectScreenshot({
 
 export function ProjectGallery({ projectTitle, screenshots }: ProjectGalleryProps) {
   const hasOverflow = screenshots.length > 3
+  const { galleryRef, layout } = useProjectGalleryLayout(screenshots, !hasOverflow)
 
   return (
-    <section className={styles.galleryRegion} aria-label={`${projectTitle} screenshots`}>
+    <section
+      className={styles.galleryRegion}
+      aria-label={`${projectTitle} screenshots`}
+      ref={galleryRef}
+      style={layout ? { width: layout.galleryWidth } : undefined}
+    >
       <ul
         className={hasOverflow ? `${styles.gallery} ${styles.overflow}` : styles.gallery}
-        style={{ '--gallery-count': screenshots.length } as GalleryStyle}
+        style={hasOverflow ? undefined : createGalleryStyle(screenshots, layout?.screenshotWidths)}
       >
         {screenshots.map((screenshot, index) => (
           <ProjectScreenshot index={index} key={screenshot.id} screenshot={screenshot} />
