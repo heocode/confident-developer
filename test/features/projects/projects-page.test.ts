@@ -6,7 +6,10 @@ import type {
   PublicProject,
   PublicProjectDetail,
 } from '../../../src/features/projects/model/project.types.ts'
-import { createProjectsPagePresentation } from '../../../src/features/projects/presentation/projects-page.ts'
+import {
+  createProjectBrowserShellPresentation,
+  createProjectsPagePresentation,
+} from '../../../src/features/projects/presentation/projects-page.ts'
 
 function createMedia(id: string, width = 400, height = 200): PublicMedia {
   return {
@@ -53,6 +56,39 @@ function createDetail(id: string): PublicProjectDetail {
 }
 
 describe('Projects page presentation', () => {
+  it('creates a browser shell before selected detail is available', () => {
+    const projects = [createProject('first'), createProject('second')]
+
+    assert.deepEqual(createProjectBrowserShellPresentation(projects, 'second'), {
+      activeSlug: 'second',
+      tabs: [
+        {
+          id: 'first',
+          slug: 'first',
+          title: 'Project first',
+          logo: { ...projects[0].logo, aspectRatio: 1 },
+          theme: { tabColor: '#15418A', panelColor: '#394E70' },
+        },
+        {
+          id: 'second',
+          slug: 'second',
+          title: 'Project second',
+          logo: { ...projects[1].logo, aspectRatio: 1 },
+          theme: { tabColor: '#15418A', panelColor: '#394E70' },
+        },
+      ],
+      theme: { tabColor: '#15418A', panelColor: '#394E70' },
+    })
+  })
+
+  it('keeps all tabs but selects no theme for an unknown slug', () => {
+    const shell = createProjectBrowserShellPresentation([createProject('first')], 'missing')
+
+    assert.equal(shell.activeSlug, null)
+    assert.equal(shell.tabs.length, 1)
+    assert.equal(shell.theme, null)
+  })
+
   it('preserves backend order and maps the selected project for rendering', () => {
     const projects = [createProject('first'), createProject('second'), createProject('third')]
     const detail = createDetail('second')

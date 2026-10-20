@@ -1,0 +1,14 @@
+.content {
+  display: grid;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) clamp(20rem, 31.3%, 25.625rem);
+  gap: 0.625rem;
+}
+
+.standaloneFeedback {
+  width: min(42rem, 100%);
+  min-height: 18rem;
+  margin-top: 2.5rem;
+}

@@ -32,6 +32,7 @@ export interface ProjectTabPresentation {
   slug: string
   title: string
   logo: ProjectTabMediaPresentation
+  theme: ProjectsPageTheme | null
 }
 
 export interface SelectedProjectPresentation {
@@ -50,6 +51,12 @@ export interface ProjectsPagePresentation {
   tabs: ProjectTabPresentation[]
   selectedProject: SelectedProjectPresentation | null
   configurationIssue: ProjectsPageConfigurationIssue | null
+}
+
+export interface ProjectBrowserShellPresentation {
+  activeSlug: string | null
+  tabs: ProjectTabPresentation[]
+  theme: ProjectsPageTheme | null
 }
 
 function hasValidDimensions(media: PublicMedia) {
@@ -74,6 +81,29 @@ function findInvalidLogo(projects: PublicProject[]) {
   return projects.find((project) => !hasValidDimensions(project.logo))
 }
 
+export function createProjectTabsPresentation(projects: PublicProject[]): ProjectTabPresentation[] {
+  return projects.map((project) => ({
+    id: project.id,
+    slug: project.slug,
+    title: project.title,
+    logo: createTabMediaPresentation(project.logo),
+    theme: project.projectsPageTheme ? { ...project.projectsPageTheme } : null,
+  }))
+}
+
+export function createProjectBrowserShellPresentation(
+  projects: PublicProject[],
+  activeSlug: string,
+): ProjectBrowserShellPresentation {
+  const activeProject = projects.find((project) => project.slug === activeSlug)
+
+  return {
+    activeSlug: activeProject?.slug ?? null,
+    tabs: createProjectTabsPresentation(projects),
+    theme: activeProject?.projectsPageTheme ? { ...activeProject.projectsPageTheme } : null,
+  }
+}
+
 export function createProjectsPagePresentation(
   projects: PublicProject[],
   detail: PublicProjectDetail,
@@ -82,12 +112,7 @@ export function createProjectsPagePresentation(
 
   const selectedListProject = projects.find((project) => project.slug === detail.slug)
   const invalidLogoProject = findInvalidLogo(projects)
-  const tabs = projects.map((project) => ({
-    id: project.id,
-    slug: project.slug,
-    title: project.title,
-    logo: createTabMediaPresentation(project.logo),
-  }))
+  const tabs = createProjectTabsPresentation(projects)
 
   if (!selectedListProject || selectedListProject.id !== detail.id) {
     return {

@@ -1,4 +1,5 @@
 import appStoreIconUrl from '../../../assets/icons/social/app-store.svg'
+import externalLinkIconUrl from '../../../assets/icons/actions/external-link.svg'
 import githubIconUrl from '../../../assets/icons/social/github.svg'
 import globeIconUrl from '../../../assets/icons/social/globe.svg'
 import type { ProjectLink, ProjectLinkIcon } from '../model/project.types.ts'
@@ -14,13 +15,17 @@ const iconByType: Record<ProjectLinkIcon, string> = {
 interface ProjectLinksProps {
   isInteractive: boolean
   links: ProjectLink[]
+  variant?: 'card' | 'browser'
 }
 
-export function ProjectLinks({ isInteractive, links }: ProjectLinksProps) {
+export function ProjectLinks({ isInteractive, links, variant = 'card' }: ProjectLinksProps) {
   if (links.length === 0) return null
 
   return (
-    <ul className={styles.links} aria-label="Project links">
+    <ul
+      className={variant === 'browser' ? `${styles.links} ${styles.browser}` : styles.links}
+      aria-label="Project links"
+    >
       {links.map((link) => (
         <li key={link.id}>
           <a
@@ -32,9 +37,13 @@ export function ProjectLinks({ isInteractive, links }: ProjectLinksProps) {
           >
             <img src={iconByType[link.icon]} alt="" width="32" height="32" />
             <span>{link.label}</span>
-            <span className={styles.external} aria-hidden="true">
-              ↗
-            </span>
+            {variant === 'browser' ? (
+              <img className={styles.externalIcon} src={externalLinkIconUrl} alt="" width="19" height="19" />
+            ) : (
+              <span className={styles.external} aria-hidden="true">
+                ↗
+              </span>
+            )}
           </a>
         </li>
       ))}

@@ -1,0 +1,101 @@
+.metadata {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: minmax(0, 15.0625rem) 5.125rem 5.125rem minmax(0, 1fr);
+  gap: 0.625rem;
+}
+
+.scope,
+.facts > div {
+  border-radius: 0.8236rem;
+  background: var(--project-panel-color);
+}
+
+.scope {
+  min-height: 0;
+  overflow: auto;
+  padding: 1.6875rem 1.875rem;
+  scrollbar-width: thin;
+}
+
+.scope h2,
+.linksSection h2 {
+  margin: 0;
+  color: rgb(255 255 255 / 50%);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.scope p {
+  margin: 0.625rem 0 0;
+  color: var(--color-text);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.28;
+}
+
+.facts {
+  display: contents;
+}
+
+.facts > div {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 1fr minmax(0, 1.15fr);
+  align-items: center;
+  padding: 0 1.875rem;
+  column-gap: 1rem;
+}
+
+.facts dt,
+.facts dd {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.facts dt {
+  color: rgb(255 255 255 / 50%);
+}
+
+.facts dd {
+  overflow: hidden;
+  color: var(--color-text);
+  text-align: right;
+  text-overflow: ellipsis;
+}
+
+.linksSection {
+  min-height: 0;
+  overflow: auto;
+  padding-top: 0.4375rem;
+  scrollbar-width: thin;
+}
+
+.noLinks {
+  margin: 0.75rem 0 0;
+  color: rgb(255 255 255 / 65%);
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 72rem) {
+  .metadata {
+    grid-template-rows: minmax(0, 15.0625rem) 5.125rem 5.125rem minmax(0, 1fr);
+  }
+
+  .scope,
+  .facts > div {
+    padding-inline: 1.25rem;
+  }
+
+  .scope h2,
+  .scope p,
+  .linksSection h2,
+  .facts dt,
+  .facts dd {
+    font-size: 1rem;
+  }
+}

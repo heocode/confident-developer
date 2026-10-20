@@ -1,0 +1,21 @@
+.browser {
+  width: 100%;
+  --project-panel-color: var(--color-surface-active);
+  --project-tab-color: var(--color-surface-active);
+}
+
+.frame {
+  position: relative;
+  z-index: 1;
+  height: clamp(34rem, 42.36vw, 38.125rem);
+  margin-top: -1.5rem;
+  padding: 1.5625rem;
+  border: 0.0625rem solid rgb(255 255 255 / 50%);
+  border-radius: 0.9413rem;
+  background: color-mix(in srgb, var(--project-tab-color) 75%, transparent);
+}
+
+.viewport {
+  height: 100%;
+  min-height: 0;
+}
