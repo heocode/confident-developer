@@ -25,14 +25,12 @@ export function ProjectMetadata({ project }: ProjectMetadataProps) {
         </div>
       </dl>
 
-      <section className={styles.linksSection} aria-labelledby="project-links-title">
-        <h2 id="project-links-title">Links</h2>
-        {project.links.length > 0 ? (
+      {project.links.length > 0 && (
+        <section className={styles.linksSection} aria-labelledby="project-links-title">
+          <h2 id="project-links-title">Links</h2>
           <ProjectLinks isInteractive links={project.links} variant="browser" />
-        ) : (
-          <p className={styles.noLinks}>No public links available.</p>
-        )}
-      </section>
+        </section>
+      )}
     </aside>
   )
 }

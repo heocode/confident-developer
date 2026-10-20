@@ -1,29 +1,35 @@
 .page {
   display: flex;
   width: min(calc(100% - 5rem), var(--content-width));
-  min-height: 100svh;
+  height: 100svh;
+  min-height: 0;
   margin-inline: auto;
   flex-direction: column;
   align-items: flex-start;
-  padding: 9.5rem 0 6.875rem;
+  overflow: clip;
+  padding: clamp(7rem, 14.8438svh, 9.5rem) 0 clamp(2rem, 4.6875svh, 3rem);
 }
 
 .title {
   margin: 0;
-  font-size: clamp(3.25rem, 5vw, 4.5rem);
+  flex: 0 0 auto;
+  font-size: clamp(3.25rem, min(5vw, 7.0313svh), 4.5rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: var(--letter-spacing-title);
 }
 
 .content {
+  flex: 1 1 auto;
   width: 100%;
-  margin-top: 2.5rem;
+  min-height: 0;
+  max-height: 44.5rem;
+  margin-top: clamp(1.5rem, 3.9063svh, 2.5rem);
 }
 
 @media (max-width: 64rem) {
   .page {
     width: calc(100% - 2rem);
-    padding-top: 8.5rem;
+    padding-top: clamp(7rem, 13.2813svh, 8.5rem);
   }
 }
