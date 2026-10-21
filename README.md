@@ -20,6 +20,8 @@ Home is feature-complete for the approved scope. Its remaining work is limited t
 
 The Home route composes the Hero, Projects, Services, Profile, References, and Contact sections. The sections remain in normal document flow and use scroll-progress transitions. The final Contact section includes the footer and opens the functional contact drawer.
 
+The dedicated Projects routes are feature-complete for the approved scope. Published projects load from the backend into URL-backed browser tabs, and each selected project presents its ordered screenshots and metadata in one responsive horizontal rail across desktop and mobile.
+
 ## Requirements
 
 - Node.js 22 or newer

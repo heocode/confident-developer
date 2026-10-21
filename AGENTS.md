@@ -12,6 +12,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 
 - The six primary routes are Home, Projects, Services, About Me, References, and Contact Me.
 - Home is feature-complete for the approved scope. Treat its sections as previews of the dedicated routes rather than duplicating the complete content of those pages; further Home changes should be visual polish or bug fixes unless a new product requirement is agreed.
+- Projects is feature-complete for the approved scope. Treat further changes as visual polish or bug fixes unless a new product requirement is agreed.
 - Home uses normal document scrolling. Its major sections are designed as `100vh` sections, with the footer incorporated into the final contact section.
 - The Home Hero-to-Projects transition keeps both sections in normal document flow: Hero content fades near the section boundary, then the Projects heading and project cards enter sequentially from below according to scroll progress. Do not turn the Hero into a pinned Projects background or add transition dimming and blur.
 - The Home Projects-to-Services transition also remains in normal document flow: project content exits upward, the Services heading receives a distinct title-only phase, and the service rows then enter sequentially from below. Keep the final section spacing unchanged and create the separation through scroll phases rather than spacer content.
