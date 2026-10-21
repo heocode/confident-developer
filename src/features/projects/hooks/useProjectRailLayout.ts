@@ -4,13 +4,29 @@ import {
   calculateProjectRailLayout,
   type ProjectRailLayout,
 } from '../presentation/project-rail-layout.ts'
+import type { ProjectScreenshotPresentation } from '../presentation/projects-page.ts'
 
 interface ElementSize {
   height: number
   width: number
 }
 
-export function useProjectRailLayout() {
+function layoutsMatch(
+  currentLayout: ProjectRailLayout | null,
+  nextLayout: ProjectRailLayout | null,
+) {
+  return (
+    currentLayout?.height === nextLayout?.height &&
+    currentLayout?.width === nextLayout?.width &&
+    currentLayout?.screenshotWidths.every(
+      (width, index) => width === nextLayout?.screenshotWidths[index],
+    )
+  )
+}
+
+export function useProjectRailLayout(
+  screenshots: readonly ProjectScreenshotPresentation[],
+) {
   const railRef = useRef<HTMLElement>(null)
   const [layout, setLayout] = useState<ProjectRailLayout | null>(null)
 
@@ -23,13 +39,11 @@ export function useProjectRailLayout() {
       const nextLayout = calculateProjectRailLayout({
         containerHeight: Math.round(height * 100) / 100,
         containerWidth: Math.round(width * 100) / 100,
+        screenshotAspectRatios: screenshots.map(({ aspectRatio }) => aspectRatio),
       })
 
       setLayout((currentLayout) =>
-        currentLayout?.height === nextLayout?.height &&
-        currentLayout?.width === nextLayout?.width
-          ? currentLayout
-          : nextLayout,
+        layoutsMatch(currentLayout, nextLayout) ? currentLayout : nextLayout,
       )
     }
     const measureContainer = () => updateLayout(container.getBoundingClientRect())
@@ -45,7 +59,7 @@ export function useProjectRailLayout() {
     resizeObserver.observe(container)
 
     return () => resizeObserver.disconnect()
-  }, [])
+  }, [screenshots])
 
   return { layout, railRef }
 }

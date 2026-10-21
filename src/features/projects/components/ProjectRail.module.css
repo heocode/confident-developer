@@ -40,9 +40,13 @@
 
 .slide {
   display: flex;
-  width: var(--project-panel-width, var(--project-panel-base-width));
+  width: var(
+    --project-slide-width,
+    var(--project-panel-width, var(--project-panel-base-width))
+  );
   height: 100%;
-  flex: 0 0 var(--project-panel-width, var(--project-panel-base-width));
+  flex: 0 0
+    var(--project-slide-width, var(--project-panel-width, var(--project-panel-base-width)));
   align-items: center;
   justify-content: center;
   scroll-snap-align: start;
@@ -51,7 +55,10 @@
 
 .canvasViewport {
   position: relative;
-  width: var(--project-panel-width, var(--project-panel-base-width));
+  width: var(
+    --project-slide-width,
+    var(--project-panel-width, var(--project-panel-base-width))
+  );
   height: var(--project-panel-height, var(--project-panel-base-height));
   flex: 0 0 auto;
   overflow: hidden;
@@ -62,7 +69,7 @@
   top: 0;
   left: 0;
   display: flex;
-  width: var(--project-panel-base-width);
+  width: var(--project-panel-surface-base-width, var(--project-panel-base-width));
   height: var(--project-panel-base-height);
   align-items: center;
   justify-content: center;
@@ -92,20 +99,7 @@
 }
 
 .expandedSlide {
-  width: auto;
-  min-width: var(--project-panel-width, var(--project-panel-base-width));
-  height: var(--project-panel-height, var(--project-panel-base-height));
-  flex-basis: auto;
-  aspect-ratio: var(--project-panel-expanded-aspect-ratio);
   scroll-snap-stop: normal;
-}
-
-.expandedSlide .canvasViewport {
-  width: 100%;
-}
-
-.expandedSlide .screenshotPanel {
-  width: var(--project-panel-expanded-base-width);
 }
 
 .metadataSlide {

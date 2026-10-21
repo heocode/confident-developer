@@ -11,6 +11,7 @@ test('keeps the established mobile maximum scale when the rail has enough room',
   const layout = calculateProjectRailLayout({
     containerHeight: 700,
     containerWidth: 430,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
 
   assert.ok(layout)
@@ -25,6 +26,7 @@ test('scales the complete panel uniformly on a narrow rail', () => {
   const layout = calculateProjectRailLayout({
     containerHeight: 700,
     containerWidth: 320,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
   const expectedWidth = 320 * PROJECT_RAIL_LAYOUT_TOKENS.horizontalTrackShare
 
@@ -38,6 +40,7 @@ test('uses height as the limiting dimension on a short desktop rail', () => {
   const layout = calculateProjectRailLayout({
     containerHeight: 600,
     containerWidth: 1024,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
 
   assert.ok(layout)
@@ -49,6 +52,7 @@ test('allows larger stable panels as desktop width becomes available', () => {
   const layout = calculateProjectRailLayout({
     containerHeight: 900,
     containerWidth: 1440,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
 
   assert.ok(layout)
@@ -59,10 +63,12 @@ test('keeps panel scaling continuous across the responsive boundary', () => {
   const beforeBoundary = calculateProjectRailLayout({
     containerHeight: 800,
     containerWidth: 768,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
   const afterBoundary = calculateProjectRailLayout({
     containerHeight: 800,
     containerWidth: 769,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
   })
 
   assert.ok(beforeBoundary)
@@ -72,10 +78,54 @@ test('keeps panel scaling continuous across the responsive boundary', () => {
 })
 
 test('rejects invalid rail geometry', () => {
-  assert.equal(calculateProjectRailLayout({ containerHeight: 0, containerWidth: 393 }), null)
   assert.equal(
-    calculateProjectRailLayout({ containerHeight: 600, containerWidth: Number.NaN }),
+    calculateProjectRailLayout({
+      containerHeight: 0,
+      containerWidth: 393,
+      screenshotAspectRatios: [0.45],
+    }),
     null,
+  )
+  assert.equal(
+    calculateProjectRailLayout({
+      containerHeight: 600,
+      containerWidth: Number.NaN,
+      screenshotAspectRatios: [0.45],
+    }),
+    null,
+  )
+})
+
+test('distributes unused desktop width between screenshots while metadata stays stable', () => {
+  const layout = calculateProjectRailLayout({
+    containerHeight: 900,
+    containerWidth: 1900,
+    screenshotAspectRatios: [0.45, 0.45, 0.45],
+  })
+
+  assert.ok(layout)
+
+  const totalWidth =
+    layout.screenshotWidths.reduce((total, width) => total + width, 0) +
+    layout.width +
+    PROJECT_RAIL_LAYOUT_TOKENS.desktopPanelGap * layout.screenshotWidths.length
+
+  assert.ok(Math.abs(totalWidth - 1900) < Number.EPSILON * 1900)
+  assert.equal(layout.width, PROJECT_RAIL_LAYOUT_TOKENS.baseWidth * layout.scale)
+  assert.ok(layout.screenshotWidths.every((width) => width > layout.width))
+})
+
+test('preserves natural widths when the desktop rail already overflows', () => {
+  const layout = calculateProjectRailLayout({
+    containerHeight: 700,
+    containerWidth: 1024,
+    screenshotAspectRatios: [1.8, 1.8, 1.8],
+  })
+
+  assert.ok(layout)
+  assert.deepEqual(
+    layout.screenshotWidths,
+    layout.screenshotBaseWidths.map((width) => width * layout.scale),
   )
 })
 

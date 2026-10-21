@@ -26,26 +26,29 @@ type ProjectRailStyle = CSSProperties & {
 }
 
 type ProjectScreenshotStyle = CSSProperties & {
-  '--project-panel-expanded-aspect-ratio': number
-  '--project-panel-expanded-base-width': string
+  '--project-panel-surface-base-width': string
+  '--project-slide-width': string
 }
 
 const EXPANDED_SCREENSHOT_ASPECT_RATIO = 0.8
 
 function ProjectScreenshot({
   index,
+  layoutBaseWidth,
+  layoutWidth,
   screenshot,
 }: {
   index: number
+  layoutBaseWidth?: number
+  layoutWidth?: number
   screenshot: ProjectScreenshotPresentation
 }) {
   const [hasFailed, setHasFailed] = useState(false)
   const isExpanded = screenshot.aspectRatio > EXPANDED_SCREENSHOT_ASPECT_RATIO
   const expandedPanelWidth = calculateExpandedProjectPanelWidth(screenshot.aspectRatio)
   const screenshotStyle: ProjectScreenshotStyle = {
-    '--project-panel-expanded-aspect-ratio':
-      expandedPanelWidth / PROJECT_RAIL_LAYOUT_TOKENS.baseHeight,
-    '--project-panel-expanded-base-width': `${expandedPanelWidth}px`,
+    '--project-panel-surface-base-width': `${layoutBaseWidth ?? expandedPanelWidth}px`,
+    '--project-slide-width': `${layoutWidth ?? expandedPanelWidth}px`,
   }
 
   return (
@@ -79,7 +82,7 @@ function ProjectScreenshot({
 }
 
 export function ProjectRail({ project }: ProjectRailProps) {
-  const { layout, railRef } = useProjectRailLayout()
+  const { layout, railRef } = useProjectRailLayout(project.screenshots)
   const railStyle: ProjectRailStyle = {
     '--project-panel-base-height': `${PROJECT_RAIL_LAYOUT_TOKENS.baseHeight}px`,
     '--project-panel-base-width': `${PROJECT_RAIL_LAYOUT_TOKENS.baseWidth}px`,
@@ -126,7 +129,13 @@ export function ProjectRail({ project }: ProjectRailProps) {
     >
       <ol className={styles.track}>
         {project.screenshots.map((screenshot, index) => (
-          <ProjectScreenshot index={index} key={screenshot.id} screenshot={screenshot} />
+          <ProjectScreenshot
+            index={index}
+            key={screenshot.id}
+            layoutBaseWidth={layout?.screenshotBaseWidths[index]}
+            layoutWidth={layout?.screenshotWidths[index]}
+            screenshot={screenshot}
+          />
         ))}
         <li className={`${styles.slide} ${styles.metadataSlide}`}>
           <div className={styles.canvasViewport}>

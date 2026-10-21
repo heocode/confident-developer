@@ -2,6 +2,7 @@ export const PROJECT_RAIL_LAYOUT_TOKENS = {
   baseHeight: 560,
   baseWidth: 314,
   desktopMaxScale: 1.4,
+  desktopPanelGap: 16,
   desktopScaleEndWidth: 1440,
   desktopScaleStartWidth: 768,
   horizontalTrackShare: 0.86,
@@ -14,11 +15,14 @@ export const PROJECT_RAIL_LAYOUT_TOKENS = {
 interface ProjectRailLayoutInput {
   containerHeight: number
   containerWidth: number
+  screenshotAspectRatios: readonly number[]
 }
 
 export interface ProjectRailLayout {
   height: number
   scale: number
+  screenshotBaseWidths: number[]
+  screenshotWidths: number[]
   width: number
 }
 
@@ -29,8 +33,13 @@ function clamp(value: number, minimum: number, maximum: number) {
 export function calculateProjectRailLayout({
   containerHeight,
   containerWidth,
+  screenshotAspectRatios,
 }: ProjectRailLayoutInput): ProjectRailLayout | null {
   if (
+    screenshotAspectRatios.length === 0 ||
+    screenshotAspectRatios.some(
+      (aspectRatio) => !Number.isFinite(aspectRatio) || aspectRatio <= 0,
+    ) ||
     !Number.isFinite(containerHeight) ||
     !Number.isFinite(containerWidth) ||
     containerHeight <= 0 ||
@@ -42,6 +51,7 @@ export function calculateProjectRailLayout({
   const {
     baseHeight,
     baseWidth,
+    desktopPanelGap,
     desktopMaxScale,
     desktopScaleEndWidth,
     desktopScaleStartWidth,
@@ -61,11 +71,31 @@ export function calculateProjectRailLayout({
     (containerWidth * horizontalTrackShare) / baseWidth,
     containerHeight / baseHeight,
   )
+  const naturalScreenshotBaseWidths = screenshotAspectRatios.map(
+    calculateExpandedProjectPanelWidth,
+  )
+  const naturalScreenshotWidths = naturalScreenshotBaseWidths.map(
+    (screenshotWidth) => screenshotWidth * scale,
+  )
+  const metadataWidth = baseWidth * scale
+  const naturalRailWidth =
+    naturalScreenshotWidths.reduce((total, screenshotWidth) => total + screenshotWidth, 0) +
+    metadataWidth +
+    desktopPanelGap * screenshotAspectRatios.length
+  const desktopFillWidth =
+    containerWidth > desktopScaleStartWidth && naturalRailWidth < containerWidth
+      ? (containerWidth - naturalRailWidth) / screenshotAspectRatios.length
+      : 0
+  const screenshotWidths = naturalScreenshotWidths.map(
+    (screenshotWidth) => screenshotWidth + desktopFillWidth,
+  )
 
   return {
     height: baseHeight * scale,
     scale,
-    width: baseWidth * scale,
+    screenshotBaseWidths: screenshotWidths.map((screenshotWidth) => screenshotWidth / scale),
+    screenshotWidths,
+    width: metadataWidth,
   }
 }
 
