@@ -21,7 +21,6 @@ export interface ProjectsPageConfigurationIssue {
 
 export interface ProjectScreenshotPresentation extends PublicMedia {
   aspectRatio: number
-  layoutWeight: number
 }
 
 export interface ProjectTabMediaPresentation extends PublicMedia {
@@ -60,9 +59,6 @@ export interface ProjectBrowserShellPresentation {
   theme: ProjectsPageTheme | null
 }
 
-const MIN_SCREENSHOT_LAYOUT_WEIGHT = 0.45
-const MAX_SCREENSHOT_LAYOUT_WEIGHT = 1.8
-
 function hasValidDimensions(media: PublicMedia) {
   return Number.isFinite(media.width) && media.width > 0 && Number.isFinite(media.height) && media.height > 0
 }
@@ -73,10 +69,6 @@ function createScreenshotPresentation(media: PublicMedia): ProjectScreenshotPres
   return {
     ...media,
     aspectRatio,
-    layoutWeight: Math.min(
-      MAX_SCREENSHOT_LAYOUT_WEIGHT,
-      Math.max(MIN_SCREENSHOT_LAYOUT_WEIGHT, aspectRatio),
-    ),
   }
 }
 

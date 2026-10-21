@@ -1,20 +1,20 @@
-.metadataSlide,
-.mobileCanvasViewport,
 .metadata {
+  --project-metadata-font-size: 1rem;
+  --project-metadata-gap: 0.625rem;
+  --project-metadata-padding-block: 1.125rem;
+  --project-metadata-padding-inline: 1.25rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: var(--project-panel-base-width);
+  height: var(--project-panel-base-height);
   min-width: 0;
   min-height: 0;
-}
-
-.metadataSlide,
-.mobileCanvasViewport {
-  height: 100%;
-}
-
-.metadata {
-  display: flex;
-  height: 100%;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: var(--project-metadata-gap);
+  transform: scale(var(--project-panel-scale, 1));
+  transform-origin: top left;
 }
 
 .scope,
@@ -25,31 +25,32 @@
 
 .scope {
   flex: 0 0 auto;
-  padding: clamp(1rem, 2.6367svh, 1.6875rem) clamp(1.25rem, 2.9297svh, 1.875rem);
+  padding: var(--project-metadata-padding-block)
+    var(--project-metadata-padding-inline);
 }
 
 .scope h2,
 .linksSection h2 {
   margin: 0;
   color: rgb(255 255 255 / 50%);
-  font-size: clamp(0.875rem, 1.7578svh, 1.125rem);
+  font-size: var(--project-metadata-font-size);
   font-weight: 600;
   line-height: 1.2;
 }
 
 .scope p {
-  margin: clamp(0.375rem, 0.9766svh, 0.625rem) 0 0;
+  margin: 0.5rem 0 0;
   color: var(--color-text);
-  font-size: clamp(0.875rem, 1.7578svh, 1.125rem);
+  font-size: var(--project-metadata-font-size);
   font-weight: 600;
-  line-height: 1.28;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .facts {
   display: grid;
   flex: 0 0 auto;
-  gap: 0.625rem;
+  gap: var(--project-metadata-gap);
   margin: 0;
 }
 
@@ -58,14 +59,15 @@
   min-width: 0;
   grid-template-columns: 1fr minmax(0, 1.15fr);
   align-items: center;
-  padding: clamp(1.25rem, 2.9297svh, 1.875rem) clamp(1.25rem, 2.9297svh, 1.875rem);
-  column-gap: 1rem;
+  padding: var(--project-metadata-padding-block)
+    var(--project-metadata-padding-inline);
+  column-gap: var(--project-metadata-gap);
 }
 
 .facts dt,
 .facts dd {
   margin: 0;
-  font-size: clamp(0.875rem, 1.7578svh, 1.125rem);
+  font-size: var(--project-metadata-font-size);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -82,88 +84,5 @@
 
 .linksSection {
   flex: 0 0 auto;
-  padding-top: 0.4375rem;
-}
-
-@media (max-width: 72rem) {
-  .scope,
-  .facts > div {
-    padding-inline: 1.25rem;
-  }
-
-  .scope h2,
-  .scope p,
-  .linksSection h2,
-  .facts dt,
-  .facts dd {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 48rem) {
-  .metadataSlide {
-    width: var(--project-carousel-item-width);
-    height: var(--project-carousel-item-height);
-    flex: 0 0 var(--project-carousel-item-width);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    scroll-snap-align: end;
-    scroll-snap-stop: always;
-  }
-
-  .mobileCanvasViewport {
-    position: relative;
-    width: var(--project-mobile-panel-width, var(--project-mobile-panel-base-width));
-    height: var(--project-mobile-panel-height, var(--project-mobile-panel-base-height));
-    flex: 0 0 auto;
-    overflow: hidden;
-  }
-
-  .metadata {
-    --project-metadata-font-size: 1rem;
-    --project-metadata-gap: 0.625rem;
-    --project-metadata-padding-block: 1.125rem;
-    --project-metadata-padding-inline: 1.25rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: var(--project-mobile-panel-base-width);
-    height: var(--project-mobile-panel-base-height);
-    gap: var(--project-metadata-gap);
-    transform: scale(var(--project-mobile-panel-scale, 1));
-    transform-origin: top left;
-  }
-
-  .scope {
-    padding: var(--project-metadata-padding-block)
-      var(--project-metadata-padding-inline);
-  }
-
-  .facts > div {
-    padding: var(--project-metadata-padding-block)
-      var(--project-metadata-padding-inline);
-    column-gap: var(--project-metadata-gap);
-  }
-
-  .scope h2,
-  .scope p,
-  .linksSection h2,
-  .facts dt,
-  .facts dd {
-    font-size: var(--project-metadata-font-size);
-  }
-
-  .scope p {
-    margin-top: 0.5rem;
-    line-height: 1.2;
-  }
-
-  .facts {
-    gap: var(--project-metadata-gap);
-  }
-
-  .linksSection {
-    padding-top: calc(var(--project-metadata-gap) * 0.5);
-  }
+  padding-top: calc(var(--project-metadata-gap) * 0.5);
 }

@@ -5,7 +5,7 @@
 }
 
 html {
-  min-width: 20rem;
+  min-width: 17.5rem;
   background: var(--color-background);
   overscroll-behavior-y: none;
   scroll-behavior: smooth;
@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  min-width: 20rem;
+  min-width: 17.5rem;
   min-height: 100vh;
   margin: 0;
   overscroll-behavior-y: none;

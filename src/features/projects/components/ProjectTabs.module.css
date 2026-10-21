@@ -103,8 +103,10 @@
 
 @media (max-width: 48rem) {
   .tabs {
-    width: calc(100% - clamp(2rem, 8vw, 2.5rem));
-    margin-left: clamp(2rem, 8vw, 2.5rem);
+    --project-tab-collapsed-width: clamp(4.25rem, 20vw, 5.125rem);
+    width: 100%;
+    margin-left: 0;
+    justify-content: safe center;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
@@ -116,15 +118,22 @@
   }
 
   .tab {
-    width: 5.125rem;
+    width: var(--project-tab-collapsed-width);
     flex: 0 0 auto;
-    gap: 0.625rem;
-    padding-right: 0.875rem;
-    padding-left: 0.875rem;
+    gap: clamp(0.4rem, 2vw, 0.625rem);
+    padding-right: clamp(0.625rem, 3vw, 0.875rem);
+    padding-left: clamp(0.625rem, 3vw, 0.875rem);
   }
 
   .active {
-    width: 9.25rem;
+    width: clamp(
+      8rem,
+      calc(
+        100% - var(--page-gutter) - var(--page-gutter) -
+          var(--project-tab-collapsed-width) - var(--project-tab-collapsed-width)
+      ),
+      14rem
+    );
   }
 
   .title {

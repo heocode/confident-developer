@@ -1,53 +1,5 @@
-.content {
-  display: grid;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  grid-template-columns: auto minmax(var(--project-metadata-min-width), 1fr);
-  gap: var(--project-content-gap);
-}
-
-.overflowContent {
-  grid-template-columns: minmax(0, 1fr) clamp(20rem, 31.3%, 25.625rem);
-}
-
 .standaloneFeedback {
   width: min(42rem, 100%);
   min-height: 18rem;
   margin-top: 2.5rem;
-}
-
-@media (max-width: 48rem) {
-  .content,
-  .overflowContent {
-    --project-carousel-item-width: var(
-      --project-mobile-panel-width,
-      var(--project-mobile-panel-base-width)
-    );
-    --project-carousel-item-height: 100cqh;
-    --project-carousel-item-gap: 0.75rem;
-    --project-carousel-track-start: var(--page-gutter);
-    --project-carousel-track-end: var(--page-gutter);
-    display: flex;
-    width: 100%;
-    height: 100%;
-    grid-template-columns: none;
-    gap: var(--project-carousel-item-gap);
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-block: 0;
-    padding-inline-start: var(--project-carousel-track-start);
-    padding-inline-end: var(--project-carousel-track-end);
-    overscroll-behavior-inline: contain;
-    scroll-padding-inline-start: var(--project-carousel-track-start);
-    scroll-padding-inline-end: var(--project-carousel-track-end);
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    touch-action: pan-x pinch-zoom;
-  }
-
-  .content::-webkit-scrollbar,
-  .overflowContent::-webkit-scrollbar {
-    display: none;
-  }
 }
