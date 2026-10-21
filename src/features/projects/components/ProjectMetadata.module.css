@@ -1,7 +1,18 @@
+.metadataSlide,
+.mobileCanvasViewport,
 .metadata {
-  display: flex;
   min-width: 0;
   min-height: 0;
+}
+
+.metadataSlide,
+.mobileCanvasViewport {
+  height: 100%;
+}
+
+.metadata {
+  display: flex;
+  height: 100%;
   flex-direction: column;
   gap: 0.625rem;
 }
@@ -90,21 +101,49 @@
 }
 
 @media (max-width: 48rem) {
-  .metadata {
-    width: var(--project-mobile-slide-width);
-    height: 100%;
-    flex: 0 0 var(--project-mobile-slide-width);
-    overflow: hidden;
-    scroll-snap-align: center;
+  .metadataSlide {
+    width: var(--project-carousel-item-width);
+    height: var(--project-carousel-item-height);
+    flex: 0 0 var(--project-carousel-item-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: end;
     scroll-snap-stop: always;
   }
 
+  .mobileCanvasViewport {
+    position: relative;
+    width: var(--project-mobile-panel-width, var(--project-mobile-panel-base-width));
+    height: var(--project-mobile-panel-height, var(--project-mobile-panel-base-height));
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .metadata {
+    --project-metadata-font-size: 1rem;
+    --project-metadata-gap: 0.625rem;
+    --project-metadata-padding-block: 1.125rem;
+    --project-metadata-padding-inline: 1.25rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--project-mobile-panel-base-width);
+    height: var(--project-mobile-panel-base-height);
+    gap: var(--project-metadata-gap);
+    transform: scale(var(--project-mobile-panel-scale, 1));
+    transform-origin: top left;
+  }
+
   .scope {
-    padding: clamp(1rem, 3svh, 1.75rem) clamp(1.25rem, 5vw, 2rem);
+    padding: var(--project-metadata-padding-block)
+      var(--project-metadata-padding-inline);
   }
 
   .facts > div {
-    padding: clamp(1rem, 3svh, 1.75rem) clamp(1.25rem, 5vw, 2rem);
+    padding: var(--project-metadata-padding-block)
+      var(--project-metadata-padding-inline);
+    column-gap: var(--project-metadata-gap);
   }
 
   .scope h2,
@@ -112,10 +151,19 @@
   .linksSection h2,
   .facts dt,
   .facts dd {
-    font-size: clamp(0.875rem, min(4vw, 2.1svh), 1.5rem);
+    font-size: var(--project-metadata-font-size);
   }
 
   .scope p {
-    line-height: 1.22;
+    margin-top: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .facts {
+    gap: var(--project-metadata-gap);
+  }
+
+  .linksSection {
+    padding-top: calc(var(--project-metadata-gap) * 0.5);
   }
 }

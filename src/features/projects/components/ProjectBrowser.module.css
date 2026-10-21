@@ -37,6 +37,8 @@
 .viewport {
   height: 100%;
   min-height: 0;
+  container-name: project-browser;
+  container-type: size;
 }
 
 @media (max-width: 48rem) {

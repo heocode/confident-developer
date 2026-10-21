@@ -2,7 +2,9 @@ import type { CSSProperties } from 'react'
 
 import type { ProjectRouteState } from '../presentation/projects-page-state.ts'
 import { PROJECT_GALLERY_LAYOUT_TOKENS } from '../presentation/project-gallery-layout.ts'
+import { PROJECT_MOBILE_PANEL_TOKENS } from '../presentation/project-mobile-panel-layout.ts'
 import { createProjectBrowserShellPresentation } from '../presentation/projects-page.ts'
+import { useProjectMobilePanelLayout } from '../hooks/useProjectMobilePanelLayout.ts'
 import { ProjectBrowser } from './ProjectBrowser.tsx'
 import { ProjectGallery } from './ProjectGallery.tsx'
 import { ProjectMetadata } from './ProjectMetadata.tsx'
@@ -20,6 +22,11 @@ type ProjectContentStyle = CSSProperties & {
   '--project-metadata-min-width': string
   '--project-panel-padding-block': string
   '--project-panel-padding-inline': string
+  '--project-mobile-panel-base-height': string
+  '--project-mobile-panel-base-width': string
+  '--project-mobile-panel-height'?: string
+  '--project-mobile-panel-scale'?: number
+  '--project-mobile-panel-width'?: string
 }
 
 const projectContentStyle: ProjectContentStyle = {
@@ -27,6 +34,8 @@ const projectContentStyle: ProjectContentStyle = {
   '--project-metadata-min-width': `${PROJECT_GALLERY_LAYOUT_TOKENS.metadataMinWidth}px`,
   '--project-panel-padding-block': `${PROJECT_GALLERY_LAYOUT_TOKENS.panelBlockPadding}px`,
   '--project-panel-padding-inline': `${PROJECT_GALLERY_LAYOUT_TOKENS.panelInlinePadding}px`,
+  '--project-mobile-panel-base-height': `${PROJECT_MOBILE_PANEL_TOKENS.baseHeight}px`,
+  '--project-mobile-panel-base-width': `${PROJECT_MOBILE_PANEL_TOKENS.baseWidth}px`,
 }
 
 function feedbackForState(
@@ -84,6 +93,10 @@ function feedbackForState(
 }
 
 export function ProjectsPageView({ onRetryDetail, onRetryProjects, state }: ProjectsPageViewProps) {
+  const { containerRef, layout: mobilePanelLayout } = useProjectMobilePanelLayout(
+    state.status === 'ready',
+  )
+
   if (state.status === 'projects-loading' || state.status === 'projects-error' || state.status === 'empty') {
     return (
       <div className={styles.standaloneFeedback}>
@@ -116,7 +129,17 @@ export function ProjectsPageView({ onRetryDetail, onRetryProjects, state }: Proj
         <div
           className={project.screenshots.length > 3 ? `${styles.content} ${styles.overflowContent}` : styles.content}
           key={project.slug}
-          style={projectContentStyle}
+          ref={containerRef}
+          style={{
+            ...projectContentStyle,
+            ...(mobilePanelLayout
+              ? {
+                  '--project-mobile-panel-height': `${mobilePanelLayout.height}px`,
+                  '--project-mobile-panel-scale': mobilePanelLayout.scale,
+                  '--project-mobile-panel-width': `${mobilePanelLayout.width}px`,
+                }
+              : {}),
+          }}
         >
           <ProjectGallery projectTitle={project.title} screenshots={project.screenshots} />
           <ProjectMetadata project={project} />

@@ -3,6 +3,10 @@ import type { CSSProperties } from 'react'
 
 import { useProjectGalleryLayout } from '../hooks/useProjectGalleryLayout.ts'
 import type { ProjectScreenshotPresentation } from '../presentation/projects-page.ts'
+import {
+  calculateExpandedProjectPanelWidth,
+  PROJECT_MOBILE_PANEL_TOKENS,
+} from '../presentation/project-mobile-panel-layout.ts'
 import styles from './ProjectGallery.module.css'
 
 interface ProjectGalleryProps {
@@ -11,7 +15,8 @@ interface ProjectGalleryProps {
 }
 
 type ProjectScreenshotStyle = CSSProperties & {
-  '--project-mobile-screenshot-aspect-ratio': number
+  '--project-mobile-panel-expanded-aspect-ratio': number
+  '--project-mobile-panel-expanded-base-width': string
 }
 
 const MOBILE_EXPANDED_SCREENSHOT_ASPECT_RATIO = 0.8
@@ -37,8 +42,11 @@ function ProjectScreenshot({
   const [hasFailed, setHasFailed] = useState(false)
   const isExpandedScreenshot =
     screenshot.aspectRatio > MOBILE_EXPANDED_SCREENSHOT_ASPECT_RATIO
+  const expandedPanelWidth = calculateExpandedProjectPanelWidth(screenshot.aspectRatio)
   const screenshotStyle: ProjectScreenshotStyle = {
-    '--project-mobile-screenshot-aspect-ratio': screenshot.aspectRatio,
+    '--project-mobile-panel-expanded-aspect-ratio':
+      expandedPanelWidth / PROJECT_MOBILE_PANEL_TOKENS.baseHeight,
+    '--project-mobile-panel-expanded-base-width': `${expandedPanelWidth}px`,
   }
 
   return (
@@ -48,23 +56,27 @@ function ProjectScreenshot({
       }
       style={screenshotStyle}
     >
-      {hasFailed ? (
-        <p className={styles.imageError} role="status">
-          Screenshot unavailable
-        </p>
-      ) : (
-        <img
-          alt={screenshot.alt}
-          decoding="async"
-          fetchPriority={index === 0 ? 'high' : 'auto'}
-          height={screenshot.height}
-          loading={index === 0 ? 'eager' : 'lazy'}
-          onError={() => setHasFailed(true)}
-          src={screenshot.url}
-          style={{ aspectRatio: screenshot.aspectRatio }}
-          width={screenshot.width}
-        />
-      )}
+      <div className={styles.mobileCanvasViewport}>
+        <div className={styles.panel}>
+          {hasFailed ? (
+            <p className={styles.imageError} role="status">
+              Screenshot unavailable
+            </p>
+          ) : (
+            <img
+              alt={screenshot.alt}
+              decoding="async"
+              fetchPriority={index === 0 ? 'high' : 'auto'}
+              height={screenshot.height}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              onError={() => setHasFailed(true)}
+              src={screenshot.url}
+              style={{ aspectRatio: screenshot.aspectRatio }}
+              width={screenshot.width}
+            />
+          )}
+        </div>
+      </div>
     </li>
   )
 }

@@ -73,19 +73,29 @@
 }
 
 @media (max-width: 48rem) {
-  .links {
+  .browser {
+    gap: 0.375rem;
+    margin-top: var(--project-metadata-gap);
+  }
+
+  .browser a {
     gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0.25rem 0.625rem;
+    font-size: var(--project-metadata-font-size);
   }
 
-  .links a {
-    gap: 0.45rem;
-    min-height: 2.1rem;
-    padding: 0.3rem 0.65rem;
-    font-size: 0.8125rem;
+  .browser img:not(.externalIcon) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
-  .links img {
-    width: 1.25rem;
-    height: 1.25rem;
+  .browser .externalIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .browser a span {
+    white-space: nowrap;
   }
 }
