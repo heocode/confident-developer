@@ -19,7 +19,9 @@ function layoutsMatch(
   return (
     currentLayout?.height === nextLayout?.height &&
     currentLayout?.compactPanelSize === nextLayout?.compactPanelSize &&
+    currentLayout?.gap === nextLayout?.gap &&
     currentLayout?.informationPanelWidth === nextLayout?.informationPanelWidth &&
+    currentLayout?.scale === nextLayout?.scale &&
     currentLayout?.groupWidths.length === nextLayout?.groupWidths.length &&
     currentLayout?.groupWidths.every(
       (width, index) => width === nextLayout?.groupWidths[index],

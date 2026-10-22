@@ -27,7 +27,7 @@
   min-width: 100%;
   height: 100%;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: var(--service-showcase-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -44,25 +44,26 @@
 
 .compactGroup {
   flex-direction: column;
-  gap: 0.625rem;
+  gap: var(--service-showcase-gap);
 }
 
 .panel {
   display: flex;
   width: 100%;
   height: 100%;
-  padding: 1rem 1.375rem;
+  padding: calc(1rem * var(--service-showcase-scale))
+    calc(1.375rem * var(--service-showcase-scale));
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0.8125rem;
+  border-radius: calc(0.8125rem * var(--service-showcase-scale));
   background: var(--service-surface-color);
 }
 
 .compactPanel {
   height: var(--service-showcase-compact-size);
   flex: 0 0 var(--service-showcase-compact-size);
-  padding: 0.75rem;
+  padding: calc(0.75rem * var(--service-showcase-scale));
 }
 
 .panel img {
@@ -75,7 +76,11 @@
 }
 
 .panel .videoMedia {
-  border-radius: clamp(1.5rem, 2.7778vw, 2.5rem);
+  border-radius: clamp(
+    1.5rem,
+    2.7778vw,
+    calc(2.5rem * var(--service-showcase-scale))
+  );
 }
 
 .mediaError {
@@ -92,7 +97,7 @@
     var(--service-showcase-information-width),
     calc(100vw - 2 * var(--page-gutter))
   );
-  height: 100%;
+  height: var(--service-showcase-height);
   flex: 0 0
     min(
       var(--service-showcase-information-width),
@@ -114,7 +119,7 @@
   height: 100%;
   min-height: min-content;
   grid-template-rows: repeat(3, minmax(min-content, 1fr));
-  gap: 0.625rem;
+  gap: var(--service-showcase-gap);
 }
 
 @media (max-width: 48rem) {

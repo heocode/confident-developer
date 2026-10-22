@@ -15,8 +15,10 @@ interface ServiceShowcaseRailProps {
 
 type RailStyle = CSSProperties & {
   '--service-showcase-compact-size': string
+  '--service-showcase-gap': string
   '--service-showcase-height': string
   '--service-showcase-information-width': string
+  '--service-showcase-scale': number
 }
 
 type GroupStyle = CSSProperties & {
@@ -67,11 +69,13 @@ export function ServiceShowcaseRail({
   const { groups, layout, railRef } = useServiceShowcaseLayout(assets)
   const railStyle: RailStyle = {
     '--service-showcase-compact-size': `${layout?.compactPanelSize ?? 180}px`,
+    '--service-showcase-gap': `${layout?.gap ?? SERVICE_SHOWCASE_LAYOUT_TOKENS.gap}px`,
     '--service-showcase-height': `${layout?.height ?? SERVICE_SHOWCASE_LAYOUT_TOKENS.baseHeight}px`,
     '--service-showcase-information-width': `${
       layout?.informationPanelWidth ??
       SERVICE_SHOWCASE_LAYOUT_TOKENS.informationPanelWidth
     }px`,
+    '--service-showcase-scale': layout?.scale ?? 1,
   }
 
   useLayoutEffect(() => {

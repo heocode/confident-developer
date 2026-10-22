@@ -55,6 +55,8 @@ test('matches the Figma product showcase geometry at the reference height', () =
 
   assert.ok(layout)
   assert.equal(layout.height, 560)
+  assert.equal(layout.scale, 1)
+  assert.equal(layout.gap, 10)
   assert.equal(layout.compactPanelSize, 180)
   assert.deepEqual(layout.groupWidths, [290, 290, 180])
   assert.equal(layout.informationPanelWidth, 530)
@@ -90,6 +92,26 @@ test('keeps three animations in one block and fits their tiles to constrained he
   assert.equal(layout.groupWidths[2], layout.compactPanelSize)
 })
 
+test('scales the composition uniformly on tall screens and then preserves free space', () => {
+  const groups = groupServiceShowcaseAssets(productAssets)
+  const layout = calculateServiceShowcaseLayout({
+    containerHeight: 1200,
+    containerWidth: 2560,
+    groupAspectRatios: [0.5, 0.5, 1],
+    groups,
+  })
+
+  assert.ok(layout)
+  assert.equal(layout.height, 784)
+  assert.equal(layout.scale, 1.4)
+  assert.equal(layout.gap, 14)
+  assert.equal(layout.compactPanelSize, 252)
+  assert.ok(Math.abs(layout.groupWidths[0] - 406) < Number.EPSILON * 2048)
+  assert.ok(Math.abs(layout.groupWidths[1] - 406) < Number.EPSILON * 2048)
+  assert.equal(layout.groupWidths[2], 252)
+  assert.equal(layout.informationPanelWidth, 742)
+})
+
 test('does not shrink the base media width when only height is constrained', () => {
   assert.equal(calculateServiceShowcasePanelWidth(0.5, 560), 290)
   assert.equal(calculateServiceShowcasePanelWidth(0.5, 320), 290)
@@ -103,6 +125,11 @@ test('caps wide showcase panels without changing portrait minimums', () => {
   assert.equal(
     calculateServiceShowcasePanelWidth(20),
     SERVICE_SHOWCASE_LAYOUT_TOKENS.maxPanelWidth,
+  )
+  assert.equal(
+    calculateServiceShowcasePanelWidth(20, 784),
+    SERVICE_SHOWCASE_LAYOUT_TOKENS.maxPanelWidth *
+      SERVICE_SHOWCASE_LAYOUT_TOKENS.desktopMaxScale,
   )
 })
 

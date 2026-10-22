@@ -47,8 +47,8 @@
 
 .backLink {
   display: block;
-  width: 5.25rem;
-  height: 5.25rem;
+  width: clamp(5.25rem, 8.2031svh, 7.35rem);
+  height: clamp(5.25rem, 8.2031svh, 7.35rem);
   flex: 0 0 auto;
   border-radius: 50%;
   text-decoration: none;
@@ -67,10 +67,14 @@
 .card {
   display: flex;
   min-width: 0;
-  padding: clamp(1rem, 2.9297svh, 1.875rem);
+  padding: clamp(
+    1rem,
+    2.9297svh,
+    calc(1.875rem * var(--service-showcase-scale))
+  );
   flex-direction: column;
   justify-content: center;
-  border-radius: 0.8125rem;
+  border-radius: calc(0.8125rem * var(--service-showcase-scale));
   background: var(--service-surface-color);
 }
 
@@ -86,34 +90,36 @@
 
 .card h3 {
   color: rgb(255 255 255 / 50%);
-  font-size: 1.125rem;
+  font-size: calc(1.125rem * var(--service-showcase-scale));
   font-weight: 600;
   line-height: normal;
 }
 
 .description {
-  max-width: 29.375rem;
-  margin-top: 0.25rem !important;
-  font-size: 1.125rem;
+  max-width: calc(29.375rem * var(--service-showcase-scale));
+  margin-top: calc(0.25rem * var(--service-showcase-scale)) !important;
+  font-size: calc(1.125rem * var(--service-showcase-scale));
   font-weight: 600;
   line-height: normal;
 }
 
 .capabilities {
   display: flex;
-  margin: 0.625rem 0 0;
+  margin: calc(0.625rem * var(--service-showcase-scale)) 0 0;
   padding: 0;
   flex-wrap: wrap;
-  gap: 0.3125rem 0.625rem;
+  gap: calc(0.3125rem * var(--service-showcase-scale))
+    calc(0.625rem * var(--service-showcase-scale));
   list-style: none;
 }
 
 .capabilities li {
-  min-height: 1.9375rem;
-  padding: 0.375rem 1.25rem;
+  min-height: calc(1.9375rem * var(--service-showcase-scale));
+  padding: calc(0.375rem * var(--service-showcase-scale))
+    calc(1.25rem * var(--service-showcase-scale));
   border-radius: var(--radius-pill);
   background: rgb(255 255 255 / 12%);
-  font-size: 1rem;
+  font-size: calc(1rem * var(--service-showcase-scale));
   font-weight: 500;
   line-height: normal;
   white-space: nowrap;
@@ -124,26 +130,26 @@
   width: 100%;
   min-height: min-content;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.625rem;
+  gap: var(--service-showcase-gap);
 }
 
 .resources {
   display: flex;
-  margin: 0.3125rem 0 0;
+  margin: calc(0.3125rem * var(--service-showcase-scale)) 0 0;
   padding: 0;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.625rem;
+  gap: var(--service-showcase-gap);
   list-style: none;
 }
 
 .resource,
 .projectLink {
   display: block;
-  width: 3.8125rem;
-  height: 3.8125rem;
-  flex: 0 0 3.8125rem;
-  border-radius: 0.6875rem;
+  width: calc(3.8125rem * var(--service-showcase-scale));
+  height: calc(3.8125rem * var(--service-showcase-scale));
+  flex: 0 0 calc(3.8125rem * var(--service-showcase-scale));
+  border-radius: calc(0.6875rem * var(--service-showcase-scale));
 }
 
 .projectLink {
@@ -153,9 +159,9 @@
 .resource img,
 .projectLink img {
   display: block;
-  width: 3.8125rem;
-  height: 3.8125rem;
-  border-radius: 0.6875rem;
+  width: calc(3.8125rem * var(--service-showcase-scale));
+  height: calc(3.8125rem * var(--service-showcase-scale));
+  border-radius: calc(0.6875rem * var(--service-showcase-scale));
   object-fit: contain;
 }
 

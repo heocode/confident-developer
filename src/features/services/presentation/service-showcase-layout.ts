@@ -3,9 +3,11 @@ export const SERVICE_SHOWCASE_LAYOUT_TOKENS = {
   basePanelWidth: 290,
   compactPanelSize: 180,
   compactItemsPerColumn: 3,
+  desktopMaxScale: 1.4,
   expandedAspectRatio: 0.8,
   gap: 10,
   informationPanelWidth: 530,
+  maxInformationPanelWidth: 742,
   maxPanelWidth: 720,
   panelBlockPadding: 16,
   panelInlinePadding: 22,
@@ -29,9 +31,11 @@ interface ServiceShowcaseLayoutInput {
 
 export interface ServiceShowcaseLayout {
   compactPanelSize: number
+  gap: number
   groupWidths: number[]
   height: number
   informationPanelWidth: number
+  scale: number
 }
 
 function clamp(value: number, minimum: number, maximum: number) {
@@ -72,21 +76,28 @@ export function calculateServiceShowcasePanelWidth(
   const {
     baseHeight,
     basePanelWidth,
+    desktopMaxScale,
     expandedAspectRatio,
     maxPanelWidth,
     panelBlockPadding,
     panelInlinePadding,
   } = SERVICE_SHOWCASE_LAYOUT_TOKENS
-  const scale = Math.min(1.4, Math.max(1, panelHeight / baseHeight))
+  const scale = Math.min(
+    desktopMaxScale,
+    Math.max(1, panelHeight / baseHeight),
+  )
 
   if (aspectRatio <= expandedAspectRatio) return basePanelWidth * scale
 
-  const contentHeight = Math.max(0, panelHeight - panelBlockPadding * 2)
+  const contentHeight = Math.max(
+    0,
+    panelHeight - panelBlockPadding * scale * 2,
+  )
 
   return clamp(
-    contentHeight * aspectRatio + panelInlinePadding * 2,
+    contentHeight * aspectRatio + panelInlinePadding * scale * 2,
     basePanelWidth * scale,
-    maxPanelWidth,
+    maxPanelWidth * scale,
   )
 }
 
@@ -110,9 +121,20 @@ export function calculateServiceShowcaseLayout({
     return null
   }
 
-  const { compactItemsPerColumn, gap, informationPanelWidth } =
-    SERVICE_SHOWCASE_LAYOUT_TOKENS
-  const height = containerHeight
+  const {
+    baseHeight,
+    compactItemsPerColumn,
+    desktopMaxScale,
+    gap: baseGap,
+    informationPanelWidth,
+    maxInformationPanelWidth,
+  } = SERVICE_SHOWCASE_LAYOUT_TOKENS
+  const height = Math.min(containerHeight, baseHeight * desktopMaxScale)
+  const scale = Math.min(
+    desktopMaxScale,
+    Math.max(1, height / baseHeight),
+  )
+  const gap = baseGap * scale
   const fittedCompactPanelSize =
     (height - gap * (compactItemsPerColumn - 1)) / compactItemsPerColumn
   const groupWidths = groups.map((group, index) =>
@@ -127,11 +149,14 @@ export function calculateServiceShowcaseLayout({
 
   return {
     compactPanelSize: fittedCompactPanelSize,
+    gap,
     groupWidths,
     height,
-    informationPanelWidth: Math.max(
-      informationPanelWidth,
+    informationPanelWidth: clamp(
       remainingInformationWidth,
+      informationPanelWidth,
+      maxInformationPanelWidth,
     ),
+    scale,
   }
 }
