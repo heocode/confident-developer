@@ -1,0 +1,112 @@
+.rail {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.rail:focus-visible {
+  outline: 0.125rem solid var(--color-text);
+  outline-offset: -0.1875rem;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.group {
+  display: flex;
+  width: var(--service-showcase-group-width);
+  height: var(--service-showcase-height);
+  flex: 0 0 var(--service-showcase-group-width);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.compactGroup {
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.panel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 1.375rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.8125rem;
+  background: var(--service-surface-color);
+}
+
+.compactPanel {
+  height: var(--service-showcase-compact-size);
+  flex: 0 0 var(--service-showcase-compact-size);
+  padding: 0.75rem;
+}
+
+.panel img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.mediaError {
+  max-width: 12rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.informationSlide {
+  width: min(33.125rem, calc(100vw - 2 * var(--page-gutter)));
+  height: 100%;
+  flex: 0 0 min(33.125rem, calc(100vw - 2 * var(--page-gutter)));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-align: start;
+  scrollbar-width: none;
+}
+
+.informationSlide::-webkit-scrollbar {
+  display: none;
+}
+
+.informationColumn {
+  display: flex;
+  width: 100%;
+  min-height: 28.75rem;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+@media (max-width: 48rem) {
+  .track {
+    padding-right: var(--page-gutter);
+  }
+}

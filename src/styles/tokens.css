@@ -12,6 +12,10 @@
   --color-service-mobile: rgb(255 155 133 / 75%);
   --color-service-web: rgb(126 214 196 / 75%);
   --color-service-backend: rgb(167 139 250 / 75%);
+  --color-service-product-surface: #ab9f79;
+  --color-service-mobile-surface: #b18176;
+  --color-service-web-surface: #658c84;
+  --color-service-backend-surface: #726599;
   --color-service-border: rgb(255 255 255 / 50%);
   --font-family-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --letter-spacing-title: 0.01em;

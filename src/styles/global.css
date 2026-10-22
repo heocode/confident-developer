@@ -49,9 +49,10 @@ a {
     position: fixed;
     z-index: 20;
     top: 0;
-    right: var(--modal-scrollbar-compensation, 0px);
+    right: auto;
     left: 0;
     display: flex;
+    width: 100vw;
     justify-content: center;
     padding: var(--viewport-edge-offset) var(--page-gutter) 0;
     pointer-events: none;

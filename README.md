@@ -14,7 +14,7 @@ Home is feature-complete for the approved scope. Its remaining work is limited t
 | `/projects` | Projects archive | Implemented |
 | `/projects/:slug` | Project detail | Implemented |
 | `/services` | Services index | Desktop UI implemented |
-| `/services/:slug` | Service detail | Data and presentation foundation |
+| `/services/:slug` | Service detail | Desktop UI implemented with preview media |
 | `/about` | About me | Placeholder |
 | `/references` | References | Placeholder |
 | `/contact` | Contact Me | Implemented |

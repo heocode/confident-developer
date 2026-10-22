@@ -38,10 +38,10 @@ const testAssets: ServicePresentationAssets = {
     'backend-development': { src: '/backend.svg', width: 84, height: 84 },
   },
   tones: {
-    product: { key: 'product', color: 'product-color' },
-    mobile: { key: 'mobile', color: 'mobile-color' },
-    web: { key: 'web', color: 'web-color' },
-    backend: { key: 'backend', color: 'backend-color' },
+    product: { key: 'product', color: 'product-color', surfaceColor: 'product-surface' },
+    mobile: { key: 'mobile', color: 'mobile-color', surfaceColor: 'mobile-surface' },
+    web: { key: 'web', color: 'web-color', surfaceColor: 'web-surface' },
+    backend: { key: 'backend', color: 'backend-color', surfaceColor: 'backend-surface' },
   },
   tools: Object.fromEntries(
     toolKeys.map((key) => [key, { src: `/${key}.svg`, width: 61, height: 61 }]),
