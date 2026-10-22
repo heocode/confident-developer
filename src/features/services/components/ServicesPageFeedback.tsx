@@ -1,3 +1,5 @@
+import styles from './ServicesPageFeedback.module.css'
+
 interface ServicesPageFeedbackProps {
   isError?: boolean
   message: string
@@ -12,7 +14,7 @@ export function ServicesPageFeedback({
   title,
 }: ServicesPageFeedbackProps) {
   return (
-    <div role={isError ? 'alert' : 'status'}>
+    <div className={styles.feedback} role={isError ? 'alert' : 'status'}>
       <h2>{title}</h2>
       <p>{message}</p>
       {onRetry && (

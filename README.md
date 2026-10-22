@@ -13,7 +13,7 @@ Home is feature-complete for the approved scope. Its remaining work is limited t
 | `/` | Home | Implemented |
 | `/projects` | Projects archive | Implemented |
 | `/projects/:slug` | Project detail | Implemented |
-| `/services` | Services index | Data and presentation foundation |
+| `/services` | Services index | Desktop UI implemented |
 | `/services/:slug` | Service detail | Data and presentation foundation |
 | `/about` | About me | Placeholder |
 | `/references` | References | Placeholder |

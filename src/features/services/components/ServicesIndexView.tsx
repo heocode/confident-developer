@@ -1,19 +1,46 @@
 import { Link } from 'react-router-dom'
+import type { CSSProperties } from 'react'
 
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
+import styles from './ServicesIndexView.module.css'
 
 interface ServicesIndexViewProps {
   services: ServiceSummaryPresentation[]
 }
 
+type ServiceSurfaceStyle = CSSProperties & {
+  '--service-tone-color': string
+}
+
 export function ServicesIndexView({ services }: ServicesIndexViewProps) {
   return (
-    <ul aria-label="Published Services">
-      {services.map((service) => (
-        <li key={service.id}>
-          <Link to={`/services/${service.slug}`}>{service.title}</Link>
-        </li>
-      ))}
+    <ul className={styles.list} aria-label="Published Services">
+      {services.map((service) => {
+        const surfaceStyle: ServiceSurfaceStyle = {
+          '--service-tone-color': service.tone.color,
+        }
+
+        return (
+          <li className={styles.item} key={service.id}>
+            <Link
+              aria-label={`View ${service.title} details`}
+              className={styles.link}
+              to={`/services/${service.slug}`}
+            >
+              <span className={styles.surface} style={surfaceStyle}>
+                <span className={styles.title}>{service.title}</span>
+                <img
+                  alt=""
+                  className={styles.icon}
+                  height={service.icon.height}
+                  src={service.icon.src}
+                  width={service.icon.width}
+                />
+              </span>
+            </Link>
+          </li>
+        )
+      })}
     </ul>
   )
 }

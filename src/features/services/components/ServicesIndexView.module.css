@@ -1,0 +1,89 @@
+.list {
+  width: 100%;
+}
+
+.item {
+  height: clamp(5.5rem, 15.625svh, 10rem);
+}
+
+.item + .item {
+  margin-top: -0.0625rem;
+}
+
+.link {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  height: 100%;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.link:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline-offset: -0.25rem;
+}
+
+.surface {
+  display: flex;
+  width: max-content;
+  max-width: calc(100vw - 2.5rem);
+  height: 100%;
+  padding: 0 clamp(1.5rem, 3.3333vw, 3rem) 0 2.5rem;
+  align-items: center;
+  gap: clamp(1.25rem, 2.2222vw, 2rem);
+  overflow: hidden;
+  border: 0.0625rem solid var(--color-service-border);
+  border-left: 0;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: var(--service-tone-color);
+}
+
+.title {
+  min-width: 0;
+  font-size: clamp(2rem, min(5vw, 7.0313svh), 4.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-title);
+  white-space: nowrap;
+}
+
+.icon {
+  width: auto;
+  max-width: clamp(3.25rem, 5.9028vw, 5.3125rem);
+  height: auto;
+  max-height: clamp(3.25rem, 8.3008svh, 5.3125rem);
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+@media (max-width: 64rem) {
+  .surface {
+    max-width: calc(100vw - 1rem);
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .item {
+    height: clamp(5rem, min(24vw, 14svh), 7rem);
+  }
+
+  .surface {
+    gap: clamp(0.75rem, 3vw, 1.25rem);
+    padding-right: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .title {
+    font-size: clamp(1.65rem, 7.6vw, 2.5rem);
+    line-height: 1.05;
+    white-space: normal;
+  }
+
+  .icon {
+    max-width: clamp(2.75rem, 14vw, 4rem);
+    max-height: clamp(2.75rem, 14vw, 4rem);
+  }
+}
+
