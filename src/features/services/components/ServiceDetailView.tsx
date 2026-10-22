@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
 import type { SelectedServicePresentation } from '../presentation/services-page.ts'
+import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
 import { ServiceShowcaseRail } from './ServiceShowcaseRail.tsx'
 import styles from './ServiceDetailView.module.css'
 
@@ -11,12 +12,14 @@ interface ServiceDetailViewProps {
 }
 
 type ServiceDetailStyle = CSSProperties & {
+  '--mobile-service-width': string
   '--service-surface-color': string
   '--service-tone-color': string
 }
 
 export function ServiceDetailView({ service }: ServiceDetailViewProps) {
   const detailStyle: ServiceDetailStyle = {
+    '--mobile-service-width': serviceMobileWidths[service.tone.key],
     '--service-surface-color': service.tone.surfaceColor,
     '--service-tone-color': service.tone.color,
   }

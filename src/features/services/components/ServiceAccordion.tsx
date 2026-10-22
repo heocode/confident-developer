@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import type { FocusEvent, MouseEvent, PointerEvent } from 'react'
+import type { CSSProperties, FocusEvent, MouseEvent, PointerEvent } from 'react'
 
 import { useScrollAwareServiceHover } from '../hooks/useScrollAwareServiceHover.ts'
 import type { HomeService, ServiceTone } from '../model/service.types.ts'
+import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
 import styles from './HomeServicesSection.module.css'
 
 const toneClassByTone: Record<ServiceTone, string> = {
@@ -14,6 +15,10 @@ const toneClassByTone: Record<ServiceTone, string> = {
 
 interface ServiceAccordionProps {
   services: readonly HomeService[]
+}
+
+type ServiceSurfaceStyle = CSSProperties & {
+  '--mobile-service-width': string
 }
 
 export function ServiceAccordion({ services }: ServiceAccordionProps) {
@@ -61,6 +66,9 @@ export function ServiceAccordion({ services }: ServiceAccordionProps) {
       {services.map((service) => {
         const isActive = service.id === activeServiceId
         const descriptionId = `home-service-${service.id}-description`
+        const surfaceStyle: ServiceSurfaceStyle = {
+          '--mobile-service-width': serviceMobileWidths[service.tone],
+        }
 
         return (
           <li
@@ -79,7 +87,10 @@ export function ServiceAccordion({ services }: ServiceAccordionProps) {
               onFocus={(event) => activateFromFocus(event, service.id)}
               onPointerEnter={(event) => activateFromPointer(event, service.id)}
             >
-              <span className={`${styles.surface} ${toneClassByTone[service.tone]}`}>
+              <span
+                className={`${styles.surface} ${toneClassByTone[service.tone]}`}
+                style={surfaceStyle}
+              >
                 <span className={styles.lead}>
                   <span className={styles.title}>{service.title}</span>
                   <img

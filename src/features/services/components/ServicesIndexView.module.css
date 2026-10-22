@@ -43,7 +43,7 @@
 .title {
   min-width: 0;
   font-size: var(--services-row-title-size);
-  font-weight: 500;
+  font-weight: var(--services-row-title-weight);
   line-height: 1;
   letter-spacing: var(--letter-spacing-title);
   white-space: nowrap;
@@ -66,11 +66,15 @@
 
 @media (max-width: 48rem) {
   .surface {
-    padding-right: clamp(1rem, 4vw, 1.5rem);
+    display: grid;
+    width: var(--mobile-service-width);
+    max-width: none;
+    padding-inline: var(--services-row-inline-start);
+    grid-template-columns: minmax(0, 1fr) max-content;
   }
 
   .title {
-    line-height: 1.05;
+    line-height: 1.25;
     white-space: normal;
   }
 }

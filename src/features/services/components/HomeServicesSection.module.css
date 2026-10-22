@@ -241,22 +241,6 @@
     width: calc(100vw - var(--page-gutter));
   }
 
-  .product {
-    --mobile-service-width: 90.5vw;
-  }
-
-  .mobile {
-    --mobile-service-width: 86.5vw;
-  }
-
-  .web {
-    --mobile-service-width: 88.5vw;
-  }
-
-  .backend {
-    --mobile-service-width: 85vw;
-  }
-
   .title {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
     line-height: 1.25;

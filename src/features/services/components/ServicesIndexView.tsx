@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { CSSProperties } from 'react'
 
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
+import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
 import styles from './ServicesIndexView.module.css'
 
 interface ServicesIndexViewProps {
@@ -9,6 +10,7 @@ interface ServicesIndexViewProps {
 }
 
 type ServiceSurfaceStyle = CSSProperties & {
+  '--mobile-service-width': string
   '--service-tone-color': string
 }
 
@@ -17,6 +19,7 @@ export function ServicesIndexView({ services }: ServicesIndexViewProps) {
     <ul className={styles.list} aria-label="Published Services">
       {services.map((service) => {
         const surfaceStyle: ServiceSurfaceStyle = {
+          '--mobile-service-width': serviceMobileWidths[service.tone.key],
           '--service-tone-color': service.tone.color,
         }
 
