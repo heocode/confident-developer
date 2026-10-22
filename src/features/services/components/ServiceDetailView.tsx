@@ -51,7 +51,11 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
           serviceSlug={service.slug}
           serviceTitle={service.title}
         >
-          <div className={styles.primaryInformation}>
+          <div
+            aria-label={`${service.title} description and capabilities`}
+            className={styles.primaryInformation}
+            tabIndex={0}
+          >
             <section
               className={`${styles.card} ${styles.descriptionCard}`}
               aria-labelledby={`${service.slug}-description`}
