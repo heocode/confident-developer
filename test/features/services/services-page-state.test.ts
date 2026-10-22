@@ -6,12 +6,42 @@ import type {
   ServiceDetail,
   ServiceSummary,
 } from '../../../src/features/services/model/service.types.ts'
+import type { ServicePresentationAssets } from '../../../src/features/services/presentation/services-page.ts'
 import {
   getServicesRequestErrorMessage,
   isServiceNotFoundError,
   resolveServiceRouteState,
   resolveServicesIndexState,
 } from '../../../src/features/services/presentation/services-page-state.ts'
+
+const testAssets: ServicePresentationAssets = {
+  icons: {
+    'product-ui-ux': { src: '/product.svg', width: 85, height: 83 },
+    'mobile-development': { src: '/mobile.svg', width: 60, height: 85 },
+    'web-development': { src: '/web.svg', width: 85, height: 75 },
+    'backend-development': { src: '/backend.svg', width: 84, height: 84 },
+  },
+  tones: {
+    product: { key: 'product', color: 'product-color' },
+    mobile: { key: 'mobile', color: 'mobile-color' },
+    web: { key: 'web', color: 'web-color' },
+    backend: { key: 'backend', color: 'backend-color' },
+  },
+  tools: {
+    jitter: { src: '/jitter.svg', width: 61, height: 61 },
+    rive: { src: '/rive.svg', width: 61, height: 61 },
+    figma: { src: '/figma.svg', width: 61, height: 61 },
+    react: { src: '/react.svg', width: 61, height: 61 },
+    typescript: { src: '/typescript.svg', width: 61, height: 61 },
+    expo: { src: '/expo.svg', width: 61, height: 61 },
+    nextjs: { src: '/nextjs.svg', width: 61, height: 61 },
+    wordpress: { src: '/wordpress.svg', width: 61, height: 61 },
+    vercel: { src: '/vercel.svg', width: 61, height: 61 },
+    nestjs: { src: '/nestjs.svg', width: 61, height: 61 },
+    postgresql: { src: '/postgresql.svg', width: 61, height: 61 },
+    prisma: { src: '/prisma.svg', width: 61, height: 61 },
+  },
+}
 
 function createService(id: string): ServiceSummary {
   return {
@@ -62,21 +92,23 @@ function createDetail(id: string): ServiceDetail {
 
 describe('Services index route state', () => {
   it('preserves loading and errors before exposing the backend-ordered list', () => {
-    assert.deepEqual(resolveServicesIndexState({ status: 'loading' }), { status: 'loading' })
-    assert.deepEqual(resolveServicesIndexState({ status: 'error', message: 'Unavailable' }), {
+    assert.deepEqual(resolveServicesIndexState({ status: 'loading' }, testAssets), { status: 'loading' })
+    assert.deepEqual(resolveServicesIndexState({ status: 'error', message: 'Unavailable' }, testAssets), {
       status: 'error',
       message: 'Unavailable',
     })
 
     const services = [createService('first'), createService('second')]
-    assert.deepEqual(resolveServicesIndexState({ status: 'ready', services }), {
-      status: 'ready',
-      services,
-    })
+    const result = resolveServicesIndexState({ status: 'ready', services }, testAssets)
+    assert.equal(result.status, 'ready')
+    assert.deepEqual(
+      result.status === 'ready' ? result.presentation.services.map(({ slug }) => slug) : [],
+      ['first', 'second'],
+    )
   })
 
   it('keeps an empty index instead of redirecting to a detail route', () => {
-    assert.deepEqual(resolveServicesIndexState({ status: 'ready', services: [] }), {
+    assert.deepEqual(resolveServicesIndexState({ status: 'ready', services: [] }, testAssets), {
       status: 'empty',
     })
   })
@@ -91,6 +123,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'loading' },
         { status: 'ready', service: createDetail('first') },
+        testAssets,
       ),
       { status: 'services-loading' },
     )
@@ -99,6 +132,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'error', message: 'List failed' },
         { status: 'ready', service: createDetail('first') },
+        testAssets,
       ),
       { status: 'services-error', message: 'List failed' },
     )
@@ -110,6 +144,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'ready', services: [] },
         { status: 'ready', service: createDetail('first') },
+        testAssets,
       ),
       { status: 'empty' },
     )
@@ -118,6 +153,7 @@ describe('Service detail route state', () => {
       'missing',
       { status: 'ready', services },
       { status: 'loading' },
+      testAssets,
     )
     assert.equal(state.status, 'not-found')
     assert.equal(state.status === 'not-found' ? state.services : null, services)
@@ -129,6 +165,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'ready', services },
         { status: 'loading' },
+        testAssets,
       ),
       { status: 'detail-loading', services, slug: 'first' },
     )
@@ -137,6 +174,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'ready', services },
         { status: 'error', message: 'Detail failed', notFound: false },
+        testAssets,
       ),
       { status: 'detail-error', services, slug: 'first', message: 'Detail failed' },
     )
@@ -148,6 +186,7 @@ describe('Service detail route state', () => {
         'first',
         { status: 'ready', services },
         { status: 'error', message: 'Service not found', notFound: true },
+        testAssets,
       ),
       { status: 'not-found', services, slug: 'first' },
     )
@@ -160,8 +199,53 @@ describe('Service detail route state', () => {
         'second',
         { status: 'ready', services },
         { status: 'ready', service: detail },
+        testAssets,
       ),
-      { status: 'ready', services, service: detail },
+      {
+        status: 'ready',
+        presentation: {
+          services: services.map((service) => ({
+            id: service.id,
+            slug: service.slug,
+            title: service.title,
+            description: service.description,
+            icon: testAssets.icons['web-development'],
+            tone: testAssets.tones.web,
+          })),
+          selectedService: {
+            id: detail.id,
+            slug: detail.slug,
+            title: detail.title,
+            description: detail.description,
+            icon: testAssets.icons['web-development'],
+            tone: testAssets.tones.web,
+            capabilities: detail.capabilities,
+            tools: [
+              {
+                ...detail.tools[0],
+                icon: testAssets.tools.typescript,
+              },
+            ],
+            relatedProjects: [
+              {
+                ...detail.relatedProjects[0],
+                logo: {
+                  ...detail.relatedProjects[0].logo,
+                  aspectRatio: 1,
+                },
+              },
+            ],
+            showcaseAssets: [
+              {
+                ...detail.showcaseAssets[0],
+                width: 800,
+                height: 1200,
+                aspectRatio: 2 / 3,
+              },
+            ],
+          },
+        },
+      },
     )
 
     const mismatchedDetail = { ...createDetail('second'), id: 'reused-id' }
@@ -169,8 +253,13 @@ describe('Service detail route state', () => {
       'second',
       { status: 'ready', services },
       { status: 'ready', service: mismatchedDetail },
+      testAssets,
     )
-    assert.equal(mismatch.status, 'detail-error')
+    assert.equal(mismatch.status, 'configuration-error')
+    assert.equal(
+      mismatch.status === 'configuration-error' ? mismatch.issue.code : null,
+      'detail-service-mismatch',
+    )
   })
 })
 

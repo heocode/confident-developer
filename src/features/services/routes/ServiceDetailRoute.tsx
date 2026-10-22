@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { ServiceDetailView } from '../components/ServiceDetailView.tsx'
 import { ServicesPageFeedback } from '../components/ServicesPageFeedback.tsx'
 import { useServiceDetail } from '../hooks/useServicesPageData.ts'
+import { servicePresentationAssets } from '../presentation/service-presentation-assets.ts'
 import { resolveServiceRouteState } from '../presentation/services-page-state.ts'
 import { useServicesRouteContext } from './services-route-context.ts'
 
@@ -25,7 +26,12 @@ export function ServiceDetailRoute() {
 function ServiceDetailContent({ slug }: { slug: string }) {
   const { detailCache, retryServices, servicesState } = useServicesRouteContext()
   const { retry: retryDetail, state: detailState } = useServiceDetail(slug, detailCache)
-  const state = resolveServiceRouteState(slug, servicesState, detailState)
+  const state = resolveServiceRouteState(
+    slug,
+    servicesState,
+    detailState,
+    servicePresentationAssets,
+  )
 
   switch (state.status) {
     case 'services-loading':
@@ -65,7 +71,15 @@ function ServiceDetailContent({ slug }: { slug: string }) {
           onRetry={retryDetail}
         />
       )
+    case 'configuration-error':
+      return (
+        <ServicesPageFeedback
+          isError
+          title="Service unavailable"
+          message={`“${state.issue.serviceSlug}” has incomplete published content.`}
+        />
+      )
     case 'ready':
-      return <ServiceDetailView service={state.service} />
+      return <ServiceDetailView service={state.presentation.selectedService} />
   }
 }

@@ -1,11 +1,8 @@
 import type {
   HomeService,
-  ServiceIconAsset,
-  ServiceIconKey,
   ServiceSummary,
 } from '../model/service.types.ts'
-
-export type ServiceIconAssets = Readonly<Record<ServiceIconKey, ServiceIconAsset>>
+import type { ServiceIconAssets } from './service-icon-assets.ts'
 
 export function createHomeServicesPresentation(
   services: readonly ServiceSummary[],

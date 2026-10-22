@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import type { ServiceSummary } from '../model/service.types.ts'
+import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
 
 interface ServicesIndexViewProps {
-  services: ServiceSummary[]
+  services: ServiceSummaryPresentation[]
 }
 
 export function ServicesIndexView({ services }: ServicesIndexViewProps) {

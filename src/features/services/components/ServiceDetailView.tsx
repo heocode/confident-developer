@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import type { ServiceDetail } from '../model/service.types.ts'
+import type { SelectedServicePresentation } from '../presentation/services-page.ts'
 
 interface ServiceDetailViewProps {
-  service: ServiceDetail
+  service: SelectedServicePresentation
 }
 
 export function ServiceDetailView({ service }: ServiceDetailViewProps) {

@@ -1,5 +1,15 @@
 import { ApiError } from '../../../api/api-error.ts'
 import type { ServiceDetail, ServiceSummary } from '../model/service.types.ts'
+import type {
+  ServicePresentationAssets,
+  ServicesIndexPresentation,
+  ServicesPageConfigurationIssue,
+  ServicesPagePresentation,
+} from './services-page.ts'
+import {
+  createServicesIndexPresentation,
+  createServicesPagePresentation,
+} from './services-page.ts'
 
 export type ServicesListState =
   | { status: 'loading' }
@@ -15,7 +25,8 @@ export type ServicesIndexState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
   | { status: 'empty' }
-  | { status: 'ready'; services: ServiceSummary[] }
+  | { status: 'configuration-error'; issue: ServicesPageConfigurationIssue }
+  | { status: 'ready'; presentation: ServicesIndexPresentation }
 
 export type ServiceRouteState =
   | { status: 'services-loading' }
@@ -29,7 +40,8 @@ export type ServiceRouteState =
       slug: string
       message: string
     }
-  | { status: 'ready'; services: ServiceSummary[]; service: ServiceDetail }
+  | { status: 'configuration-error'; issue: ServicesPageConfigurationIssue }
+  | { status: 'ready'; presentation: ServicesPagePresentation }
 
 export function getServicesRequestErrorMessage(error: unknown) {
   if (!(error instanceof ApiError)) return 'Services could not be loaded. Please try again.'
@@ -49,17 +61,25 @@ export function isServiceNotFoundError(error: unknown) {
   return error instanceof ApiError && error.kind === 'http' && error.status === 404
 }
 
-export function resolveServicesIndexState(state: ServicesListState): ServicesIndexState {
+export function resolveServicesIndexState(
+  state: ServicesListState,
+  assets: ServicePresentationAssets,
+): ServicesIndexState {
   if (state.status !== 'ready') return state
   if (state.services.length === 0) return { status: 'empty' }
 
-  return { status: 'ready', services: state.services }
+  const result = createServicesIndexPresentation(state.services, assets)
+
+  return result.configurationIssue
+    ? { status: 'configuration-error', issue: result.configurationIssue }
+    : { status: 'ready', presentation: result.presentation }
 }
 
 export function resolveServiceRouteState(
   slug: string,
   servicesState: ServicesListState,
   detailState: ServiceDetailState,
+  assets: ServicePresentationAssets,
 ): ServiceRouteState {
   if (servicesState.status === 'loading') return { status: 'services-loading' }
   if (servicesState.status === 'error') {
@@ -87,18 +107,13 @@ export function resolveServiceRouteState(
         }
   }
 
-  if (detailState.service.slug !== listedService.slug || detailState.service.id !== listedService.id) {
-    return {
-      status: 'detail-error',
-      services: servicesState.services,
-      slug,
-      message: 'Published Service data is inconsistent. Please try again.',
-    }
-  }
+  const result = createServicesPagePresentation(
+    servicesState.services,
+    detailState.service,
+    assets,
+  )
 
-  return {
-    status: 'ready',
-    services: servicesState.services,
-    service: detailState.service,
-  }
+  return result.configurationIssue
+    ? { status: 'configuration-error', issue: result.configurationIssue }
+    : { status: 'ready', presentation: result.presentation }
 }

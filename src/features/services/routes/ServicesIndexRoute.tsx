@@ -1,11 +1,12 @@
 import { ServicesIndexView } from '../components/ServicesIndexView.tsx'
 import { ServicesPageFeedback } from '../components/ServicesPageFeedback.tsx'
+import { servicePresentationAssets } from '../presentation/service-presentation-assets.ts'
 import { resolveServicesIndexState } from '../presentation/services-page-state.ts'
 import { useServicesRouteContext } from './services-route-context.ts'
 
 export function ServicesIndexRoute() {
   const { retryServices, servicesState } = useServicesRouteContext()
-  const state = resolveServicesIndexState(servicesState)
+  const state = resolveServicesIndexState(servicesState, servicePresentationAssets)
 
   if (state.status === 'loading') {
     return <ServicesPageFeedback title="Loading services" message="Preparing the Services archive…" />
@@ -31,5 +32,15 @@ export function ServicesIndexRoute() {
     )
   }
 
-  return <ServicesIndexView services={state.services} />
+  if (state.status === 'configuration-error') {
+    return (
+      <ServicesPageFeedback
+        isError
+        title="Services unavailable"
+        message={`“${state.issue.serviceSlug}” has incomplete published content.`}
+      />
+    )
+  }
+
+  return <ServicesIndexView services={state.presentation.services} />
 }

@@ -2,7 +2,9 @@ import backendDevelopmentIconUrl from '../../../assets/icons/services/backend-de
 import mobileDevelopmentIconUrl from '../../../assets/icons/services/mobile-development.svg'
 import productUiUxIconUrl from '../../../assets/icons/services/product-ui-ux.svg'
 import webDevelopmentIconUrl from '../../../assets/icons/services/web-development.svg'
-import type { ServiceIconAssets } from './home-services.ts'
+import type { ServiceIconAsset, ServiceIconKey } from '../model/service.types.ts'
+
+export type ServiceIconAssets = Readonly<Record<ServiceIconKey, ServiceIconAsset>>
 
 export const serviceIconAssets = {
   'product-ui-ux': { src: productUiUxIconUrl, width: 85, height: 83 },

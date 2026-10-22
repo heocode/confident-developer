@@ -3,7 +3,7 @@ import { describe, it } from 'node:test'
 
 import type { ServiceSummary } from '../../../src/features/services/model/service.types.ts'
 import { createHomeServicesPresentation } from '../../../src/features/services/presentation/home-services.ts'
-import type { ServiceIconAssets } from '../../../src/features/services/presentation/home-services.ts'
+import type { ServiceIconAssets } from '../../../src/features/services/presentation/service-icon-assets.ts'
 
 const iconAssets: ServiceIconAssets = {
   'product-ui-ux': { src: '/icons/product-ui-ux.svg', width: 85, height: 83 },
