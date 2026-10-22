@@ -126,4 +126,28 @@
   .track {
     padding-right: var(--page-gutter);
   }
+
+  .informationSlide {
+    --service-mobile-information-width: calc(
+      100vw - 2 * var(--page-gutter)
+    );
+    width: calc(
+      2 * var(--service-mobile-information-width) +
+        var(--service-showcase-gap)
+    );
+    flex-basis: calc(
+      2 * var(--service-mobile-information-width) +
+        var(--service-showcase-gap)
+    );
+    overflow: visible;
+    scroll-snap-align: none;
+  }
+
+  .informationColumn {
+    display: flex;
+    width: 100%;
+    min-height: 0;
+    flex-direction: row;
+    grid-template-rows: none;
+  }
 }

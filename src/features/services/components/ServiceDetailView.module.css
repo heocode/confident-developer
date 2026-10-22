@@ -83,6 +83,10 @@
   min-height: min-content;
 }
 
+.primaryInformation {
+  display: contents;
+}
+
 .card h3,
 .card p {
   margin: 0;
@@ -176,22 +180,58 @@
     white-space: normal;
   }
 
+  .primaryInformation {
+    display: grid;
+    width: var(--service-mobile-information-width);
+    height: 100%;
+    min-height: 0;
+    flex: 0 0 var(--service-mobile-information-width);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: var(--service-showcase-gap);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .descriptionCard,
+  .capabilitiesCard {
+    min-height: 0;
+  }
+
   .resourceGrid {
-    width: 100%;
+    width: var(--service-mobile-information-width);
+    height: 100%;
+    min-height: 0;
+    flex: 0 0 var(--service-mobile-information-width);
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .resourceCard {
+    min-height: 0;
+    padding: 1rem;
+    align-items: stretch;
+    justify-content: flex-start;
   }
 
   .resources {
-    align-items: flex-start;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    align-items: center;
+    flex: 1 1 auto;
     flex-direction: column;
+    justify-content: center;
+    gap: clamp(0.5rem, 2svh, 0.875rem);
   }
 
   .resource,
   .projectLink,
   .resource img,
   .projectLink img {
-    width: clamp(2rem, 10vw, 2.75rem);
-    height: clamp(2rem, 10vw, 2.75rem);
-    flex-basis: clamp(2rem, 10vw, 2.75rem);
+    width: clamp(2.5rem, min(16vw, 7svh), 5rem);
+    height: clamp(2.5rem, min(16vw, 7svh), 5rem);
+    flex-basis: clamp(2.5rem, min(16vw, 7svh), 5rem);
   }
 }

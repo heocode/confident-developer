@@ -51,28 +51,33 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
           serviceSlug={service.slug}
           serviceTitle={service.title}
         >
-          <section
-            className={`${styles.card} ${styles.descriptionCard}`}
-            aria-labelledby={`${service.slug}-description`}
-          >
-            <h3 id={`${service.slug}-description`}>Description</h3>
-            <p className={styles.description}>{service.description}</p>
-          </section>
+          <div className={styles.primaryInformation}>
+            <section
+              className={`${styles.card} ${styles.descriptionCard}`}
+              aria-labelledby={`${service.slug}-description`}
+            >
+              <h3 id={`${service.slug}-description`}>Description</h3>
+              <p className={styles.description}>{service.description}</p>
+            </section>
 
-          <section
-            className={`${styles.card} ${styles.capabilitiesCard}`}
-            aria-labelledby={`${service.slug}-capabilities`}
-          >
-            <h3 id={`${service.slug}-capabilities`}>What I can help with</h3>
-            <ul className={styles.capabilities}>
-              {service.capabilities.map((capability) => (
-                <li key={capability}>{capability}</li>
-              ))}
-            </ul>
-          </section>
+            <section
+              className={`${styles.card} ${styles.capabilitiesCard}`}
+              aria-labelledby={`${service.slug}-capabilities`}
+            >
+              <h3 id={`${service.slug}-capabilities`}>What I can help with</h3>
+              <ul className={styles.capabilities}>
+                {service.capabilities.map((capability) => (
+                  <li key={capability}>{capability}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
 
           <div className={styles.resourceGrid}>
-            <section className={styles.card} aria-labelledby={`${service.slug}-tools`}>
+            <section
+              className={`${styles.card} ${styles.resourceCard}`}
+              aria-labelledby={`${service.slug}-tools`}
+            >
               <h3 id={`${service.slug}-tools`}>Tools</h3>
               <ul className={styles.resources}>
                 {service.tools.map((tool) => (
@@ -88,7 +93,10 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
               </ul>
             </section>
 
-            <section className={styles.card} aria-labelledby={`${service.slug}-projects`}>
+            <section
+              className={`${styles.card} ${styles.resourceCard}`}
+              aria-labelledby={`${service.slug}-projects`}
+            >
               <h3 id={`${service.slug}-projects`}>Used In</h3>
               <ul className={styles.resources}>
                 {service.relatedProjects.map((project) => (
