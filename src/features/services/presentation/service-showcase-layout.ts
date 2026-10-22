@@ -5,6 +5,7 @@ export const SERVICE_SHOWCASE_LAYOUT_TOKENS = {
   compactItemsPerColumn: 3,
   expandedAspectRatio: 0.8,
   gap: 10,
+  informationPanelWidth: 530,
   maxPanelWidth: 720,
   panelBlockPadding: 16,
   panelInlinePadding: 22,
@@ -30,6 +31,7 @@ export interface ServiceShowcaseLayout {
   compactPanelSize: number
   groupWidths: number[]
   height: number
+  informationPanelWidth: number
 }
 
 function clamp(value: number, minimum: number, maximum: number) {
@@ -108,18 +110,28 @@ export function calculateServiceShowcaseLayout({
     return null
   }
 
-  const { compactItemsPerColumn, gap } = SERVICE_SHOWCASE_LAYOUT_TOKENS
+  const { compactItemsPerColumn, gap, informationPanelWidth } =
+    SERVICE_SHOWCASE_LAYOUT_TOKENS
   const height = containerHeight
   const fittedCompactPanelSize =
     (height - gap * (compactItemsPerColumn - 1)) / compactItemsPerColumn
+  const groupWidths = groups.map((group, index) =>
+    group.kind === 'compact'
+      ? fittedCompactPanelSize
+      : calculateServiceShowcasePanelWidth(groupAspectRatios[index], height),
+  )
+  const remainingInformationWidth =
+    containerWidth -
+    groupWidths.reduce((totalWidth, groupWidth) => totalWidth + groupWidth, 0) -
+    gap * groups.length
 
   return {
     compactPanelSize: fittedCompactPanelSize,
-    groupWidths: groups.map((group, index) =>
-      group.kind === 'compact'
-        ? fittedCompactPanelSize
-        : calculateServiceShowcasePanelWidth(groupAspectRatios[index], height),
-    ),
+    groupWidths,
     height,
+    informationPanelWidth: Math.max(
+      informationPanelWidth,
+      remainingInformationWidth,
+    ),
   }
 }

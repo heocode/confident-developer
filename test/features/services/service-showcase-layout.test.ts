@@ -57,6 +57,21 @@ test('matches the Figma product showcase geometry at the reference height', () =
   assert.equal(layout.height, 560)
   assert.equal(layout.compactPanelSize, 180)
   assert.deepEqual(layout.groupWidths, [290, 290, 180])
+  assert.equal(layout.informationPanelWidth, 530)
+})
+
+test('gives the information panel unused rail width after shorter showcases', () => {
+  const groups = groupServiceShowcaseAssets(productAssets.slice(0, 2))
+  const layout = calculateServiceShowcaseLayout({
+    containerHeight: 560,
+    containerWidth: 1320,
+    groupAspectRatios: [0.5, 0.5],
+    groups,
+  })
+
+  assert.ok(layout)
+  assert.deepEqual(layout.groupWidths, [290, 290])
+  assert.equal(layout.informationPanelWidth, 720)
 })
 
 test('keeps three animations in one block and fits their tiles to constrained height', () => {

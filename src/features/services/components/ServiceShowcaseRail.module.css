@@ -88,9 +88,16 @@
 }
 
 .informationSlide {
-  width: min(33.125rem, calc(100vw - 2 * var(--page-gutter)));
+  width: min(
+    var(--service-showcase-information-width),
+    calc(100vw - 2 * var(--page-gutter))
+  );
   height: 100%;
-  flex: 0 0 min(33.125rem, calc(100vw - 2 * var(--page-gutter)));
+  flex: 0 0
+    min(
+      var(--service-showcase-information-width),
+      calc(100vw - 2 * var(--page-gutter))
+    );
   overflow-y: auto;
   overscroll-behavior-y: contain;
   scroll-snap-align: start;
@@ -102,10 +109,11 @@
 }
 
 .informationColumn {
-  display: flex;
+  display: grid;
   width: 100%;
-  min-height: 28.75rem;
-  flex-direction: column;
+  height: 100%;
+  min-height: min-content;
+  grid-template-rows: repeat(3, minmax(min-content, 1fr));
   gap: 0.625rem;
 }
 
