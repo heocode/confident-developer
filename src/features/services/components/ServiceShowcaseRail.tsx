@@ -43,6 +43,7 @@ function ServiceShowcaseAsset({
       ) : (
         <img
           alt={image.alt}
+          className={asset.kind === 'video' ? styles.videoMedia : undefined}
           decoding="async"
           fetchPriority={isPriority ? 'high' : 'auto'}
           height={image.height}

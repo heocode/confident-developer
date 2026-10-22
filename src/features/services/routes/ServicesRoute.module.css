@@ -1,4 +1,10 @@
 .page {
+  --services-row-height: clamp(5.5rem, 15.625svh, 10rem);
+  --services-row-inline-start: 2.5rem;
+  --services-row-content-gap: clamp(1.25rem, 2.2222vw, 2rem);
+  --services-row-title-size: clamp(2rem, min(5vw, 7.0313svh), 4.5rem);
+  --services-row-icon-width: clamp(3.25rem, 5.9028vw, 5.3125rem);
+  --services-row-icon-height: clamp(3.25rem, 8.3008svh, 5.3125rem);
   display: flex;
   width: 100%;
   height: 100svh;
@@ -31,6 +37,7 @@
 
 @media (max-width: 64rem) {
   .page {
+    --services-row-inline-start: 1rem;
     padding-top: clamp(7rem, 13.2813svh, 8.5rem);
   }
 
@@ -41,6 +48,11 @@
 
 @media (max-width: 48rem) {
   .page {
+    --services-row-height: clamp(5rem, min(24vw, 14svh), 7rem);
+    --services-row-content-gap: clamp(0.75rem, 3vw, 1.25rem);
+    --services-row-title-size: clamp(1.65rem, 7.6vw, 2.5rem);
+    --services-row-icon-width: clamp(2.75rem, 14vw, 4rem);
+    --services-row-icon-height: clamp(2.75rem, 14vw, 4rem);
     padding-top: clamp(6.5rem, 15svh, 8rem);
   }
 
