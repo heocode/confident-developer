@@ -13,7 +13,8 @@ Home is feature-complete for the approved scope. Its remaining work is limited t
 | `/` | Home | Implemented |
 | `/projects` | Projects archive | Implemented |
 | `/projects/:slug` | Project detail | Implemented |
-| `/services` | Services | Placeholder |
+| `/services` | Services index | Routing and data foundation |
+| `/services/:slug` | Service detail | Routing and data foundation |
 | `/about` | About me | Placeholder |
 | `/references` | References | Placeholder |
 | `/contact` | Contact Me | Implemented |
@@ -76,7 +77,7 @@ The shared application layout remains mounted across client-side route transitio
 The frontend currently integrates these public backend domains:
 
 - Projects: Home placement, archive list, and slug detail through `/api/v1/projects`.
-- Services: ordered Home placement through `/api/v1/services?placement=home`.
+- Services: Home placement, ordered Services-page list, and slug detail through `/api/v1/services`.
 - Profile: persisted GitHub summary, profile post, interactions, and resume download.
 - References: paginated public guestbook, ownership state, submission, and deletion flows.
 - Contact: validated public submissions through `/api/v1/contact`.
