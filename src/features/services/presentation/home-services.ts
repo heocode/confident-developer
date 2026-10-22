@@ -1,14 +1,14 @@
 import type {
   HomeService,
-  PublicService,
   ServiceIconAsset,
   ServiceIconKey,
+  ServiceSummary,
 } from '../model/service.types.ts'
 
 export type ServiceIconAssets = Readonly<Record<ServiceIconKey, ServiceIconAsset>>
 
 export function createHomeServicesPresentation(
-  services: readonly PublicService[],
+  services: readonly ServiceSummary[],
   iconAssets: ServiceIconAssets,
 ): HomeService[] {
   return services.map((service) => ({

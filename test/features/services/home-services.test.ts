@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 
-import type { PublicService } from '../../../src/features/services/model/service.types.ts'
+import type { ServiceSummary } from '../../../src/features/services/model/service.types.ts'
 import { createHomeServicesPresentation } from '../../../src/features/services/presentation/home-services.ts'
 import type { ServiceIconAssets } from '../../../src/features/services/presentation/home-services.ts'
 
@@ -12,7 +12,7 @@ const iconAssets: ServiceIconAssets = {
   'backend-development': { src: '/icons/backend-development.svg', width: 84, height: 84 },
 }
 
-const services: PublicService[] = [
+const services: ServiceSummary[] = [
   {
     id: 'service-1',
     slug: 'web-development',
