@@ -2,7 +2,10 @@ import { useLayoutEffect, useState } from 'react'
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 
 import { useServiceShowcaseLayout } from '../hooks/useServiceShowcaseLayout.ts'
-import { getServiceBlockEnterDelay } from '../presentation/service-detail-motion.ts'
+import {
+  getServiceBlockEnterDelay,
+  getServiceBlockExitDelay,
+} from '../presentation/service-detail-motion.ts'
 import { SERVICE_SHOWCASE_LAYOUT_TOKENS } from '../presentation/service-showcase-layout.ts'
 import type { ShowcaseAssetPresentation } from '../presentation/services-page.ts'
 import entranceStyles from './ServiceBlockEntrance.module.css'
@@ -29,21 +32,25 @@ type GroupStyle = CSSProperties & {
 
 type EnterStyle = CSSProperties & {
   '--service-block-enter-delay': string
+  '--service-block-exit-delay': string
 }
 
-function getEnterStyle(index: number): EnterStyle {
+function getEnterStyle(index: number, blockCount: number): EnterStyle {
   return {
     '--service-block-enter-delay': `${getServiceBlockEnterDelay(index)}ms`,
+    '--service-block-exit-delay': `${getServiceBlockExitDelay(index, blockCount)}ms`,
   }
 }
 
 function ServiceShowcaseAsset({
   asset,
+  blockCount,
   enterIndex,
   isCompact,
   isPriority,
 }: {
   asset: ShowcaseAssetPresentation
+  blockCount: number
   enterIndex: number
   isCompact: boolean
   isPriority: boolean
@@ -56,7 +63,7 @@ function ServiceShowcaseAsset({
       className={`${styles.panel} ${entranceStyles.block}${
         isCompact ? ` ${styles.compactPanel}` : ''
       }`}
-      style={getEnterStyle(enterIndex)}
+      style={getEnterStyle(enterIndex, blockCount)}
     >
       {hasFailed ? (
         <p className={styles.mediaError} role="status">
@@ -86,6 +93,7 @@ export function ServiceShowcaseRail({
   serviceTitle,
 }: ServiceShowcaseRailProps) {
   const { groups, layout, railRef } = useServiceShowcaseLayout(assets)
+  const blockCount = assets.length + 4
   const railStyle: RailStyle = {
     '--service-showcase-compact-size': `${layout?.compactPanelSize ?? 180}px`,
     '--service-showcase-gap': `${layout?.gap ?? SERVICE_SHOWCASE_LAYOUT_TOKENS.gap}px`,
@@ -163,6 +171,7 @@ export function ServiceShowcaseRail({
                 return (
                   <ServiceShowcaseAsset
                     asset={asset}
+                    blockCount={blockCount}
                     enterIndex={groupEnterOffsets[groupIndex] + groupAssetIndex}
                     isCompact={group.kind === 'compact'}
                     isPriority={groupIndex === 0 && groupAssetIndex === 0}

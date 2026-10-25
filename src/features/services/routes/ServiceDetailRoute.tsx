@@ -26,6 +26,8 @@ export function ServiceDetailRoute() {
 
 function ServiceDetailContent({ slug }: { slug: string }) {
   const {
+    beginServiceClosing,
+    closingServiceSlug,
     detailCache,
     reportServiceDetailResolution,
     retryServices,
@@ -93,6 +95,12 @@ function ServiceDetailContent({ slug }: { slug: string }) {
         />
       )
     case 'ready':
-      return <ServiceDetailView service={state.presentation.selectedService} />
+      return (
+        <ServiceDetailView
+          isClosing={closingServiceSlug === slug}
+          onCloseService={beginServiceClosing}
+          service={state.presentation.selectedService}
+        />
+      )
   }
 }

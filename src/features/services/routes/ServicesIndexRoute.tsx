@@ -5,7 +5,13 @@ import { resolveServicesIndexState } from '../presentation/services-page-state.t
 import { useServicesRouteContext } from './services-route-context.ts'
 
 export function ServicesIndexRoute() {
-  const { beginServiceOpening, retryServices, servicesState } = useServicesRouteContext()
+  const {
+    beginServiceOpening,
+    closingServiceSlug,
+    reportServiceClosingTarget,
+    retryServices,
+    servicesState,
+  } = useServicesRouteContext()
   const state = resolveServicesIndexState(servicesState, servicePresentationAssets)
 
   if (state.status === 'loading') {
@@ -44,6 +50,8 @@ export function ServicesIndexRoute() {
 
   return (
     <ServicesIndexView
+      closingServiceSlug={closingServiceSlug}
+      onClosingTargetReady={reportServiceClosingTarget}
       onOpenService={beginServiceOpening}
       services={state.presentation.services}
     />

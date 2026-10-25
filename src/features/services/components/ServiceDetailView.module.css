@@ -11,6 +11,10 @@
   background: var(--service-tone-color);
 }
 
+.detail[data-closing] {
+  pointer-events: none;
+}
+
 .header {
   display: flex;
   height: var(--services-row-height);

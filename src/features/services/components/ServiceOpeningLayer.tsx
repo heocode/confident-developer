@@ -1,11 +1,15 @@
 import type { CSSProperties } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
-import type { ServiceOpeningState } from '../routes/service-route-motion.ts'
+import type {
+  ServiceClosingState,
+  ServiceOpeningState,
+} from '../routes/service-route-motion.ts'
 import styles from './ServiceOpeningLayer.module.css'
 
 interface ServiceOpeningLayerProps {
-  transition: ServiceOpeningState
+  direction?: 'closing' | 'opening'
+  transition: ServiceClosingState | ServiceOpeningState
 }
 
 type OpeningLayerStyle = CSSProperties & {
@@ -18,23 +22,36 @@ type OpeningLayerStyle = CSSProperties & {
   '--service-tone-color': string
 }
 
-export function ServiceOpeningLayer({ transition }: ServiceOpeningLayerProps) {
+export function ServiceOpeningLayer({
+  direction = 'opening',
+  transition,
+}: ServiceOpeningLayerProps) {
   const { geometry, service } = transition
-  const actionInset = Math.max(
-    0,
-    geometry.surfaceRect.left +
-      geometry.surfaceRect.width -
-      geometry.actionRect.left -
-      geometry.actionRect.width,
-  )
+  const actionInset = geometry
+    ? Math.max(
+        0,
+        geometry.surfaceRect.left +
+          geometry.surfaceRect.width -
+          geometry.actionRect.left -
+          geometry.actionRect.width,
+      )
+    : 0
 
   const layerStyle: OpeningLayerStyle = {
-    '--service-opening-action-inset': `${actionInset}px`,
-    '--service-opening-bottom': `calc(100% - ${geometry.surfaceRect.top + geometry.surfaceRect.height}px)`,
-    '--service-opening-left': `${geometry.surfaceRect.left}px`,
-    '--service-opening-radius': `${geometry.surfaceRect.height / 2}px`,
-    '--service-opening-right': `calc(100% - ${geometry.surfaceRect.left + geometry.surfaceRect.width}px)`,
-    '--service-opening-top': `${geometry.surfaceRect.top}px`,
+    '--service-opening-action-inset': geometry
+      ? `${actionInset}px`
+      : 'var(--services-row-inline-start)',
+    '--service-opening-bottom': geometry
+      ? `calc(100% - ${geometry.surfaceRect.top + geometry.surfaceRect.height}px)`
+      : '0px',
+    '--service-opening-left': geometry ? `${geometry.surfaceRect.left}px` : '0px',
+    '--service-opening-radius': geometry
+      ? `${geometry.surfaceRect.height / 2}px`
+      : '0px',
+    '--service-opening-right': geometry
+      ? `calc(100% - ${geometry.surfaceRect.left + geometry.surfaceRect.width}px)`
+      : '0px',
+    '--service-opening-top': geometry ? `${geometry.surfaceRect.top}px` : '0px',
     '--service-tone-color': service.tone.color,
   }
 
@@ -42,6 +59,7 @@ export function ServiceOpeningLayer({ transition }: ServiceOpeningLayerProps) {
     <div
       aria-hidden="true"
       className={styles.layer}
+      data-direction={direction}
       data-phase={transition.phase}
       style={layerStyle}
     >

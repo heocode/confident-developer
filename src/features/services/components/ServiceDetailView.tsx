@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, MouseEvent } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
-import { getServiceBlockEnterDelay } from '../presentation/service-detail-motion.ts'
+import {
+  getServiceBlockEnterDelay,
+  getServiceBlockExitDelay,
+} from '../presentation/service-detail-motion.ts'
 import type { SelectedServicePresentation } from '../presentation/services-page.ts'
 import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
+import { shouldAnimateServiceTransition } from '../routes/service-route-motion.ts'
 import entranceStyles from './ServiceBlockEntrance.module.css'
 import { ServiceShowcaseRail } from './ServiceShowcaseRail.tsx'
 import styles from './ServiceDetailView.module.css'
 
 interface ServiceDetailViewProps {
+  isClosing: boolean
+  onCloseService: (service: SelectedServicePresentation) => boolean
   service: SelectedServicePresentation
 }
 
@@ -21,26 +27,43 @@ type ServiceDetailStyle = CSSProperties & {
 
 type EnterStyle = CSSProperties & {
   '--service-block-enter-delay': string
+  '--service-block-exit-delay': string
 }
 
-function getEnterStyle(index: number): EnterStyle {
+function getEnterStyle(index: number, blockCount: number): EnterStyle {
   return {
     '--service-block-enter-delay': `${getServiceBlockEnterDelay(index)}ms`,
+    '--service-block-exit-delay': `${getServiceBlockExitDelay(index, blockCount)}ms`,
   }
 }
 
-export function ServiceDetailView({ service }: ServiceDetailViewProps) {
+export function ServiceDetailView({
+  isClosing,
+  onCloseService,
+  service,
+}: ServiceDetailViewProps) {
   const informationEnterIndex = service.showcaseAssets.length
+  const blockCount = informationEnterIndex + 4
   const detailStyle: ServiceDetailStyle = {
     '--mobile-service-width': serviceMobileWidths[service.tone.key],
     '--service-surface-color': service.tone.surfaceColor,
     '--service-tone-color': service.tone.color,
   }
 
+  const beginClosing = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!shouldAnimateServiceTransition(event)) return
+
+    event.preventDefault()
+    onCloseService(service)
+  }
+
   return (
     <article
       aria-labelledby={`service-${service.slug}-title`}
-      className={styles.detail}
+      className={`${styles.detail}${
+        isClosing ? ` ${entranceStyles.closing}` : ''
+      }`}
+      data-closing={isClosing ? '' : undefined}
       style={detailStyle}
     >
       <header className={styles.header}>
@@ -56,7 +79,12 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             width={service.icon.width}
           />
         </div>
-        <Link aria-label="Back to Services" className={styles.backLink} to="/services">
+        <Link
+          aria-label="Back to Services"
+          className={styles.backLink}
+          onClick={beginClosing}
+          to="/services"
+        >
           <img alt="" height="84" src={backIconUrl} width="84" />
         </Link>
       </header>
@@ -75,7 +103,7 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             <section
               className={`${styles.card} ${styles.descriptionCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-description`}
-              style={getEnterStyle(informationEnterIndex)}
+              style={getEnterStyle(informationEnterIndex, blockCount)}
             >
               <h3 id={`${service.slug}-description`}>Description</h3>
               <p className={styles.description}>{service.description}</p>
@@ -84,7 +112,7 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             <section
               className={`${styles.card} ${styles.capabilitiesCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-capabilities`}
-              style={getEnterStyle(informationEnterIndex + 1)}
+              style={getEnterStyle(informationEnterIndex + 1, blockCount)}
             >
               <h3 id={`${service.slug}-capabilities`}>What I can help with</h3>
               <ul className={styles.capabilities}>
@@ -99,7 +127,7 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             <section
               className={`${styles.card} ${styles.resourceCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-tools`}
-              style={getEnterStyle(informationEnterIndex + 2)}
+              style={getEnterStyle(informationEnterIndex + 2, blockCount)}
             >
               <h3 id={`${service.slug}-tools`}>Tools</h3>
               <ul className={styles.resources}>
@@ -119,7 +147,7 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             <section
               className={`${styles.card} ${styles.resourceCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-projects`}
-              style={getEnterStyle(informationEnterIndex + 3)}
+              style={getEnterStyle(informationEnterIndex + 3, blockCount)}
             >
               <h3 id={`${service.slug}-projects`}>Used In</h3>
               <ul className={styles.resources}>

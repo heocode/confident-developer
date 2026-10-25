@@ -74,9 +74,9 @@
   will-change: transform;
 }
 
-.layer[data-phase='opening'],
-.layer[data-phase='settled'],
-.layer[data-phase='handoff'] {
+.layer[data-direction='opening'][data-phase='opening'],
+.layer[data-direction='opening'][data-phase='settled'],
+.layer[data-direction='opening'][data-phase='handoff'] {
   inset: 0;
   padding-right: var(--services-row-inline-start);
   border-radius: 0;
@@ -89,16 +89,47 @@
     border-radius 300ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.layer[data-phase='opening'] .action img,
-.layer[data-phase='settled'] .action img,
-.layer[data-phase='handoff'] .action img {
+.layer[data-direction='opening'][data-phase='opening'] .action img,
+.layer[data-direction='opening'][data-phase='settled'] .action img,
+.layer[data-direction='opening'][data-phase='handoff'] .action img {
   transform: rotate(0deg);
   transition: transform 80ms ease-out 220ms;
 }
 
-.layer[data-phase='handoff'] {
+.layer[data-direction='opening'][data-phase='handoff'] {
   opacity: 0;
   transition: opacity 60ms ease-out;
+}
+
+.layer[data-direction='closing'] {
+  inset: 0;
+  padding-right: var(--services-row-inline-start);
+  border-radius: 0;
+}
+
+.layer[data-direction='closing'] .action img {
+  transform: rotate(0deg);
+}
+
+.layer[data-direction='closing'][data-phase='collapsing'] {
+  top: var(--service-opening-top);
+  right: var(--service-opening-right);
+  bottom: var(--service-opening-bottom);
+  left: var(--service-opening-left);
+  padding-right: var(--service-opening-action-inset);
+  border-radius: 0 var(--service-opening-radius) var(--service-opening-radius) 0;
+  transition:
+    top 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    right 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    bottom 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    left 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    padding-right 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    border-radius 300ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.layer[data-direction='closing'][data-phase='collapsing'] .action img {
+  transform: rotate(180deg);
+  transition: transform 80ms ease-out 220ms;
 }
 
 @media (prefers-reduced-motion: reduce) {

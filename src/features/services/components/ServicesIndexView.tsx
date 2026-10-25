@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import type { CSSProperties, MouseEvent } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
@@ -7,12 +7,15 @@ import { useServicePointerPreview } from '../hooks/useServicePointerPreview.ts'
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
 import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
 import {
+  shouldAnimateServiceTransition,
   toServiceTransitionRect,
 } from '../routes/service-route-motion.ts'
 import type { ServiceOpeningRequest } from '../routes/service-route-motion.ts'
 import styles from './ServicesIndexView.module.css'
 
 interface ServicesIndexViewProps {
+  closingServiceSlug: string | null
+  onClosingTargetReady: (request: ServiceOpeningRequest) => void
   onOpenService: (request: ServiceOpeningRequest) => boolean
   services: ServiceSummaryPresentation[]
 }
@@ -22,35 +25,61 @@ type ServiceSurfaceStyle = CSSProperties & {
   '--service-tone-color': string
 }
 
-export function ServicesIndexView({ onOpenService, services }: ServicesIndexViewProps) {
+export function ServicesIndexView({
+  closingServiceSlug,
+  onClosingTargetReady,
+  onOpenService,
+  services,
+}: ServicesIndexViewProps) {
   const [openingServiceId, setOpeningServiceId] = useState<string | null>(null)
-  const listRef = useServicePointerPreview(openingServiceId !== null)
+  const listRef = useServicePointerPreview(
+    openingServiceId !== null || closingServiceSlug !== null,
+  )
+
+  useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list || !closingServiceSlug) return
+
+    const service = services.find(({ slug }) => slug === closingServiceSlug)
+    const item = Array.from(
+      list.querySelectorAll<HTMLElement>('[data-service-preview-item]'),
+    ).find(({ dataset }) => dataset.serviceSlug === closingServiceSlug)
+    const action = item?.querySelector<HTMLElement>('[data-service-preview-action]')
+    const surface = item?.querySelector<HTMLElement>('[data-service-preview-surface]')
+    if (!service || !action || !surface) return
+
+    const surfaceRect = surface.getBoundingClientRect()
+    const actionRect = action.getBoundingClientRect()
+    const parsedActionInset = Number.parseFloat(
+      window
+        .getComputedStyle(action)
+        .getPropertyValue('--service-preview-action-inset'),
+    )
+    const actionInset = Number.isFinite(parsedActionInset) ? parsedActionInset : 0
+
+    onClosingTargetReady({
+      actionRect: {
+        height: actionRect.height,
+        left:
+          surfaceRect.right - actionInset - actionRect.width,
+        top: surfaceRect.top + (surfaceRect.height - actionRect.height) / 2,
+        width: actionRect.width,
+      },
+      service,
+      surfaceRect: toServiceTransitionRect(surfaceRect),
+    })
+  }, [closingServiceSlug, listRef, onClosingTargetReady, services])
 
   const beginOpening = (
     event: MouseEvent<HTMLAnchorElement>,
     service: ServiceSummaryPresentation,
   ) => {
-    if (
-      event.button !== 0 ||
-      event.altKey ||
-      event.ctrlKey ||
-      event.metaKey ||
-      event.shiftKey
-    ) {
-      return
-    }
+    if (!shouldAnimateServiceTransition(event)) return
 
     if (openingServiceId) {
       event.preventDefault()
       return
     }
-
-    const usesFinePointer = window.matchMedia(
-      '(hover: hover) and (pointer: fine) and (min-width: 48.0625rem)',
-    ).matches
-    const usesKeyboard = event.detail === 0
-    const usesDesktopLayout = window.matchMedia('(min-width: 48.0625rem)').matches
-    if (!usesFinePointer && !(usesKeyboard && usesDesktopLayout)) return
 
     const action = event.currentTarget.querySelector<HTMLElement>(
       '[data-service-preview-action]',
@@ -85,7 +114,12 @@ export function ServicesIndexView({ onOpenService, services }: ServicesIndexView
         }
 
         return (
-          <li className={styles.item} data-service-preview-item="" key={service.id}>
+          <li
+            className={styles.item}
+            data-service-preview-item=""
+            data-service-slug={service.slug}
+            key={service.id}
+          >
             <Link
               aria-label={`View ${service.title} details`}
               className={styles.link}
