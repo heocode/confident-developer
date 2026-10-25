@@ -23,7 +23,7 @@ import styles from './ServicesRoute.module.css'
 
 const OPENING_DURATION_MS = 300
 const HANDOFF_DURATION_MS = 60
-const CLOSING_DURATION_MS = 300
+const CLOSING_DURATION_MS = 220
 
 export function ServicesRoute() {
   const navigate = useNavigate()

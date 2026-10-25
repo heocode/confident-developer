@@ -15,8 +15,8 @@ describe('Service detail block motion', () => {
   })
 
   it('mirrors the stagger when detail blocks leave', () => {
-    assert.equal(getServiceBlockExitDelay(8, 9), 20)
-    assert.equal(getServiceBlockExitDelay(5, 9), 110)
-    assert.equal(getServiceBlockExitDelay(0, 9), 170)
+    assert.equal(getServiceBlockExitDelay(8, 9), 15)
+    assert.equal(getServiceBlockExitDelay(5, 9), 75)
+    assert.equal(getServiceBlockExitDelay(0, 9), 115)
   })
 })
