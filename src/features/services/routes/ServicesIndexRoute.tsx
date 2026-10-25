@@ -5,7 +5,7 @@ import { resolveServicesIndexState } from '../presentation/services-page-state.t
 import { useServicesRouteContext } from './services-route-context.ts'
 
 export function ServicesIndexRoute() {
-  const { retryServices, servicesState } = useServicesRouteContext()
+  const { beginServiceOpening, retryServices, servicesState } = useServicesRouteContext()
   const state = resolveServicesIndexState(servicesState, servicePresentationAssets)
 
   if (state.status === 'loading') {
@@ -42,5 +42,10 @@ export function ServicesIndexRoute() {
     )
   }
 
-  return <ServicesIndexView services={state.presentation.services} />
+  return (
+    <ServicesIndexView
+      onOpenService={beginServiceOpening}
+      services={state.presentation.services}
+    />
+  )
 }

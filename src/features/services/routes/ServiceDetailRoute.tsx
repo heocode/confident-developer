@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { ServiceDetailView } from '../components/ServiceDetailView.tsx'
@@ -24,7 +25,12 @@ export function ServiceDetailRoute() {
 }
 
 function ServiceDetailContent({ slug }: { slug: string }) {
-  const { detailCache, retryServices, servicesState } = useServicesRouteContext()
+  const {
+    detailCache,
+    reportServiceDetailResolution,
+    retryServices,
+    servicesState,
+  } = useServicesRouteContext()
   const { retry: retryDetail, state: detailState } = useServiceDetail(slug, detailCache)
   const state = resolveServiceRouteState(
     slug,
@@ -32,6 +38,13 @@ function ServiceDetailContent({ slug }: { slug: string }) {
     detailState,
     servicePresentationAssets,
   )
+
+  const detailRequestResolved =
+    state.status !== 'detail-loading' && state.status !== 'services-loading'
+
+  useEffect(() => {
+    if (detailRequestResolved) reportServiceDetailResolution(slug)
+  }, [detailRequestResolved, reportServiceDetailResolution, slug])
 
   switch (state.status) {
     case 'services-loading':

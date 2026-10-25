@@ -28,12 +28,12 @@ interface PreviewGeometry {
   maximumWidth: number
 }
 
-export function useServicePointerPreview() {
+export function useServicePointerPreview(disabled = false) {
   const listRef = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     const list = listRef.current
-    if (!list) return
+    if (!list || disabled) return
 
     const finePointerQuery = window.matchMedia(
       '(hover: hover) and (pointer: fine) and (min-width: 48.0625rem)',
@@ -311,8 +311,9 @@ export function useServicePointerPreview() {
       if (focusTimer !== null) window.clearTimeout(focusTimer)
       if (hintTimer !== null) window.clearTimeout(hintTimer)
       cleanupTimers.forEach((timer) => window.clearTimeout(timer))
+      list.querySelectorAll<HTMLElement>(ITEM_SELECTOR).forEach(removePreviewState)
     }
-  }, [])
+  }, [disabled])
 
   return listRef
 }

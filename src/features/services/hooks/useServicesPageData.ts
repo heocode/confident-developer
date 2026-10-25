@@ -11,7 +11,34 @@ import {
   isServiceNotFoundError,
 } from '../presentation/services-page-state.ts'
 
-export type ServiceDetailCache = Map<string, ServiceDetail>
+export interface ServiceDetailCache {
+  details: Map<string, ServiceDetail>
+  prefetchedRequests: Map<string, Promise<ServiceDetail>>
+}
+
+export function createServiceDetailCache(): ServiceDetailCache {
+  return {
+    details: new Map(),
+    prefetchedRequests: new Map(),
+  }
+}
+
+export function prefetchServiceDetail(slug: string, cache: ServiceDetailCache) {
+  const cachedService = cache.details.get(slug)
+  if (cachedService) return Promise.resolve(cachedService)
+
+  const existingRequest = cache.prefetchedRequests.get(slug)
+  if (existingRequest) return existingRequest
+
+  const request = getServiceBySlug(slug).then((service) => {
+    cache.details.set(slug, service)
+    cache.prefetchedRequests.delete(slug)
+    return service
+  })
+
+  cache.prefetchedRequests.set(slug, request)
+  return request
+}
 
 interface DetailRequestRecord {
   slug: string
@@ -53,7 +80,7 @@ export function useServicesList() {
 export function useServiceDetail(slug: string, cache: ServiceDetailCache) {
   const [requestVersion, setRequestVersion] = useState(0)
   const [request, setRequest] = useState<DetailRequestRecord>(() => {
-    const cachedService = cache.get(slug)
+    const cachedService = cache.details.get(slug)
 
     return {
       slug,
@@ -63,7 +90,7 @@ export function useServiceDetail(slug: string, cache: ServiceDetailCache) {
     }
   })
 
-  const cachedService = cache.get(slug)
+  const cachedService = cache.details.get(slug)
   const state: ServiceDetailState =
     request.slug === slug
       ? request.state
@@ -72,27 +99,34 @@ export function useServiceDetail(slug: string, cache: ServiceDetailCache) {
         : { status: 'loading' }
 
   const retry = useCallback(() => {
-    cache.delete(slug)
+    cache.details.delete(slug)
+    cache.prefetchedRequests.delete(slug)
     setRequest({ slug, state: { status: 'loading' } })
     setRequestVersion((version) => version + 1)
   }, [cache, slug])
 
   useEffect(() => {
-    const cachedDetail = cache.get(slug)
+    const cachedDetail = cache.details.get(slug)
 
     if (cachedDetail) return
 
+    const prefetchedRequest = cache.prefetchedRequests.get(slug)
     const controller = new AbortController()
     let isActive = true
+    const detailRequest = prefetchedRequest ?? getServiceBySlug(slug, { signal: controller.signal })
 
-    void getServiceBySlug(slug, { signal: controller.signal })
+    void detailRequest
       .then((service) => {
         if (!isActive) return
-        cache.set(slug, service)
+        cache.details.set(slug, service)
+        cache.prefetchedRequests.delete(slug)
         setRequest({ slug, state: { status: 'ready', service } })
       })
       .catch((error: unknown) => {
         if (!isActive || controller.signal.aborted) return
+        if (cache.prefetchedRequests.get(slug) === detailRequest) {
+          cache.prefetchedRequests.delete(slug)
+        }
         setRequest({
           slug,
           state: {
@@ -105,7 +139,7 @@ export function useServiceDetail(slug: string, cache: ServiceDetailCache) {
 
     return () => {
       isActive = false
-      controller.abort()
+      if (!prefetchedRequest) controller.abort()
     }
   }, [cache, requestVersion, slug])
 

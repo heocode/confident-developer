@@ -1,0 +1,109 @@
+.layer {
+  position: absolute;
+  z-index: 4;
+  top: var(--service-opening-top);
+  right: var(--service-opening-right);
+  bottom: var(--service-opening-bottom);
+  left: var(--service-opening-left);
+  isolation: isolate;
+  padding: 0 var(--service-opening-action-inset) 0.875rem
+    var(--services-row-inline-start);
+  overflow: hidden;
+  border: 0.0625rem solid var(--color-service-border);
+  border-left: 0;
+  border-radius: 0 var(--service-opening-radius) var(--service-opening-radius) 0;
+  background: var(--color-background);
+  pointer-events: none;
+  will-change: top, right, bottom, left, padding-right, border-radius, opacity;
+}
+
+.layer::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--service-tone-color);
+  content: '';
+}
+
+.header {
+  display: flex;
+  height: var(--services-row-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--services-row-content-gap);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--services-row-title-size);
+  font-weight: var(--services-row-title-weight);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-title);
+  white-space: nowrap;
+}
+
+.serviceIcon {
+  width: auto;
+  max-width: var(--services-row-icon-width);
+  height: auto;
+  max-height: var(--services-row-icon-height);
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.action {
+  display: block;
+  width: clamp(5.25rem, 8.2031svh, 7.35rem);
+  height: clamp(5.25rem, 8.2031svh, 7.35rem);
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.action img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(180deg);
+  will-change: transform;
+}
+
+.layer[data-phase='opening'],
+.layer[data-phase='settled'],
+.layer[data-phase='handoff'] {
+  inset: 0;
+  padding-right: var(--services-row-inline-start);
+  border-radius: 0;
+  transition:
+    top 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    right 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    bottom 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    left 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    padding-right 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    border-radius 400ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.layer[data-phase='opening'] .action img,
+.layer[data-phase='settled'] .action img,
+.layer[data-phase='handoff'] .action img {
+  transform: rotate(0deg);
+  transition: transform 100ms ease-out 300ms;
+}
+
+.layer[data-phase='handoff'] {
+  opacity: 0;
+  transition: opacity 80ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer,
+  .layer .action img {
+    transition: none !important;
+  }
+}

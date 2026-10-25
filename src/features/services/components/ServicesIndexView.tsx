@@ -1,13 +1,19 @@
 import { Link } from 'react-router-dom'
-import type { CSSProperties } from 'react'
+import { useState } from 'react'
+import type { CSSProperties, MouseEvent } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
 import { useServicePointerPreview } from '../hooks/useServicePointerPreview.ts'
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
 import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
+import {
+  toServiceTransitionRect,
+} from '../routes/service-route-motion.ts'
+import type { ServiceOpeningRequest } from '../routes/service-route-motion.ts'
 import styles from './ServicesIndexView.module.css'
 
 interface ServicesIndexViewProps {
+  onOpenService: (request: ServiceOpeningRequest) => boolean
   services: ServiceSummaryPresentation[]
 }
 
@@ -16,11 +22,62 @@ type ServiceSurfaceStyle = CSSProperties & {
   '--service-tone-color': string
 }
 
-export function ServicesIndexView({ services }: ServicesIndexViewProps) {
-  const listRef = useServicePointerPreview()
+export function ServicesIndexView({ onOpenService, services }: ServicesIndexViewProps) {
+  const [openingServiceId, setOpeningServiceId] = useState<string | null>(null)
+  const listRef = useServicePointerPreview(openingServiceId !== null)
+
+  const beginOpening = (
+    event: MouseEvent<HTMLAnchorElement>,
+    service: ServiceSummaryPresentation,
+  ) => {
+    if (
+      event.button !== 0 ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey
+    ) {
+      return
+    }
+
+    if (openingServiceId) {
+      event.preventDefault()
+      return
+    }
+
+    const usesFinePointer = window.matchMedia(
+      '(hover: hover) and (pointer: fine) and (min-width: 48.0625rem)',
+    ).matches
+    const usesKeyboard = event.detail === 0
+    const usesDesktopLayout = window.matchMedia('(min-width: 48.0625rem)').matches
+    if (!usesFinePointer && !(usesKeyboard && usesDesktopLayout)) return
+
+    const action = event.currentTarget.querySelector<HTMLElement>(
+      '[data-service-preview-action]',
+    )
+    const surface = event.currentTarget.querySelector<HTMLElement>(
+      '[data-service-preview-surface]',
+    )
+    if (!action || !surface) return
+
+    event.preventDefault()
+    const openingStarted = onOpenService({
+      actionRect: toServiceTransitionRect(action.getBoundingClientRect()),
+      service,
+      surfaceRect: toServiceTransitionRect(surface.getBoundingClientRect()),
+    })
+
+    if (openingStarted) setOpeningServiceId(service.id)
+  }
 
   return (
-    <ul className={styles.list} aria-label="Published Services" ref={listRef}>
+    <ul
+      aria-busy={openingServiceId !== null}
+      aria-label="Published Services"
+      className={styles.list}
+      data-opening={openingServiceId ? '' : undefined}
+      ref={listRef}
+    >
       {services.map((service) => {
         const surfaceStyle: ServiceSurfaceStyle = {
           '--mobile-service-width': serviceMobileWidths[service.tone.key],
@@ -32,6 +89,7 @@ export function ServicesIndexView({ services }: ServicesIndexViewProps) {
             <Link
               aria-label={`View ${service.title} details`}
               className={styles.link}
+              onClick={(event) => beginOpening(event, service)}
               to={`/services/${service.slug}`}
             >
               <span
@@ -39,7 +97,9 @@ export function ServicesIndexView({ services }: ServicesIndexViewProps) {
                 data-service-preview-surface=""
                 style={surfaceStyle}
               >
-                <span className={styles.title}>{service.title}</span>
+                <span className={styles.title} data-service-preview-title="">
+                  {service.title}
+                </span>
                 <img
                   alt=""
                   className={styles.icon}
