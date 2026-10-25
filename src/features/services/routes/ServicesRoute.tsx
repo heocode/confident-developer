@@ -18,8 +18,8 @@ import type {
 import type { ServicesRouteContextValue } from './services-route-context.ts'
 import styles from './ServicesRoute.module.css'
 
-const OPENING_DURATION_MS = 400
-const HANDOFF_DURATION_MS = 80
+const OPENING_DURATION_MS = 300
+const HANDOFF_DURATION_MS = 60
 
 export function ServicesRoute() {
   const navigate = useNavigate()

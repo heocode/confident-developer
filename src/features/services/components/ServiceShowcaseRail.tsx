@@ -2,8 +2,10 @@ import { useLayoutEffect, useState } from 'react'
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 
 import { useServiceShowcaseLayout } from '../hooks/useServiceShowcaseLayout.ts'
+import { getServiceBlockEnterDelay } from '../presentation/service-detail-motion.ts'
 import { SERVICE_SHOWCASE_LAYOUT_TOKENS } from '../presentation/service-showcase-layout.ts'
 import type { ShowcaseAssetPresentation } from '../presentation/services-page.ts'
+import entranceStyles from './ServiceBlockEntrance.module.css'
 import styles from './ServiceShowcaseRail.module.css'
 
 interface ServiceShowcaseRailProps {
@@ -25,12 +27,24 @@ type GroupStyle = CSSProperties & {
   '--service-showcase-group-width': string
 }
 
+type EnterStyle = CSSProperties & {
+  '--service-block-enter-delay': string
+}
+
+function getEnterStyle(index: number): EnterStyle {
+  return {
+    '--service-block-enter-delay': `${getServiceBlockEnterDelay(index)}ms`,
+  }
+}
+
 function ServiceShowcaseAsset({
   asset,
+  enterIndex,
   isCompact,
   isPriority,
 }: {
   asset: ShowcaseAssetPresentation
+  enterIndex: number
   isCompact: boolean
   isPriority: boolean
 }) {
@@ -38,7 +52,12 @@ function ServiceShowcaseAsset({
   const image = asset.kind === 'image' ? asset : asset.preview
 
   return (
-    <div className={isCompact ? `${styles.panel} ${styles.compactPanel}` : styles.panel}>
+    <div
+      className={`${styles.panel} ${entranceStyles.block}${
+        isCompact ? ` ${styles.compactPanel}` : ''
+      }`}
+      style={getEnterStyle(enterIndex)}
+    >
       {hasFailed ? (
         <p className={styles.mediaError} role="status">
           Showcase preview unavailable
@@ -104,6 +123,11 @@ export function ServiceShowcaseRail({
         break
     }
   }
+  const groupEnterOffsets = groups.map((_, groupIndex) =>
+    groups
+      .slice(0, groupIndex)
+      .reduce((total, group) => total + group.assets.length, 0),
+  )
 
   return (
     <section
@@ -135,14 +159,17 @@ export function ServiceShowcaseRail({
               key={group.assets[0].id}
               style={groupStyle}
             >
-              {group.assets.map((asset, assetIndex) => (
-                <ServiceShowcaseAsset
-                  asset={asset}
-                  isCompact={group.kind === 'compact'}
-                  isPriority={groupIndex === 0 && assetIndex === 0}
-                  key={asset.id}
-                />
-              ))}
+              {group.assets.map((asset, groupAssetIndex) => {
+                return (
+                  <ServiceShowcaseAsset
+                    asset={asset}
+                    enterIndex={groupEnterOffsets[groupIndex] + groupAssetIndex}
+                    isCompact={group.kind === 'compact'}
+                    isPriority={groupIndex === 0 && groupAssetIndex === 0}
+                    key={asset.id}
+                  />
+                )
+              })}
             </li>
           )
         })}

@@ -81,24 +81,24 @@
   padding-right: var(--services-row-inline-start);
   border-radius: 0;
   transition:
-    top 400ms cubic-bezier(0.33, 1, 0.68, 1),
-    right 400ms cubic-bezier(0.33, 1, 0.68, 1),
-    bottom 400ms cubic-bezier(0.33, 1, 0.68, 1),
-    left 400ms cubic-bezier(0.33, 1, 0.68, 1),
-    padding-right 400ms cubic-bezier(0.33, 1, 0.68, 1),
-    border-radius 400ms cubic-bezier(0.33, 1, 0.68, 1);
+    top 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    right 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    bottom 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    left 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    padding-right 300ms cubic-bezier(0.33, 1, 0.68, 1),
+    border-radius 300ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .layer[data-phase='opening'] .action img,
 .layer[data-phase='settled'] .action img,
 .layer[data-phase='handoff'] .action img {
   transform: rotate(0deg);
-  transition: transform 100ms ease-out 300ms;
+  transition: transform 80ms ease-out 220ms;
 }
 
 .layer[data-phase='handoff'] {
   opacity: 0;
-  transition: opacity 80ms ease-out;
+  transition: opacity 60ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {

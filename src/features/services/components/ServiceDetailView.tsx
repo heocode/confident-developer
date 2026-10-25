@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import type { CSSProperties } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
+import { getServiceBlockEnterDelay } from '../presentation/service-detail-motion.ts'
 import type { SelectedServicePresentation } from '../presentation/services-page.ts'
 import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
+import entranceStyles from './ServiceBlockEntrance.module.css'
 import { ServiceShowcaseRail } from './ServiceShowcaseRail.tsx'
 import styles from './ServiceDetailView.module.css'
 
@@ -17,7 +19,18 @@ type ServiceDetailStyle = CSSProperties & {
   '--service-tone-color': string
 }
 
+type EnterStyle = CSSProperties & {
+  '--service-block-enter-delay': string
+}
+
+function getEnterStyle(index: number): EnterStyle {
+  return {
+    '--service-block-enter-delay': `${getServiceBlockEnterDelay(index)}ms`,
+  }
+}
+
 export function ServiceDetailView({ service }: ServiceDetailViewProps) {
+  const informationEnterIndex = service.showcaseAssets.length
   const detailStyle: ServiceDetailStyle = {
     '--mobile-service-width': serviceMobileWidths[service.tone.key],
     '--service-surface-color': service.tone.surfaceColor,
@@ -60,16 +73,18 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             tabIndex={0}
           >
             <section
-              className={`${styles.card} ${styles.descriptionCard}`}
+              className={`${styles.card} ${styles.descriptionCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-description`}
+              style={getEnterStyle(informationEnterIndex)}
             >
               <h3 id={`${service.slug}-description`}>Description</h3>
               <p className={styles.description}>{service.description}</p>
             </section>
 
             <section
-              className={`${styles.card} ${styles.capabilitiesCard}`}
+              className={`${styles.card} ${styles.capabilitiesCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-capabilities`}
+              style={getEnterStyle(informationEnterIndex + 1)}
             >
               <h3 id={`${service.slug}-capabilities`}>What I can help with</h3>
               <ul className={styles.capabilities}>
@@ -82,8 +97,9 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
 
           <div className={styles.resourceGrid}>
             <section
-              className={`${styles.card} ${styles.resourceCard}`}
+              className={`${styles.card} ${styles.resourceCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-tools`}
+              style={getEnterStyle(informationEnterIndex + 2)}
             >
               <h3 id={`${service.slug}-tools`}>Tools</h3>
               <ul className={styles.resources}>
@@ -101,8 +117,9 @@ export function ServiceDetailView({ service }: ServiceDetailViewProps) {
             </section>
 
             <section
-              className={`${styles.card} ${styles.resourceCard}`}
+              className={`${styles.card} ${styles.resourceCard} ${entranceStyles.block}`}
               aria-labelledby={`${service.slug}-projects`}
+              style={getEnterStyle(informationEnterIndex + 3)}
             >
               <h3 id={`${service.slug}-projects`}>Used In</h3>
               <ul className={styles.resources}>
