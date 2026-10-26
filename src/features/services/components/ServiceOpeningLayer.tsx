@@ -5,6 +5,7 @@ import type {
   ServiceClosingState,
   ServiceOpeningState,
 } from '../routes/service-route-motion.ts'
+import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
 import styles from './ServiceOpeningLayer.module.css'
 
 interface ServiceOpeningLayerProps {
@@ -20,6 +21,7 @@ type OpeningLayerStyle = CSSProperties & {
   '--service-opening-right': string
   '--service-opening-top': string
   '--service-tone-color': string
+  '--mobile-service-width': string
 }
 
 export function ServiceOpeningLayer({
@@ -53,6 +55,7 @@ export function ServiceOpeningLayer({
       : '0px',
     '--service-opening-top': geometry ? `${geometry.surfaceRect.top}px` : '0px',
     '--service-tone-color': service.tone.color,
+    '--mobile-service-width': serviceMobileWidths[service.tone.key],
   }
 
   return (

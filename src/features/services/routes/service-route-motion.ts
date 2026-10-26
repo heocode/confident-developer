@@ -9,6 +9,8 @@ interface ServiceTransitionActivation {
   shiftKey: boolean
 }
 
+type ServiceMediaQueryMatcher = (query: string) => boolean
+
 export interface ServiceTransitionRect {
   height: number
   left: number
@@ -44,7 +46,11 @@ export interface ServiceClosingState {
   service: ServiceSummaryPresentation
 }
 
-export function shouldAnimateServiceTransition(event: ServiceTransitionActivation) {
+export function shouldAnimateServiceTransition(
+  event: ServiceTransitionActivation,
+  matchesMedia: ServiceMediaQueryMatcher = (query) =>
+    window.matchMedia(query).matches,
+) {
   if (
     event.button !== 0 ||
     event.altKey ||
@@ -55,13 +61,14 @@ export function shouldAnimateServiceTransition(event: ServiceTransitionActivatio
     return false
   }
 
-  const usesFinePointer = window.matchMedia(
+  const usesMobileLayout = matchesMedia('(max-width: 48rem)')
+  const usesFinePointer = matchesMedia(
     '(hover: hover) and (pointer: fine) and (min-width: 48.0625rem)',
-  ).matches
+  )
   const usesKeyboard = event.detail === 0
-  const usesDesktopLayout = window.matchMedia('(min-width: 48.0625rem)').matches
+  const usesDesktopLayout = matchesMedia('(min-width: 48.0625rem)')
 
-  return usesFinePointer || (usesKeyboard && usesDesktopLayout)
+  return usesMobileLayout || usesFinePointer || (usesKeyboard && usesDesktopLayout)
 }
 
 function makeRelativeRect(

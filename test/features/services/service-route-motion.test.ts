@@ -4,6 +4,7 @@ import { describe, it } from 'node:test'
 import type { ServiceSummaryPresentation } from '../../../src/features/services/presentation/services-page.ts'
 import {
   createServiceOpeningGeometry,
+  shouldAnimateServiceTransition,
 } from '../../../src/features/services/routes/service-route-motion.ts'
 
 const service: ServiceSummaryPresentation = {
@@ -42,5 +43,44 @@ describe('Service opening transition geometry', () => {
       top: 230,
       width: 84,
     })
+  })
+})
+
+describe('Service route transition activation', () => {
+  const activation = {
+    altKey: false,
+    button: 0,
+    ctrlKey: false,
+    detail: 1,
+    metaKey: false,
+    shiftKey: false,
+  }
+
+  it('animates an unmodified primary activation on the mobile layout', () => {
+    assert.equal(
+      shouldAnimateServiceTransition(
+        activation,
+        (query) => query === '(max-width: 48rem)',
+      ),
+      true,
+    )
+  })
+
+  it('keeps coarse-pointer desktop navigation immediate', () => {
+    assert.equal(shouldAnimateServiceTransition(activation, () => false), false)
+  })
+
+  it('preserves modified-link navigation', () => {
+    assert.equal(
+      shouldAnimateServiceTransition(
+        { ...activation, metaKey: true },
+        () => true,
+      ),
+      false,
+    )
+    assert.equal(
+      shouldAnimateServiceTransition({ ...activation, button: 1 }, () => true),
+      false,
+    )
   })
 })
