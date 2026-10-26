@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
-import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
+import type { CSSProperties, KeyboardEvent, ReactNode, RefObject } from 'react'
 
 import { useServiceShowcaseLayout } from '../hooks/useServiceShowcaseLayout.ts'
 import {
@@ -10,6 +10,7 @@ import { SERVICE_SHOWCASE_LAYOUT_TOKENS } from '../presentation/service-showcase
 import type { ShowcaseAssetPresentation } from '../presentation/services-page.ts'
 import entranceStyles from './ServiceBlockEntrance.module.css'
 import styles from './ServiceShowcaseRail.module.css'
+import { ServiceVideoShowcase } from './ServiceVideoShowcase.tsx'
 
 interface ServiceShowcaseRailProps {
   assets: ShowcaseAssetPresentation[]
@@ -48,12 +49,14 @@ function ServiceShowcaseAsset({
   enterIndex,
   isCompact,
   isPriority,
+  railRef,
 }: {
   asset: ShowcaseAssetPresentation
   blockCount: number
   enterIndex: number
   isCompact: boolean
   isPriority: boolean
+  railRef: RefObject<HTMLElement | null>
 }) {
   const [hasFailed, setHasFailed] = useState(false)
   const image = asset.kind === 'image' ? asset : asset.preview
@@ -65,14 +68,19 @@ function ServiceShowcaseAsset({
       }`}
       style={getEnterStyle(enterIndex, blockCount)}
     >
-      {hasFailed ? (
+      {asset.kind === 'video' ? (
+        <ServiceVideoShowcase
+          asset={asset}
+          isPriority={isPriority}
+          railRef={railRef}
+        />
+      ) : hasFailed ? (
         <p className={styles.mediaError} role="status">
           Showcase preview unavailable
         </p>
       ) : (
         <img
           alt={image.alt}
-          className={asset.kind === 'video' ? styles.videoMedia : undefined}
           decoding="async"
           fetchPriority={isPriority ? 'high' : 'auto'}
           height={image.height}
@@ -176,6 +184,7 @@ export function ServiceShowcaseRail({
                     isCompact={group.kind === 'compact'}
                     isPriority={groupIndex === 0 && groupAssetIndex === 0}
                     key={asset.id}
+                    railRef={railRef}
                   />
                 )
               })}

@@ -75,14 +75,6 @@
   object-fit: contain;
 }
 
-.panel .videoMedia {
-  border-radius: clamp(
-    1.5rem,
-    2.7778vw,
-    calc(2.5rem * var(--service-showcase-scale))
-  );
-}
-
 .mediaError {
   max-width: 12rem;
   margin: 0;

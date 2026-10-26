@@ -1,0 +1,75 @@
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: clamp(
+    1.5rem,
+    2.7778vw,
+    calc(2.5rem * var(--service-showcase-scale))
+  );
+  background: var(--service-surface-color);
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.replayOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  background: rgb(28 36 33 / 82%);
+  place-items: center;
+}
+
+.replayButton {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  place-items: center;
+}
+
+.replayButton img {
+  width: calc(4.125rem * var(--service-showcase-scale));
+  max-width: none;
+  height: calc(4.375rem * var(--service-showcase-scale));
+}
+
+.replayButton:focus-visible {
+  outline-color: #fff;
+  outline-offset: -0.25rem;
+}
+
+.mediaError {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  place-items: center;
+  text-align: center;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
