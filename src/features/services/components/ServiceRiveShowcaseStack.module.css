@@ -1,0 +1,65 @@
+.stack {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  gap: var(--service-showcase-gap);
+}
+
+.panel {
+  position: relative;
+}
+
+.surface {
+  position: absolute;
+  inset: calc(0.75rem * var(--service-showcase-scale));
+}
+
+.surface .preview {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.runtime {
+  position: absolute;
+  z-index: 2;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease-out;
+}
+
+.panel[data-rive-active] .runtime {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .panel[data-rive-active] .runtime {
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runtime {
+    transition: none;
+  }
+}

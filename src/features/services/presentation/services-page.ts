@@ -83,10 +83,24 @@ export interface ImageShowcaseAssetPresentation extends ShowcaseAssetPresentatio
   width: number
 }
 
-export interface MotionShowcaseAssetPresentation extends ShowcaseAssetPresentationBase {
-  kind: 'animation' | 'video'
+interface MotionShowcaseAssetPresentationBase
+  extends ShowcaseAssetPresentationBase {
   preview: ServiceImagePresentation
 }
+
+export interface AnimationShowcaseAssetPresentation
+  extends MotionShowcaseAssetPresentationBase {
+  kind: 'animation'
+}
+
+export interface VideoShowcaseAssetPresentation
+  extends MotionShowcaseAssetPresentationBase {
+  kind: 'video'
+}
+
+export type MotionShowcaseAssetPresentation =
+  | AnimationShowcaseAssetPresentation
+  | VideoShowcaseAssetPresentation
 
 export type ShowcaseAssetPresentation =
   | ImageShowcaseAssetPresentation
@@ -243,7 +257,7 @@ function createProjectsPresentation(
 
 function createMotionPresentation(
   serviceSlug: string,
-  asset: ShowcaseAsset,
+  asset: ShowcaseAsset & { kind: 'animation' | 'video' },
 ): PresentationResult<MotionShowcaseAssetPresentation> {
   if (!asset.preview) {
     return {
@@ -283,17 +297,23 @@ function createMotionPresentation(
 
   const preview = createImagePresentation(asset.preview)
 
-  return {
-    configurationIssue: null,
-    presentation: {
-      ...asset,
-      kind: asset.kind as 'animation' | 'video',
-      aspectRatio: hasOwnDimensions
-        ? (asset.width as number) / (asset.height as number)
-        : preview.aspectRatio,
-      preview,
-    },
+  const presentation = {
+    ...asset,
+    aspectRatio: hasOwnDimensions
+      ? (asset.width as number) / (asset.height as number)
+      : preview.aspectRatio,
+    preview,
   }
+
+  return asset.kind === 'video'
+    ? {
+        configurationIssue: null,
+        presentation: { ...presentation, kind: 'video' },
+      }
+    : {
+        configurationIssue: null,
+        presentation: { ...presentation, kind: 'animation' },
+      }
 }
 
 function createShowcasePresentation(
@@ -344,7 +364,10 @@ function createShowcasePresentation(
     }
 
     if (asset.kind === 'video' || asset.kind === 'animation') {
-      const result = createMotionPresentation(service.slug, asset)
+      const result = createMotionPresentation(service.slug, {
+        ...asset,
+        kind: asset.kind,
+      })
       if (result.configurationIssue) return result
       showcase.push(result.presentation)
       continue

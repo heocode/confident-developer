@@ -7,8 +7,12 @@ import {
   getServiceBlockExitDelay,
 } from '../presentation/service-detail-motion.ts'
 import { SERVICE_SHOWCASE_LAYOUT_TOKENS } from '../presentation/service-showcase-layout.ts'
-import type { ShowcaseAssetPresentation } from '../presentation/services-page.ts'
+import type {
+  AnimationShowcaseAssetPresentation,
+  ShowcaseAssetPresentation,
+} from '../presentation/services-page.ts'
 import entranceStyles from './ServiceBlockEntrance.module.css'
+import { ServiceRiveShowcaseStack } from './ServiceRiveShowcaseStack.tsx'
 import styles from './ServiceShowcaseRail.module.css'
 import { ServiceVideoShowcase } from './ServiceVideoShowcase.tsx'
 
@@ -41,6 +45,12 @@ function getEnterStyle(index: number, blockCount: number): EnterStyle {
     '--service-block-enter-delay': `${getServiceBlockEnterDelay(index)}ms`,
     '--service-block-exit-delay': `${getServiceBlockExitDelay(index, blockCount)}ms`,
   }
+}
+
+function isAnimationAsset(
+  asset: ShowcaseAssetPresentation,
+): asset is AnimationShowcaseAssetPresentation {
+  return asset.kind === 'animation'
 }
 
 function ServiceShowcaseAsset({
@@ -164,6 +174,7 @@ export function ServiceShowcaseRail({
                 : SERVICE_SHOWCASE_LAYOUT_TOKENS.basePanelWidth)
             }px`,
           }
+          const animationAssets = group.assets.filter(isAnimationAsset)
 
           return (
             <li
@@ -175,19 +186,32 @@ export function ServiceShowcaseRail({
               key={group.assets[0].id}
               style={groupStyle}
             >
-              {group.assets.map((asset, groupAssetIndex) => {
-                return (
-                  <ServiceShowcaseAsset
-                    asset={asset}
-                    blockCount={blockCount}
-                    enterIndex={groupEnterOffsets[groupIndex] + groupAssetIndex}
-                    isCompact={group.kind === 'compact'}
-                    isPriority={groupIndex === 0 && groupAssetIndex === 0}
-                    key={asset.id}
-                    railRef={railRef}
-                  />
-                )
-              })}
+              {group.kind === 'compact' &&
+              animationAssets.length === group.assets.length ? (
+                <ServiceRiveShowcaseStack
+                  assets={animationAssets}
+                  blockCount={blockCount}
+                  enterOffset={groupEnterOffsets[groupIndex]}
+                  isPriority={groupIndex === 0}
+                  railRef={railRef}
+                />
+              ) : (
+                group.assets.map((asset, groupAssetIndex) => {
+                  return (
+                    <ServiceShowcaseAsset
+                      asset={asset}
+                      blockCount={blockCount}
+                      enterIndex={
+                        groupEnterOffsets[groupIndex] + groupAssetIndex
+                      }
+                      isCompact={group.kind === 'compact'}
+                      isPriority={groupIndex === 0 && groupAssetIndex === 0}
+                      key={asset.id}
+                      railRef={railRef}
+                    />
+                  )
+                })
+              )}
             </li>
           )
         })}

@@ -2,6 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 
 import replayIconUrl from '../../../assets/icons/actions/replay.svg'
+import {
+  useDocumentVisibility,
+  usePrefersReducedMotion,
+  useServiceRailVisibility,
+} from '../hooks/useServiceMediaEnvironment.ts'
 import { getServiceVideoPlaybackIntent } from '../presentation/service-video-playback.ts'
 import type { MotionShowcaseAssetPresentation } from '../presentation/services-page.ts'
 import styles from './ServiceVideoShowcase.module.css'
@@ -10,73 +15,6 @@ interface ServiceVideoShowcaseProps {
   asset: MotionShowcaseAssetPresentation
   isPriority: boolean
   railRef: RefObject<HTMLElement | null>
-}
-
-function usePrefersReducedMotion() {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  )
-
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const updatePreference = () => setPrefersReducedMotion(query.matches)
-
-    updatePreference()
-    query.addEventListener('change', updatePreference)
-
-    return () => query.removeEventListener('change', updatePreference)
-  }, [])
-
-  return prefersReducedMotion
-}
-
-function useDocumentVisibility() {
-  const [isDocumentVisible, setIsDocumentVisible] = useState(
-    () => document.visibilityState !== 'hidden',
-  )
-
-  useEffect(() => {
-    const updateVisibility = () =>
-      setIsDocumentVisible(document.visibilityState !== 'hidden')
-
-    document.addEventListener('visibilitychange', updateVisibility)
-
-    return () => document.removeEventListener('visibilitychange', updateVisibility)
-  }, [])
-
-  return isDocumentVisible
-}
-
-function usePanelVisibility(
-  panelRef: RefObject<HTMLElement | null>,
-  railRef: RefObject<HTMLElement | null>,
-) {
-  const [isPanelVisible, setIsPanelVisible] = useState(
-    () => !('IntersectionObserver' in window),
-  )
-
-  useEffect(() => {
-    const panel = panelRef.current
-    const rail = railRef.current
-
-    if (!panel || !rail) return
-
-    if (!('IntersectionObserver' in window)) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) =>
-        setIsPanelVisible(
-          Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.35),
-        ),
-      { root: rail, threshold: [0, 0.35] },
-    )
-
-    observer.observe(panel)
-
-    return () => observer.disconnect()
-  }, [panelRef, railRef])
-
-  return isPanelVisible
 }
 
 export function ServiceVideoShowcase({
@@ -93,7 +31,7 @@ export function ServiceVideoShowcase({
   const [manualPlaybackRequested, setManualPlaybackRequested] = useState(false)
   const [playbackWasBlocked, setPlaybackWasBlocked] = useState(false)
   const isDocumentVisible = useDocumentVisibility()
-  const isPanelVisible = usePanelVisibility(frameRef, railRef)
+  const isPanelVisible = useServiceRailVisibility(frameRef, railRef)
   const prefersReducedMotion = usePrefersReducedMotion()
   const playbackIntent = getServiceVideoPlaybackIntent({
     hasActivated,
