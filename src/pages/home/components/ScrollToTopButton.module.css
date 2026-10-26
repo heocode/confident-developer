@@ -1,7 +1,7 @@
 .button {
   position: fixed;
   z-index: 15;
-  right: calc(var(--page-gutter) + var(--modal-scrollbar-compensation, 0px));
+  right: var(--page-gutter);
   bottom: var(--viewport-edge-offset);
   display: grid;
   width: clamp(3rem, 4vw, 3.5rem);

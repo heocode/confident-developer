@@ -168,7 +168,7 @@
   position: fixed;
   z-index: 1;
   top: var(--viewport-edge-offset);
-  right: calc(var(--page-gutter) + var(--modal-scrollbar-compensation, 0px));
+  right: var(--page-gutter);
 }
 
 .removalModal > p {
@@ -451,7 +451,7 @@
     --dialog-close-icon-height: 0.125rem;
 
     top: 0.75rem;
-    right: calc(0.75rem + var(--modal-scrollbar-compensation, 0px));
+    right: 0.75rem;
   }
 
   .textFields {

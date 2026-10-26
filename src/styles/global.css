@@ -26,10 +26,8 @@ a {
 .site-shell {
     position: relative;
     isolation: isolate;
+    width: 100vw;
     min-height: 100svh;
-}
-
-.site-shell[data-route-transition-active] {
     overflow-x: clip;
 }
 
