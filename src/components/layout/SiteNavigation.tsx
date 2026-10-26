@@ -1,19 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 import { siteIdentity } from '../../data/site'
-
-const navigationItems = [
-  { label: 'Home', to: '/' },
-  { label: 'Projects', to: '/projects' },
-  { label: 'Services', to: '/services' },
-  { label: 'About me', to: '/about' },
-  { label: 'References', to: '/references' },
-  { label: 'Contact Me', to: '/contact' },
-]
+import { primaryRoutes } from './route-transitions/primary-routes.ts'
+import { shouldHandleRouteTransitionActivation } from './route-transitions/route-transition-activation.ts'
+import { useRouteTransition } from './route-transitions/route-transition-context.ts'
 
 export function SiteNavigation() {
   const location = useLocation()
+  const { beginNavigation } = useRouteTransition()
   const navigationRef = useRef<HTMLElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -100,6 +96,22 @@ export function SiteNavigation() {
     }
   }, [isMenuOpen])
 
+  const navigateFromPrimaryNavigation = (
+    event: MouseEvent<HTMLAnchorElement>,
+    to: string,
+  ) => {
+    setIsMenuOpen(false)
+
+    const shouldHandle = shouldHandleRouteTransitionActivation(event, {
+      isDesktop: window.matchMedia('(min-width: 48.001rem)').matches,
+      prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    })
+    if (!shouldHandle) return
+
+    const result = beginNavigation(to)
+    if (result !== 'bypass') event.preventDefault()
+  }
+
   return (
     <nav
       className={navigationFrameClassName}
@@ -130,15 +142,15 @@ export function SiteNavigation() {
         className={isMenuOpen ? 'site-navigation site-navigation--open' : 'site-navigation'}
         id="primary-navigation"
       >
-        {navigationItems.map(({ label, to }) => (
-          <li key={to}>
+        {primaryRoutes.map(({ label, path }) => (
+          <li key={path}>
             <NavLink
               className={({ isActive }) =>
                 isActive ? 'site-navigation__link site-navigation__link--active' : 'site-navigation__link'
               }
-              end={to === '/'}
-              onClick={() => setIsMenuOpen(false)}
-              to={to}
+              end={path === '/'}
+              onClick={(event) => navigateFromPrimaryNavigation(event, path)}
+              to={path}
             >
               {label}
             </NavLink>

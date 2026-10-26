@@ -29,6 +29,10 @@ a {
     min-height: 100svh;
 }
 
+.site-shell[data-route-transition-active] {
+    overflow-x: clip;
+}
+
 .skip-link {
     position: fixed;
     z-index: 100;
@@ -109,6 +113,83 @@ a {
     z-index: 1;
     width: 100%;
     min-height: calc(100svh - 5rem);
+}
+
+@media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'],
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'] {
+        pointer-events: none;
+        will-change: transform, opacity;
+    }
+
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'][data-route-transition-direction='forward'] {
+        animation: route-fallback-leave-forward 200ms cubic-bezier(0.4, 0, 1, 1) both;
+    }
+
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'][data-route-transition-direction='backward'] {
+        animation: route-fallback-leave-backward 200ms cubic-bezier(0.4, 0, 1, 1) both;
+    }
+
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='switching'] {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'][data-route-transition-direction='forward'] {
+        animation: route-fallback-enter-forward 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'][data-route-transition-direction='backward'] {
+        animation: route-fallback-enter-backward 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+}
+
+@keyframes route-fallback-leave-forward {
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate3d(-6vw, 0, 0);
+    }
+}
+
+@keyframes route-fallback-leave-backward {
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate3d(6vw, 0, 0);
+    }
+}
+
+@keyframes route-fallback-enter-forward {
+    from {
+        opacity: 0;
+        transform: translate3d(6vw, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes route-fallback-enter-backward {
+    from {
+        opacity: 0;
+        transform: translate3d(-6vw, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
 }
 
 .route-page {

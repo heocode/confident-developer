@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b && tsc -p tsconfig.test.json",
     "lint": "eslint .",
-    "test": "node --test test/api/*.test.ts test/features/contact/*.test.ts test/features/profile/*.test.ts test/features/projects/*.test.ts test/features/references/*.test.ts test/features/services/*.test.ts test/pages/home/*.test.ts",
+    "test": "node --test test/api/*.test.ts test/components/layout/*.test.ts test/features/contact/*.test.ts test/features/profile/*.test.ts test/features/projects/*.test.ts test/features/references/*.test.ts test/features/services/*.test.ts test/pages/home/*.test.ts",
     "preview": "vite preview"
   },
   "dependencies": {

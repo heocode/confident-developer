@@ -72,6 +72,8 @@ npm run preview
 
 The shared application layout remains mounted across client-side route transitions. Persistent site-wide layers such as the cloud background therefore continue across navigation.
 
+Desktop primary-navigation changes are coordinated as directional transitions between the six primary route areas. Mobile and reduced-motion navigation remains immediate, modified links retain native browser behavior, and nested Project or Service navigation does not invoke the global route transition.
+
 ## Backend integration
 
 The frontend currently integrates these public backend domains:
