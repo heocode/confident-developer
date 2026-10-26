@@ -60,6 +60,7 @@ export function ServiceRiveShowcaseStack({
 }: ServiceRiveShowcaseStackProps) {
   const stackRef = useRef<HTMLDivElement>(null)
   const controllersRef = useRef(new Map<string, ServiceRiveController>())
+  const hoveredAssetIdsRef = useRef(new Set<string>())
   const playbackActiveRef = useRef(false)
   const startFrameRef = useRef<number | null>(null)
   const revealFrameRef = useRef<number | null>(null)
@@ -98,6 +99,7 @@ export function ServiceRiveShowcaseStack({
 
   const handleReady = useCallback((controller: ServiceRiveController) => {
     controllersRef.current.set(controller.assetId, controller)
+    controller.setHovered(hoveredAssetIdsRef.current.has(controller.assetId))
     setReadyIds((currentIds) => addId(currentIds, controller.assetId))
     setSettledIds((currentIds) => addId(currentIds, controller.assetId))
   }, [])
@@ -106,6 +108,26 @@ export function ServiceRiveShowcaseStack({
     setFailedIds((currentIds) => addId(currentIds, assetId))
     setSettledIds((currentIds) => addId(currentIds, assetId))
   }, [])
+
+  const handlePointerEnter = (
+    assetId: string,
+    pointerType: string,
+  ) => {
+    if (pointerType !== 'mouse') return
+
+    hoveredAssetIdsRef.current.add(assetId)
+    controllersRef.current.get(assetId)?.setHovered(true)
+  }
+
+  const handlePointerLeave = (
+    assetId: string,
+    pointerType: string,
+  ) => {
+    if (pointerType !== 'mouse') return
+
+    hoveredAssetIdsRef.current.delete(assetId)
+    controllersRef.current.get(assetId)?.setHovered(false)
+  }
 
   useEffect(() => {
     const controllers = controllersRef.current
@@ -161,6 +183,12 @@ export function ServiceRiveShowcaseStack({
             className={`${railStyles.panel} ${railStyles.compactPanel} ${entranceStyles.block} ${styles.panel}`}
             data-rive-active={isRuntimeVisible ? '' : undefined}
             key={asset.id}
+            onPointerEnter={(event) =>
+              handlePointerEnter(asset.id, event.pointerType)
+            }
+            onPointerLeave={(event) =>
+              handlePointerLeave(asset.id, event.pointerType)
+            }
             style={getEnterStyle(enterOffset + assetIndex, blockCount)}
           >
             <div className={styles.surface}>

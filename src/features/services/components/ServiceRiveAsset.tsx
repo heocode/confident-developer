@@ -42,9 +42,9 @@ export function ServiceRiveAsset({
     {
       autoBind: true,
       autoplay: false,
-      dispatchPointerExit: true,
       layout,
       onLoadError: reportFailure,
+      shouldDisableRiveListeners: true,
       src: asset.url,
     },
     { shouldUseIntersectionObserver: false },
@@ -66,11 +66,15 @@ export function ServiceRiveAsset({
     // Without an initial machine name, Rive instances the first linear animation.
     // Reset onto the discovered machine so that static pose cannot remain beneath it.
     rive.reset({ autoBind: true, autoplay: false, stateMachine: machineName })
+    const hoveredProperty = rive.viewModelInstance?.boolean('hovered')
 
     onReady({
       assetId: asset.id,
       pause: () => rive.pause(machineName),
       play: () => rive.play(machineName),
+      setHovered: (isHovered) => {
+        if (hoveredProperty) hoveredProperty.value = isHovered
+      },
     })
   }, [asset.id, onReady, reportFailure, rive])
 
