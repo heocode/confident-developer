@@ -10,6 +10,38 @@
   opacity: var(--home-hero-opacity, 1);
 }
 
+.initialDrop {
+  --initial-home-drop-delay: 0ms;
+  --initial-home-drop-distance: -8rem;
+  --initial-home-drop-duration: 420ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(.site-shell[data-initial-home-opening='running']) .initialDrop {
+    animation: initial-home-element-drop var(--initial-home-drop-duration)
+      cubic-bezier(0.16, 1.08, 0.3, 1) var(--initial-home-drop-delay) both;
+    will-change: opacity, translate;
+  }
+
+  :global(.site-shell[data-initial-home-opening='running']) .portraitFloater,
+  :global(.site-shell[data-initial-home-opening='running']) .scrollIcon,
+  :global(.site-shell[data-initial-home-opening='running']) .scrollLabel {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes initial-home-element-drop {
+  from {
+    opacity: 0;
+    translate: 0 var(--initial-home-drop-distance);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 .identity,
 .keepBuilding {
   position: absolute;
@@ -24,16 +56,28 @@
 }
 
 .identity {
+  --initial-home-drop-delay: 20ms;
+  --initial-home-drop-distance: -7rem;
+  --initial-home-drop-duration: 300ms;
+
   left: var(--page-gutter);
   display: grid;
 }
 
 .keepBuilding {
+  --initial-home-drop-delay: 35ms;
+  --initial-home-drop-distance: -7rem;
+  --initial-home-drop-duration: 300ms;
+
   right: var(--page-gutter);
   text-align: right;
 }
 
 .portraitFrame {
+  --initial-home-drop-delay: 40ms;
+  --initial-home-drop-distance: -44svh;
+  --initial-home-drop-duration: 380ms;
+
   position: absolute;
   z-index: 1;
   top: clamp(4.25rem, 6.5vw, 6.5rem);
@@ -82,6 +126,10 @@
 }
 
 .introduction {
+  --initial-home-drop-delay: 60ms;
+  --initial-home-drop-distance: -64svh;
+  --initial-home-drop-duration: 430ms;
+
   position: absolute;
   z-index: 2;
   top: 50%;
@@ -115,10 +163,17 @@
 }
 
 .socials {
+  --initial-home-drop-delay: 90ms;
+  --initial-home-drop-distance: -105svh;
+  --initial-home-drop-duration: 480ms;
+
   left: var(--page-gutter);
 }
 
 .scrollPrompt {
+  --initial-home-drop-delay: 120ms;
+  --initial-home-drop-distance: -105svh;
+  --initial-home-drop-duration: 480ms;
   --scroll-cue-duration: 5s;
 
   left: 50%;
@@ -161,10 +216,30 @@
 }
 
 .clock {
+  --initial-home-drop-delay: 105ms;
+  --initial-home-drop-distance: -105svh;
+  --initial-home-drop-duration: 480ms;
+
   right: var(--page-gutter);
 }
 
 @media (max-width: 48rem) {
+  .portraitFrame {
+    --initial-home-drop-delay: 35ms;
+    --initial-home-drop-duration: 360ms;
+  }
+
+  .introduction {
+    --initial-home-drop-delay: 55ms;
+    --initial-home-drop-duration: 410ms;
+  }
+
+  .socials,
+  .clock {
+    --initial-home-drop-delay: 90ms;
+    --initial-home-drop-duration: 450ms;
+  }
+
   .identity,
   .keepBuilding {
     display: none;

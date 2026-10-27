@@ -17,18 +17,25 @@ export function HeroSection() {
       onPointerMove={handlePointerMove}
       ref={heroRef}
     >
-      <p className={`${styles.identity} ${styles.exitContent}`}>
+      <p
+        className={`${styles.identity} ${styles.exitContent} ${styles.initialDrop}`}
+      >
         <span>{siteIdentity.firstName}</span>
         <span>{siteIdentity.lastName}</span>
       </p>
 
-      <span className={`${styles.keepBuilding} ${styles.exitContent}`} aria-hidden="true">
+      <span
+        className={`${styles.keepBuilding} ${styles.exitContent} ${styles.initialDrop}`}
+        aria-hidden="true"
+      >
         KEEP
         <br />
         BUILDING
       </span>
 
-      <div className={`${styles.portraitFrame} ${styles.exitContent}`}>
+      <div
+        className={`${styles.portraitFrame} ${styles.exitContent} ${styles.initialDrop}`}
+      >
         <div className={styles.portraitMover} ref={portraitRef}>
           <div className={styles.portraitFloater}>
             <img
@@ -42,17 +49,21 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className={`${styles.introduction} ${styles.exitContent}`}>
+      <div
+        className={`${styles.introduction} ${styles.exitContent} ${styles.initialDrop}`}
+      >
         <h1 id="hero-title">{siteIdentity.heroTitle}</h1>
         <p>{siteIdentity.headline}</p>
       </div>
 
-      <div className={`${styles.socials} ${styles.exitContent}`}>
+      <div
+        className={`${styles.socials} ${styles.exitContent} ${styles.initialDrop}`}
+      >
         <SocialLinks links={siteSocialLinks} />
       </div>
 
       <a
-        className={`${styles.scrollPrompt} ${styles.exitContent}`}
+        className={`${styles.scrollPrompt} ${styles.exitContent} ${styles.initialDrop}`}
         href="#home-projects"
         aria-label="Scroll to the projects preview"
       >
@@ -62,7 +73,9 @@ export function HeroSection() {
         <span className={styles.scrollLabel}>SCROLL TO EXPLORE</span>
       </a>
 
-      <div className={`${styles.clock} ${styles.exitContent}`}>
+      <div
+        className={`${styles.clock} ${styles.exitContent} ${styles.initialDrop}`}
+      >
         <TorontoClock />
       </div>
     </section>

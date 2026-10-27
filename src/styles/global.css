@@ -106,6 +106,25 @@ a {
     background: var(--color-surface-active);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    .site-shell[data-initial-home-opening='running'] .site-header {
+        animation: initial-home-navigation-drop 320ms cubic-bezier(0.16, 1.08, 0.3, 1) both;
+        will-change: opacity, translate;
+    }
+}
+
+@keyframes initial-home-navigation-drop {
+    from {
+        opacity: 0;
+        translate: 0 -7rem;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
 .site-main {
     position: relative;
     z-index: 1;

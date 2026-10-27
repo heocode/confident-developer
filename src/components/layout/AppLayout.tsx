@@ -8,6 +8,7 @@ import { RouteTransitionContext } from './route-transitions/route-transition-con
 import { routeTransitionTiming } from './route-transitions/route-transition-timing.ts'
 import { useRouteTransitionCoordinator } from './route-transitions/useRouteTransitionCoordinator.ts'
 import { SiteNavigation } from './SiteNavigation'
+import { useInitialHomeOpening } from './useInitialHomeOpening.ts'
 import { usePageScrollLock } from './usePageScrollLock.ts'
 
 const viewportLockedRoutes = new Set(['projects', 'services'])
@@ -25,6 +26,7 @@ export function AppLayout() {
   const { pathname } = useLocation()
   const routeSection = pathname.split('/')[1]
   const isViewportLocked = viewportLockedRoutes.has(routeSection)
+  const isInitialHomeOpening = useInitialHomeOpening(pathname)
   const mainRef = useRef<HTMLElement>(null)
   const {
     activeMotionPreset,
@@ -39,6 +41,7 @@ export function AppLayout() {
     <RouteTransitionContext.Provider value={contextValue}>
       <div
         className="site-shell"
+        data-initial-home-opening={isInitialHomeOpening ? 'running' : undefined}
         data-route-transition-active={isTransitioning ? '' : undefined}
         data-route-transition-direction={transition.direction ?? undefined}
         data-route-transition-phase={transition.phase}

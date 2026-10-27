@@ -21,6 +21,8 @@ Home is feature-complete for the approved scope. Its remaining work is limited t
 
 The Home route composes the Hero, Projects, Services, Profile, References, and Contact sections. The sections remain in normal document flow and use scroll-progress transitions. The final Contact section includes the footer and opens the functional contact drawer.
 
+An initial document load at the top of Home plays a non-blocking opening scene: Navigation and Hero groups fall vertically into place, then the persistent cloud field floats in and continues its normal drift. The scene does not replay after client-side navigation and resolves immediately for user scroll/navigation intent or reduced motion.
+
 The dedicated Projects routes are feature-complete for the approved scope. Published projects load from the backend into URL-backed browser tabs, and each selected project presents its ordered screenshots and metadata in one responsive horizontal rail across desktop and mobile.
 
 On desktop primary-route changes, the complete Projects browser slides in from beyond the destination-side viewport edge. Its initially visible leading edge begins as a small rounded bulge and unfolds into the stable browser surface during the slide; the exit mirrors that travel toward the departure edge. Nested project-tab navigation and direct visits remain immediate.
