@@ -28,7 +28,7 @@ export const primaryRoutes = [
   {
     id: 'projects',
     label: 'Projects',
-    motionPreset: 'fallback',
+    motionPreset: 'custom',
     navigationIndex: 1,
     path: '/projects',
   },

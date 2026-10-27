@@ -6,6 +6,7 @@ import {
   getRouteTransitionDirection,
 } from '../../../src/components/layout/route-transitions/primary-routes.ts'
 import { shouldHandleRouteTransitionActivation } from '../../../src/components/layout/route-transitions/route-transition-activation.ts'
+import { resolvePrimaryRouteMotion } from '../../../src/components/layout/route-transitions/usePrimaryRouteMotion.ts'
 
 describe('Primary route resolution', () => {
   it('maps nested project and service URLs to their primary navigation areas', () => {
@@ -116,6 +117,71 @@ describe('Desktop navigation transition activation', () => {
         { isDesktop: true, prefersReducedMotion: false },
       ),
       false,
+    )
+  })
+})
+
+describe('Primary route-owned motion', () => {
+  it('exposes exit motion only to the source route', () => {
+    const transition = {
+      direction: 'forward' as const,
+      id: 4,
+      phase: 'leaving' as const,
+      source: 'projects' as const,
+      target: 'services' as const,
+    }
+
+    assert.deepEqual(resolvePrimaryRouteMotion(transition, 'projects'), {
+      direction: 'forward',
+      phase: 'leaving',
+      transitionId: 4,
+    })
+    assert.equal(resolvePrimaryRouteMotion(transition, 'services').phase, 'idle')
+  })
+
+  it('exposes entrance motion only to the destination route', () => {
+    const transition = {
+      direction: 'backward' as const,
+      id: 7,
+      phase: 'entering' as const,
+      source: 'contact' as const,
+      target: 'projects' as const,
+    }
+
+    assert.deepEqual(resolvePrimaryRouteMotion(transition, 'projects'), {
+      direction: 'backward',
+      phase: 'entering',
+      transitionId: 7,
+    })
+    assert.equal(resolvePrimaryRouteMotion(transition, 'contact').phase, 'idle')
+  })
+
+  it('does not expose route-owned motion while the coordinator is idle or switching', () => {
+    assert.equal(
+      resolvePrimaryRouteMotion(
+        {
+          direction: null,
+          id: 8,
+          phase: 'idle',
+          source: null,
+          target: null,
+        },
+        'projects',
+      ).phase,
+      'idle',
+    )
+    assert.equal(
+      resolvePrimaryRouteMotion(
+        {
+          direction: 'forward',
+          id: 9,
+          phase: 'switching',
+          source: 'home',
+          target: 'projects',
+        },
+        'projects',
+      ).phase,
+      'idle',
     )
   })
 })

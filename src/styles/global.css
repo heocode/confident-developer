@@ -114,9 +114,13 @@ a {
 }
 
 @media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
+    .site-main[data-route-transition-phase='leaving'],
+    .site-main[data-route-transition-phase='entering'] {
+        pointer-events: none;
+    }
+
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'],
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'] {
-        pointer-events: none;
         will-change: transform, opacity;
     }
 
@@ -128,7 +132,7 @@ a {
         animation: route-fallback-leave-backward var(--route-transition-exit-duration) cubic-bezier(0.4, 0, 1, 1) both;
     }
 
-    .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='switching'] {
+    .site-main[data-route-transition-phase='switching'] {
         opacity: 0;
         pointer-events: none;
     }

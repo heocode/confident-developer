@@ -23,6 +23,8 @@ The Home route composes the Hero, Projects, Services, Profile, References, and C
 
 The dedicated Projects routes are feature-complete for the approved scope. Published projects load from the backend into URL-backed browser tabs, and each selected project presents its ordered screenshots and metadata in one responsive horizontal rail across desktop and mobile.
 
+On desktop primary-route changes, the complete Projects browser slides in from beyond the destination-side viewport edge. Its initially visible leading edge begins as a small rounded bulge and unfolds into the stable browser surface during the slide; the exit mirrors that travel toward the departure edge. Nested project-tab navigation and direct visits remain immediate.
+
 ## Requirements
 
 - Node.js 22 or newer
