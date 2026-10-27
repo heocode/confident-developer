@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import type { AnimationEvent } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import { RouteSurfaceMotion } from '../../../components/layout/route-transitions/route-surface/RouteSurfaceMotion.tsx'
 import { usePrimaryRouteMotion } from '../../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
 import { useProjectsList } from '../hooks/useProjectsPageData.ts'
 import type { ProjectDetailCache } from '../hooks/useProjectsPageData.ts'
@@ -12,11 +12,6 @@ export function ProjectsRoute() {
   const { retry, state } = useProjectsList()
   const [detailCache] = useState<ProjectDetailCache>(() => new Map())
   const routeMotion = usePrimaryRouteMotion('projects')
-
-  const completeRouteMotion = (event: AnimationEvent<HTMLDivElement>) => {
-    if (event.currentTarget !== event.target) return
-    routeMotion.complete()
-  }
 
   return (
     <section
@@ -29,10 +24,7 @@ export function ProjectsRoute() {
         THE STUFF ARCHIVE
       </h1>
       <div className={styles.content}>
-        <div
-          className={styles.contentReveal}
-          onAnimationEnd={completeRouteMotion}
-        >
+        <RouteSurfaceMotion motion={routeMotion}>
           <Outlet
             context={{
               detailCache,
@@ -40,7 +32,7 @@ export function ProjectsRoute() {
               retryProjects: retry,
             } satisfies ProjectsRouteContextValue}
           />
-        </div>
+        </RouteSurfaceMotion>
       </div>
     </section>
   )

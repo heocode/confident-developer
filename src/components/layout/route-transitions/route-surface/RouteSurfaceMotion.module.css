@@ -1,0 +1,125 @@
+.surface {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+@media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
+  .surface {
+    --route-surface-enter-duration: 400ms;
+    --route-surface-exit-duration: 340ms;
+    --route-surface-edge-peek: clamp(1.75rem, 3vw, 3rem);
+  }
+
+  .surface[data-route-motion-phase='entering'],
+  .surface[data-route-motion-phase='leaving'] {
+    will-change: clip-path, transform;
+  }
+
+  .surface[data-route-motion-phase='entering'][data-route-motion-direction='forward'] {
+    animation:
+      surface-slide-enter-forward var(--route-surface-enter-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) both,
+      surface-shape-enter var(--route-surface-enter-duration) linear both;
+  }
+
+  .surface[data-route-motion-phase='entering'][data-route-motion-direction='backward'] {
+    animation:
+      surface-slide-enter-backward var(--route-surface-enter-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) both,
+      surface-shape-enter var(--route-surface-enter-duration) linear both;
+  }
+
+  .surface[data-route-motion-phase='leaving'][data-route-motion-direction='forward'] {
+    animation:
+      surface-slide-leave-forward var(--route-surface-exit-duration)
+        cubic-bezier(0.55, 0, 1, 0.45) both,
+      surface-shape-leave var(--route-surface-exit-duration) linear both;
+  }
+
+  .surface[data-route-motion-phase='leaving'][data-route-motion-direction='backward'] {
+    animation:
+      surface-slide-leave-backward var(--route-surface-exit-duration)
+        cubic-bezier(0.55, 0, 1, 0.45) both,
+      surface-shape-leave var(--route-surface-exit-duration) linear both;
+  }
+}
+
+@keyframes surface-slide-enter-forward {
+  from {
+    transform: translate3d(
+      calc(100% + var(--route-surface-inline-inset, 0rem) - var(--route-surface-edge-peek)),
+      0,
+      0
+    );
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes surface-slide-enter-backward {
+  from {
+    transform: translate3d(
+      calc(-100% - var(--route-surface-inline-inset, 0rem) + var(--route-surface-edge-peek)),
+      0,
+      0
+    );
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes surface-slide-leave-forward {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(
+      calc(-100% - var(--route-surface-inline-inset, 0rem) - 1rem),
+      0,
+      0
+    );
+  }
+}
+
+@keyframes surface-slide-leave-backward {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(
+      calc(100% + var(--route-surface-inline-inset, 0rem) + 1rem),
+      0,
+      0
+    );
+  }
+}
+
+@keyframes surface-shape-enter {
+  0% {
+    clip-path: inset(42% 0 round 999px);
+  }
+
+  38%,
+  100% {
+    clip-path: inset(0 round 0);
+  }
+}
+
+@keyframes surface-shape-leave {
+  0%,
+  62% {
+    clip-path: inset(0 round 0);
+  }
+
+  100% {
+    clip-path: inset(42% 0 round 999px);
+  }
+}
