@@ -1,5 +1,5 @@
 import starUrl from '../../../assets/icons/references/star.svg'
-import styles from './HomeReferencesSection.module.css'
+import styles from './ReferenceFeed.module.css'
 
 interface ReferenceRatingProps {
   label: string

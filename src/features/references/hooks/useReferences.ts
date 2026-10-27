@@ -12,7 +12,7 @@ import type {
   ReferencePagination,
 } from '../model/reference.types.ts'
 
-const HOME_REFERENCES_PAGE_SIZE = 10
+const REFERENCES_PAGE_SIZE = 10
 
 interface ReadyReferencesState {
   status: 'ready'
@@ -22,7 +22,7 @@ interface ReadyReferencesState {
   loadMoreErrorMessage: string | null
 }
 
-export type HomeReferencesState =
+export type ReferencesState =
   | { status: 'loading' }
   | { status: 'empty'; emptyState: ReferenceEmptyState | null }
   | { status: 'error'; message: string }
@@ -42,9 +42,9 @@ function getReferencesErrorMessage(error: unknown) {
   return error.message
 }
 
-export function useHomeReferences() {
+export function useReferences() {
   const [requestVersion, setRequestVersion] = useState(0)
-  const [state, setState] = useState<HomeReferencesState>({ status: 'loading' })
+  const [state, setState] = useState<ReferencesState>({ status: 'loading' })
   const isMountedRef = useRef(false)
   const loadMoreControllerRef = useRef<AbortController | null>(null)
 
@@ -68,7 +68,7 @@ export function useHomeReferences() {
     let isActive = true
 
     void getReferencesPage(
-      { page: 1, limit: HOME_REFERENCES_PAGE_SIZE },
+      { page: 1, limit: REFERENCES_PAGE_SIZE },
       { signal: controller.signal },
     )
       .then(({ emptyState, items, pagination }) => {
@@ -117,7 +117,7 @@ export function useHomeReferences() {
 
     try {
       const result = await getReferencesPage(
-        { page: nextPage, limit: HOME_REFERENCES_PAGE_SIZE },
+        { page: nextPage, limit: REFERENCES_PAGE_SIZE },
         { signal: controller.signal },
       )
       if (!isMountedRef.current || controller.signal.aborted) return

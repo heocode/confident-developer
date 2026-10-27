@@ -1,6 +1,6 @@
 import type { ReferenceEmptyState as ReferenceEmptyStateData } from '../model/reference.types.ts'
 import { formatReferenceDate } from '../presentation/reference-formatters.ts'
-import styles from './HomeReferencesSection.module.css'
+import styles from './ReferenceFeed.module.css'
 
 interface ReferenceEmptyStateProps {
   emptyState: ReferenceEmptyStateData

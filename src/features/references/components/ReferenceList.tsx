@@ -6,7 +6,7 @@ import type {
   PublicReference,
   ReferencePagination,
 } from '../model/reference.types.ts'
-import styles from './HomeReferencesSection.module.css'
+import styles from './ReferenceFeed.module.css'
 import { OwnedReferenceCard } from './OwnedReferenceCard.tsx'
 import { ReferenceCard } from './ReferenceCard.tsx'
 

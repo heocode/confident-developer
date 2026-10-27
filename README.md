@@ -98,6 +98,8 @@ The frontend currently integrates these public backend domains:
 
 The backend remains the source of truth for dynamic content and ordering. Feature modules own endpoint paths and public DTOs, while presentation formatting stays outside the transport layer. Loading, empty, error, retry, and unavailable-backend states are handled intentionally by their owning surfaces.
 
+References exposes a shared `useReferences` loader and `ReferenceFeed` display, plus controlled submission fields and a `useReferenceSubmissionForm` hook for validation and Turnstile state. Home composes these with its message input and modal shell; API submission and ownership remain in `useReferenceSubmission`. The dedicated References route is still a placeholder.
+
 ## Deployment
 
 Production hosting must preserve relative `/api/...` browser requests by proxying or rewriting them to the backend. That hosting configuration is deployment-specific and is not currently stored in this repository.

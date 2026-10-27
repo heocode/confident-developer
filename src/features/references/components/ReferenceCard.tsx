@@ -1,7 +1,7 @@
 import referenceAvatarUrl from '../../../assets/icons/references/reference-avatar.svg'
 import type { PublicReference } from '../model/reference.types.ts'
 import { formatReferenceDate } from '../presentation/reference-formatters.ts'
-import styles from './HomeReferencesSection.module.css'
+import styles from './ReferenceFeed.module.css'
 import { ReferenceRating } from './ReferenceRating.tsx'
 
 interface ReferenceCardProps {

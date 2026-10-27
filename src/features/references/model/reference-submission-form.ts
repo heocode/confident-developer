@@ -8,12 +8,9 @@ export interface ReferenceSubmissionDetails {
   ratings: ReferenceRatings
 }
 
-export type ReferenceSubmissionField =
-  | 'name'
-  | 'email'
-  | 'company'
-  | 'position'
-  | keyof ReferenceRatings
+export type ReferenceSubmissionTextField = Exclude<keyof ReferenceSubmissionDetails, 'ratings'>
+
+export type ReferenceSubmissionField = ReferenceSubmissionTextField | keyof ReferenceRatings
 
 export type ReferenceSubmissionErrors = Partial<
   Record<ReferenceSubmissionField | 'testimonial', string>

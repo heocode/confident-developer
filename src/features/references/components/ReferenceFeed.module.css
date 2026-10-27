@@ -1,0 +1,601 @@
+.viewport,
+.emptyViewport,
+.state {
+  min-height: 0;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: 0.875rem;
+}
+
+.viewport {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.emptyViewport {
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(0.625rem, 1.5vw, 1.25rem);
+}
+
+.emptyReferenceCard {
+  display: grid;
+  width: 100%;
+  grid-template-columns: clamp(4rem, 6.1vw, 5.46875rem) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.5rem, 1.1vw, 0.875rem);
+  min-width: 0;
+}
+
+.emptyAvatarWrapper {
+  position: relative;
+  width: clamp(4rem, 6.1vw, 5.46875rem);
+  aspect-ratio: 1;
+}
+
+.emptyAvatarWrapper .avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.presenceIndicator {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  width: clamp(0.625rem, 1vw, 0.875rem);
+  aspect-ratio: 1;
+  border: 0.125rem solid #73a7ef;
+  border-radius: 50%;
+  background: #38d873;
+}
+
+.list {
+  display: grid;
+  min-height: 100%;
+  padding: clamp(0.625rem, 1.2vw, 1rem);
+  align-content: end;
+  gap: clamp(2.5rem, 5svh, 3.75rem);
+}
+
+.referenceCard {
+  display: grid;
+  grid-template-columns: clamp(3.25rem, 5vw, 4.5rem) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(0.45rem, 0.9vw, 0.75rem);
+  min-width: 0;
+}
+
+.avatar {
+  width: clamp(3.25rem, 5vw, 4.5rem);
+  height: auto;
+}
+
+.referenceBody {
+  min-width: 0;
+}
+
+.referenceHeader {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.authorLine {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: nowrap;
+  column-gap: 0.5rem;
+}
+
+.authorMeta,
+.statusGroup {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.authorMeta {
+  --metadata-separator-gap: 0.5rem;
+
+  max-width: 100%;
+  flex-wrap: nowrap;
+  gap: var(--metadata-separator-gap);
+}
+
+.authorMeta > span:not(.statusGroup) {
+  overflow: hidden;
+  text-transform: capitalize;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metaItem,
+.statusGroup {
+  position: relative;
+  min-width: 0;
+  padding-left: var(--metadata-separator-gap);
+}
+
+.metaItem::before,
+.statusGroup::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.0625rem;
+  height: 0.75rem;
+  background: rgb(255 255 255 / 32%);
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.statusGroup {
+  flex: none;
+  gap: 0.4rem;
+}
+
+.pendingStatus,
+.rejectedStatus {
+  white-space: nowrap;
+}
+
+.rejectedStatus {
+  color: var(--color-error);
+}
+
+.ownershipControl {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ownershipInfo {
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: help;
+}
+
+.ownershipInfo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ownershipInfo:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: 0.125rem;
+}
+
+.ownershipPopover {
+  --ownership-popover-background: rgb(43 70 111 / 96%);
+
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  width: min(19rem, calc(100vw - 4rem));
+  visibility: hidden;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  pointer-events: none;
+  transform: translateX(-82%);
+  transition: visibility 0s linear 280ms;
+}
+
+.ownershipPopoverSurface {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--ownership-popover-background);
+  box-shadow: 0 0.5rem 1.5rem rgb(24 51 91 / 24%);
+  clip-path: inset(0 0 0 100% round 0.375rem);
+  transition: clip-path 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: clip-path;
+}
+
+.ownershipPopover::after {
+  position: absolute;
+  top: 100%;
+  left: 81%;
+  width: 0;
+  height: 0;
+  border: 0.45rem solid transparent;
+  border-top-color: var(--ownership-popover-background);
+  clip-path: inset(0 0 0 100%);
+  content: "";
+  transform: translateX(-50%);
+  transition: clip-path 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: clip-path;
+}
+
+.ownershipPopoverSurface strong {
+  color: var(--color-success);
+  font-weight: inherit;
+}
+
+.ownershipPopoverSurface > span,
+.ownershipPopoverSurface > button {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transform: translateX(-0.35rem);
+}
+
+.ownershipPopover button,
+.rejectedAction {
+  justify-self: end;
+  min-height: 1.625rem;
+  padding: 0.3rem 0.9rem;
+  border: 0.0625rem solid var(--color-error);
+  border-radius: var(--radius-pill);
+  color: var(--color-error);
+  background: transparent;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 140ms ease-out;
+}
+
+.rejectedAction {
+  align-self: center;
+}
+
+.ownershipControl:hover .ownershipPopover,
+.ownershipControl:focus-within .ownershipPopover {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.ownershipControl:hover .ownershipPopoverSurface,
+.ownershipControl:focus-within .ownershipPopoverSurface {
+  clip-path: inset(0 round 0.375rem);
+}
+
+.ownershipControl:hover .ownershipPopover::after,
+.ownershipControl:focus-within .ownershipPopover::after {
+  clip-path: inset(0);
+}
+
+.ownershipControl:hover .ownershipPopoverSurface > span,
+.ownershipControl:hover .ownershipPopoverSurface > button,
+.ownershipControl:focus-within .ownershipPopoverSurface > span,
+.ownershipControl:focus-within .ownershipPopoverSurface > button {
+  animation: ownership-popover-content-reveal 260ms
+    cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+}
+
+.ownershipPopover button:disabled,
+.rejectedAction:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.ownershipPopover button:focus-visible,
+.rejectedAction:focus-visible {
+  background: rgb(255 154 168 / 18%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ownershipPopover button:not(:disabled):hover,
+  .rejectedAction:not(:disabled):hover {
+    background: rgb(255 154 168 / 18%);
+  }
+}
+
+@keyframes ownership-popover-content-reveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateX(-0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: translateX(0);
+  }
+}
+
+.authorLine h3,
+.authorLine p,
+.authorMeta,
+.referenceHeader time,
+.testimonial,
+.ratingLabel,
+.paginationStatus p,
+.state h3,
+.state p {
+  margin: 0;
+}
+
+.authorLine h3 {
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+.authorLine p,
+.authorMeta {
+  color: var(--color-text-muted);
+  font-size: clamp(0.875rem, 1.2vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.referenceHeader time {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.testimonial {
+  max-width: 28rem;
+  margin-top: 0.125rem;
+  font-size: clamp(0.875rem, 1.2vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.ratings {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+}
+
+.rating {
+  display: grid;
+  justify-items: start;
+  gap: 0.125rem;
+}
+
+.ratingLabel {
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stars {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.starActive,
+.starInactive {
+  display: block;
+  width: clamp(1.5rem, 2.1vw, 1.875rem);
+  aspect-ratio: 42 / 40;
+  background: #ffb547;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+.starInactive {
+  background: rgb(255 255 255 / 35%);
+}
+
+.paginationStatus {
+  display: grid;
+  justify-items: center;
+  padding: 0 1rem 1rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.paginationStatus:empty {
+  display: none;
+}
+
+.paginationStatus div {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.paginationStatus button,
+.state button {
+  padding: 0.7rem 1.2rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  background: var(--color-surface-active);
+  cursor: pointer;
+}
+
+.sentinel {
+  width: 100%;
+  height: 0.0625rem;
+}
+
+.state {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.state h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.state p {
+  max-width: 30rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 48rem) {
+  .list {
+    padding: clamp(0.625rem, 3vw, 1rem);
+    align-content: end;
+    gap: 2rem;
+  }
+
+  .emptyViewport {
+    padding: clamp(0.75rem, 3.5vw, 1.25rem);
+  }
+
+  .referenceCard {
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .avatar {
+    width: 2.75rem;
+  }
+
+  .emptyReferenceCard {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 0.625rem;
+  }
+
+  .emptyAvatarWrapper {
+    width: 3.5rem;
+  }
+
+  .referenceHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .ownershipPopover {
+    position: fixed;
+    z-index: 20;
+    top: auto;
+    bottom: calc(var(--viewport-edge-offset) + 4.5rem);
+    left: 50%;
+    width: min(19rem, calc(100vw - 2rem));
+    transform: translateX(-50%);
+  }
+
+  .ownershipPopover::after {
+    display: none;
+  }
+
+  .ownershipPopoverSurface {
+    max-height: calc(100svh - 8rem);
+    overflow-y: auto;
+  }
+
+  .authorLine h3 {
+    font-size: 0.875rem;
+  }
+
+  .referenceAuthorLine {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.0625rem;
+  }
+
+  .referenceCard .referenceHeader {
+    gap: 0.0625rem;
+  }
+
+  .referenceAuthorLine h3 {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .authorMeta {
+    --metadata-separator-gap: 0.375rem;
+
+    width: 100%;
+    flex: 1 1 auto;
+    font-size: 0.6875rem;
+  }
+
+  .authorMeta > span:not(.statusGroup) {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .authorLine p,
+  .testimonial {
+    font-size: 0.78125rem;
+  }
+
+  .referenceHeader time {
+    font-size: 0.6875rem;
+  }
+
+  .testimonial {
+    margin-top: 0.4rem;
+  }
+
+  .ratings {
+    gap: 0.375rem;
+  }
+
+  .ratingLabel {
+    font-size: 0.5875rem;
+  }
+
+  .starActive,
+  .starInactive {
+    width: clamp(1.125rem, 5.5vw, 1.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ownershipPopover,
+  .ownershipPopover::after,
+  .ownershipPopoverSurface,
+  .ownershipPopover button,
+  .rejectedAction {
+    transition: none;
+  }
+
+  .ownershipPopoverSurface {
+    clip-path: none;
+  }
+
+  .ownershipControl:hover .ownershipPopover::after,
+  .ownershipControl:focus-within .ownershipPopover::after {
+    clip-path: none;
+  }
+
+  .ownershipControl:hover .ownershipPopoverSurface > span,
+  .ownershipControl:hover .ownershipPopoverSurface > button,
+  .ownershipControl:focus-within .ownershipPopoverSurface > span,
+  .ownershipControl:focus-within .ownershipPopoverSurface > button {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    animation: none;
+  }
+}

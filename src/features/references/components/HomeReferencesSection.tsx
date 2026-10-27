@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Ref } from 'react'
 
-import { useHomeReferences } from '../hooks/useHomeReferences.ts'
+import { useReferences } from '../hooks/useReferences.ts'
 import { useReferenceSubmission } from '../hooks/useReferenceSubmission.ts'
 import {
   createReferenceSubmissionInput,
@@ -11,24 +11,16 @@ import type { ReferenceSubmissionDetails } from '../model/reference-submission-f
 import styles from './HomeReferencesSection.module.css'
 import submissionStyles from './ReferenceSubmission.module.css'
 import { ReferenceComposer } from './ReferenceComposer.tsx'
-import { ReferenceEmptyState } from './ReferenceEmptyState.tsx'
-import { ReferenceList } from './ReferenceList.tsx'
+import { ReferenceFeed } from './ReferenceFeed.tsx'
 import { ReferenceRemovalModal } from './ReferenceRemovalModal.tsx'
 import { ReferenceSubmissionModal } from './ReferenceSubmissionModal.tsx'
-
-const EMPTY_PAGINATION = {
-  page: 1,
-  limit: 10,
-  totalItems: 0,
-  totalPages: 0,
-}
 
 interface HomeReferencesSectionProps {
   sectionRef?: Ref<HTMLElement>
 }
 
 export function HomeReferencesSection({ sectionRef }: HomeReferencesSectionProps) {
-  const { loadNextPage, retry, state: referencesState } = useHomeReferences()
+  const { loadNextPage, retry, state: referencesState } = useReferences()
   const {
     clearSubmissionError,
     clearWithdrawError,
@@ -82,26 +74,6 @@ export function HomeReferencesSection({ sectionRef }: HomeReferencesSectionProps
     return submitted
   }
 
-  const referenceFeed = ownedReference ? (
-    <ReferenceList
-      items={referencesState.status === 'ready' ? referencesState.items : []}
-      pagination={
-        referencesState.status === 'ready' ? referencesState.pagination : EMPTY_PAGINATION
-      }
-      isLoadingMore={referencesState.status === 'ready' && referencesState.isLoadingMore}
-      loadMoreErrorMessage={
-        referencesState.status === 'ready' ? referencesState.loadMoreErrorMessage : null
-      }
-      isOwnedReferenceRemoving={isRemovingReference}
-      ownedReference={ownedReference}
-      onLoadNextPage={loadNextPage}
-      onRequestOwnedReferenceRemoval={() => {
-        clearWithdrawError()
-        setIsRemovalModalOpen(true)
-      }}
-    />
-  ) : null
-
   return (
     <section
       className={styles.section}
@@ -114,55 +86,18 @@ export function HomeReferencesSection({ sectionRef }: HomeReferencesSectionProps
       </header>
 
       <div className={styles.panel}>
-        {referenceFeed}
-
-        {!referenceFeed && isRestoringOwnership && (
-          <div className={styles.state} role="status" aria-live="polite">
-            <p>Restoring your reference…</p>
-          </div>
-        )}
-
-        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'loading' && (
-          <div className={styles.state} role="status" aria-live="polite">
-            <p>Loading references…</p>
-          </div>
-        )}
-
-        {!referenceFeed &&
-          !isRestoringOwnership &&
-          referencesState.status === 'empty' &&
-          referencesState.emptyState && (
-            <ReferenceEmptyState emptyState={referencesState.emptyState} />
-          )}
-
-        {!referenceFeed &&
-          !isRestoringOwnership &&
-          referencesState.status === 'empty' &&
-          !referencesState.emptyState && (
-            <div className={styles.state}>
-              <h3>No references yet</h3>
-            </div>
-          )}
-
-        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'error' && (
-          <div className={styles.state} role="alert">
-            <h3>References are unavailable</h3>
-            <p>{referencesState.message}</p>
-            <button type="button" onClick={retry}>
-              Try again
-            </button>
-          </div>
-        )}
-
-        {!referenceFeed && !isRestoringOwnership && referencesState.status === 'ready' && (
-          <ReferenceList
-            items={referencesState.items}
-            pagination={referencesState.pagination}
-            isLoadingMore={referencesState.isLoadingMore}
-            loadMoreErrorMessage={referencesState.loadMoreErrorMessage}
-            onLoadNextPage={loadNextPage}
-          />
-        )}
+        <ReferenceFeed
+          state={referencesState}
+          isRestoringOwnership={isRestoringOwnership}
+          ownedReference={ownedReference}
+          isOwnedReferenceRemoving={isRemovingReference}
+          onRetry={retry}
+          onLoadNextPage={loadNextPage}
+          onRequestOwnedReferenceRemoval={() => {
+            clearWithdrawError()
+            setIsRemovalModalOpen(true)
+          }}
+        />
 
         <div className={submissionStyles.submissionControls}>
           <ReferenceComposer
