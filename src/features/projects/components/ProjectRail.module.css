@@ -2,26 +2,12 @@
   --project-rail-gap: 0.75rem;
   --project-rail-start: var(--page-gutter);
   --project-rail-end: var(--page-gutter);
+  --horizontal-snap-padding-start: var(--project-rail-start);
+  --horizontal-snap-padding-end: var(--project-rail-end);
+  --horizontal-snap-touch-action: pan-x pinch-zoom;
   width: 100%;
   height: 100%;
-  min-width: 0;
   min-height: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-inline: contain;
-  scroll-padding-inline: var(--project-rail-start) var(--project-rail-end);
-  scroll-snap-type: x proximity;
-  scrollbar-width: none;
-  touch-action: pan-x pinch-zoom;
-}
-
-.rail::-webkit-scrollbar {
-  display: none;
-}
-
-.rail:focus-visible {
-  outline: 0.125rem solid var(--color-text);
-  outline-offset: -0.1875rem;
 }
 
 .track {

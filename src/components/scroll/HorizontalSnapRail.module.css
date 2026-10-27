@@ -1,0 +1,20 @@
+.viewport {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: var(--horizontal-snap-overflow-y, hidden);
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: var(--horizontal-snap-padding-start, 0)
+    var(--horizontal-snap-padding-end, 0);
+  scroll-snap-type: var(--horizontal-snap-type, x proximity);
+  scrollbar-width: none;
+  touch-action: var(--horizontal-snap-touch-action, pan-x pinch-zoom);
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.viewport:focus-visible {
+  outline: 0.125rem solid var(--color-text);
+  outline-offset: -0.1875rem;
+}

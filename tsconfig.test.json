@@ -6,6 +6,7 @@
   },
   "include": [
     "src/api/**/*.ts",
+    "src/components/scroll/**/*.ts",
     "src/components/layout/route-transitions/**/*.ts",
     "src/features/contact/api/**/*.ts",
     "src/features/contact/model/**/*.ts",

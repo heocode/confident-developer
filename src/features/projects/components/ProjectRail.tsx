@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import type { CSSProperties, KeyboardEvent } from 'react'
+import type { CSSProperties } from 'react'
 
+import { HorizontalSnapRail } from '../../../components/scroll/HorizontalSnapRail.tsx'
 import { useProjectRailLayout } from '../hooks/useProjectRailLayout.ts'
 import {
   calculateExpandedProjectPanelWidth,
@@ -95,37 +96,13 @@ export function ProjectRail({ project }: ProjectRailProps) {
       : {}),
   }
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.target !== event.currentTarget) return
-
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault()
-        event.currentTarget.scrollBy({ left: -event.currentTarget.clientWidth * 0.8 })
-        break
-      case 'ArrowRight':
-        event.preventDefault()
-        event.currentTarget.scrollBy({ left: event.currentTarget.clientWidth * 0.8 })
-        break
-      case 'Home':
-        event.preventDefault()
-        event.currentTarget.scrollTo({ left: 0 })
-        break
-      case 'End':
-        event.preventDefault()
-        event.currentTarget.scrollTo({ left: event.currentTarget.scrollWidth })
-        break
-    }
-  }
-
   return (
-    <section
+    <HorizontalSnapRail
       aria-label={`${project.title} project content`}
       className={styles.rail}
-      onKeyDown={handleKeyDown}
       ref={railRef}
+      resetKey={project.slug}
       style={railStyle}
-      tabIndex={0}
     >
       <ol className={styles.track}>
         {project.screenshots.map((screenshot, index) => (
@@ -143,6 +120,6 @@ export function ProjectRail({ project }: ProjectRailProps) {
           </div>
         </li>
       </ol>
-    </section>
+    </HorizontalSnapRail>
   )
 }

@@ -18,6 +18,8 @@ function layoutsMatch(
   return (
     currentLayout?.height === nextLayout?.height &&
     currentLayout?.width === nextLayout?.width &&
+    currentLayout?.screenshotWidths.length ===
+      nextLayout?.screenshotWidths.length &&
     currentLayout?.screenshotWidths.every(
       (width, index) => width === nextLayout?.screenshotWidths[index],
     )

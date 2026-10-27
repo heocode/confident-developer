@@ -95,7 +95,7 @@ export function ProjectsPageView({ onRetryDetail, onRetryProjects, state }: Proj
         tabs={state.presentation.tabs}
         theme={project.theme}
       >
-        <ProjectRail key={project.slug} project={project} />
+        <ProjectRail project={project} />
       </ProjectBrowser>
     )
   }

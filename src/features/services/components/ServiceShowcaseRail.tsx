@@ -1,6 +1,7 @@
-import { useLayoutEffect, useState } from 'react'
-import type { CSSProperties, KeyboardEvent, ReactNode, RefObject } from 'react'
+import { useState } from 'react'
+import type { CSSProperties, ReactNode, RefObject } from 'react'
 
+import { HorizontalSnapRail } from '../../../components/scroll/HorizontalSnapRail.tsx'
 import { useServiceShowcaseLayout } from '../hooks/useServiceShowcaseLayout.ts'
 import {
   getServiceBlockEnterDelay,
@@ -123,32 +124,6 @@ export function ServiceShowcaseRail({
     '--service-showcase-scale': layout?.scale ?? 1,
   }
 
-  useLayoutEffect(() => {
-    railRef.current?.scrollTo({ left: 0 })
-  }, [railRef, serviceSlug])
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.target !== event.currentTarget) return
-
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault()
-        event.currentTarget.scrollBy({ left: -event.currentTarget.clientWidth * 0.8 })
-        break
-      case 'ArrowRight':
-        event.preventDefault()
-        event.currentTarget.scrollBy({ left: event.currentTarget.clientWidth * 0.8 })
-        break
-      case 'Home':
-        event.preventDefault()
-        event.currentTarget.scrollTo({ left: 0 })
-        break
-      case 'End':
-        event.preventDefault()
-        event.currentTarget.scrollTo({ left: event.currentTarget.scrollWidth })
-        break
-    }
-  }
   const groupEnterOffsets = groups.map((_, groupIndex) =>
     groups
       .slice(0, groupIndex)
@@ -156,13 +131,12 @@ export function ServiceShowcaseRail({
   )
 
   return (
-    <section
+    <HorizontalSnapRail
       aria-label={`${serviceTitle} service content`}
       className={styles.rail}
-      onKeyDown={handleKeyDown}
       ref={railRef}
+      resetKey={serviceSlug}
       style={railStyle}
-      tabIndex={0}
     >
       <ol className={styles.track}>
         {groups.map((group, groupIndex) => {
@@ -219,6 +193,6 @@ export function ServiceShowcaseRail({
           <div className={styles.informationColumn}>{children}</div>
         </li>
       </ol>
-    </section>
+    </HorizontalSnapRail>
   )
 }
