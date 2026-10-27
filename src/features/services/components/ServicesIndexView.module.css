@@ -19,28 +19,28 @@
 @media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
   :global([data-services-route-motion-phase='entering'][data-services-route-motion-direction='forward'])
     .item {
-    animation: service-route-row-enter-forward 320ms
+    animation: service-route-row-enter-forward 240ms
       cubic-bezier(0.16, 1, 0.3, 1) var(--service-route-motion-delay) both;
     will-change: transform;
   }
 
   :global([data-services-route-motion-phase='entering'][data-services-route-motion-direction='backward'])
     .item {
-    animation: service-route-row-enter-backward 320ms
+    animation: service-route-row-enter-backward 240ms
       cubic-bezier(0.16, 1, 0.3, 1) var(--service-route-motion-delay) both;
     will-change: transform;
   }
 
   :global([data-services-route-motion-phase='leaving'][data-services-route-motion-direction='forward'])
     .item {
-    animation: service-route-row-leave-forward 280ms
+    animation: service-route-row-leave-forward 200ms
       cubic-bezier(0.55, 0, 1, 0.45) var(--service-route-motion-delay) both;
     will-change: transform;
   }
 
   :global([data-services-route-motion-phase='leaving'][data-services-route-motion-direction='backward'])
     .item {
-    animation: service-route-row-leave-backward 280ms
+    animation: service-route-row-leave-backward 200ms
       cubic-bezier(0.55, 0, 1, 0.45) var(--service-route-motion-delay) both;
     will-change: transform;
   }

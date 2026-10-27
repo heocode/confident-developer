@@ -38,8 +38,8 @@
 
 @media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
   .page {
-    --projects-route-enter-duration: 480ms;
-    --projects-route-exit-duration: 420ms;
+    --projects-route-enter-duration: 400ms;
+    --projects-route-exit-duration: 340ms;
     --projects-route-edge-peek: clamp(1.75rem, 3vw, 3rem);
     --projects-route-inline-inset: max(
       2.5rem,
