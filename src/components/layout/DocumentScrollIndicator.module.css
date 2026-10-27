@@ -1,0 +1,93 @@
+.indicator {
+  --document-scroll-thumb-height: 3rem;
+  --document-scroll-thumb-offset: 0px;
+  position: fixed;
+  z-index: 19;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0.5rem;
+  opacity: 0;
+  cursor: pointer;
+  outline: none;
+  pointer-events: none;
+  transition: opacity 180ms ease-out;
+  touch-action: none;
+}
+
+.indicator::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0.5rem;
+  background: var(--color-surface-active);
+  content: '';
+  transform: translateX(-50%);
+}
+
+.indicator[data-scrollable] {
+  opacity: 0;
+}
+
+.indicator[data-scroll-active] {
+  opacity: 0.72;
+  pointer-events: auto;
+}
+
+.indicator[data-dragging],
+.indicator:focus-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.indicator:focus-visible {
+  outline: none;
+}
+
+.thumb {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: block;
+  width: 100%;
+  height: var(--document-scroll-thumb-height);
+  border: 0;
+  background: var(--color-background);
+  transform: translate3d(-50%, var(--document-scroll-thumb-offset), 0);
+  will-change: transform;
+}
+
+@media (max-width: 48rem) {
+  .indicator {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0.3125rem;
+    pointer-events: none;
+  }
+
+  .indicator[data-scrollable] {
+    opacity: 0;
+  }
+
+  .indicator[data-scrollable][data-scroll-active] {
+    opacity: 0.68;
+    pointer-events: none;
+  }
+
+  .indicator::before {
+    width: 0.3125rem;
+  }
+
+  .thumb {
+    width: 100%;
+    border: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}

@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import { CloudBackground } from './CloudBackground'
+import { DocumentScrollIndicator } from './DocumentScrollIndicator.tsx'
 import { RouteTransitionContext } from './route-transitions/route-transition-context.ts'
 import { routeTransitionTiming } from './route-transitions/route-transition-timing.ts'
 import { useRouteTransitionCoordinator } from './route-transitions/useRouteTransitionCoordinator.ts'
@@ -65,6 +66,7 @@ export function AppLayout() {
         >
           <Outlet />
         </main>
+        <DocumentScrollIndicator />
       </div>
     </RouteTransitionContext.Provider>
   )

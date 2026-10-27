@@ -76,7 +76,7 @@ npm run preview
 
 The shared application layout remains mounted across client-side route transitions. Persistent site-wide layers such as the cloud background therefore continue across navigation.
 
-The document keeps native scrolling behavior while its platform scrollbar is hidden so it never consumes layout width. A shared, reference-counted root lock coordinates viewport-locked routes, dialogs, the Contact drawer, and mobile Navigation without body mutations or padding compensation. Internal scroll regions use shared scrollbar tokens and may remain visibly scrollable when that affordance is useful.
+The document keeps native scrolling behavior while its platform scrollbar is hidden so it never consumes layout width. After actual scroll activity, a fixed themed overlay briefly reveals a conventional dark-blue track with a background-blue thumb, then hides again without affecting geometry. It supports track clicks, thumb dragging, and keyboard scrolling on desktop, becomes a transient non-interactive cue on mobile, and stays hidden when the document cannot scroll or root scrolling is locked. A shared, reference-counted root lock coordinates viewport-locked routes, dialogs, the Contact drawer, and mobile Navigation without body mutations or padding compensation. Internal scroll regions use shared scrollbar tokens and may remain visibly scrollable when that affordance is useful.
 
 Desktop primary-navigation changes are coordinated as directional transitions between the six primary route areas. Mobile and reduced-motion navigation remains immediate, modified links retain native browser behavior, and nested Project or Service navigation does not invoke the global route transition.
 
