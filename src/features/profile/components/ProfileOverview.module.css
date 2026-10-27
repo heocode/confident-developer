@@ -35,8 +35,8 @@
 
 .avatar {
   position: relative;
-  width: 11.25rem;
-  height: 11.25rem;
+  width: var(--profile-avatar-size, 11.25rem);
+  height: var(--profile-avatar-size, 11.25rem);
   flex: none;
 }
 
@@ -58,7 +58,7 @@
 
 .identity h3 {
   margin: 1.25rem 0 0;
-  font-size: 2rem;
+  font-size: var(--profile-name-font-size, 2rem);
   font-weight: 600;
   line-height: 1.125;
   letter-spacing: var(--letter-spacing-title);
@@ -67,7 +67,7 @@
 .role {
   margin: 0.5rem 0 0;
   color: var(--color-text-muted);
-  font-size: 1.125rem;
+  font-size: var(--profile-role-font-size, 1.125rem);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -92,14 +92,14 @@
 
 .statistics dt {
   color: var(--color-text-muted);
-  font-size: 1rem;
+  font-size: var(--profile-stat-label-font-size, 1rem);
   font-weight: 500;
   line-height: 1.2;
 }
 
 .statistics dd {
   order: -1;
-  font-size: 1.5rem;
+  font-size: var(--profile-stat-value-font-size, 1.5rem);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -122,8 +122,8 @@
 
 @media (max-height: 52rem) and (min-width: 48.001rem) {
   .avatar {
-    width: 9.5rem;
-    height: 9.5rem;
+    width: var(--profile-avatar-size, 9.5rem);
+    height: var(--profile-avatar-size, 9.5rem);
   }
 
   .identity h3 {
@@ -150,8 +150,8 @@
   }
 
   .avatar {
-    width: clamp(6.5rem, 32vw, 9rem);
-    height: clamp(6.5rem, 32vw, 9rem);
+    width: var(--profile-avatar-size, clamp(6.5rem, 32vw, 9rem));
+    height: var(--profile-avatar-size, clamp(6.5rem, 32vw, 9rem));
   }
 
   .presence {
@@ -161,12 +161,12 @@
 
   .identity h3 {
     margin-top: clamp(0.625rem, 2.5svh, 1rem);
-    font-size: clamp(1.5rem, 7vw, 2rem);
+    font-size: var(--profile-name-font-size, clamp(1.5rem, 7vw, 2rem));
   }
 
   .role {
     margin-top: 0.25rem;
-    font-size: clamp(0.875rem, 4vw, 1.125rem);
+    font-size: var(--profile-role-font-size, clamp(0.875rem, 4vw, 1.125rem));
   }
 
   .statistics {
@@ -179,11 +179,11 @@
   }
 
   .statistics dd {
-    font-size: 1.25rem;
+    font-size: var(--profile-stat-value-font-size, 1.25rem);
   }
 
   .statistics dt {
-    font-size: 0.875rem;
+    font-size: var(--profile-stat-label-font-size, 0.875rem);
   }
 
   .divider {

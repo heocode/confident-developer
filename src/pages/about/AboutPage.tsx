@@ -1,3 +1,4 @@
+import { HorizontalSnapRail } from '../../components/scroll/HorizontalSnapRail.tsx'
 import { ProfileOverview } from '../../features/profile/components/ProfileOverview.tsx'
 import { useProfile } from '../../features/profile/hooks/useProfile.ts'
 import { useProfileViewTracking } from '../../features/profile/hooks/useProfileViewTracking.ts'
@@ -12,41 +13,43 @@ export function AboutPage() {
     <section className={styles.page} aria-labelledby="about-page-title">
       <h1 id="about-page-title">WHO BUILDS THE STUFF?</h1>
 
-      <div className={styles.panel}>
-        <div className={styles.profile} ref={profileRef}>
-          {state.status === 'loading' && (
-            <div className={styles.profileState} role="status">
-              <p>Loading profile…</p>
-            </div>
-          )}
+      <HorizontalSnapRail aria-label="About me panels" className={styles.panel}>
+        <div className={styles.track}>
+          <div className={styles.profile} ref={profileRef}>
+            {state.status === 'loading' && (
+              <div className={styles.profileState} role="status">
+                <p>Loading profile…</p>
+              </div>
+            )}
 
-          {state.status === 'error' && (
-            <div className={styles.profileState} role="alert">
-              <p>{state.message}</p>
-              <button type="button" onClick={retry}>
-                Try again
-              </button>
-            </div>
-          )}
+            {state.status === 'error' && (
+              <div className={styles.profileState} role="alert">
+                <p>{state.message}</p>
+                <button type="button" onClick={retry}>
+                  Try again
+                </button>
+              </div>
+            )}
 
-          {state.status === 'ready' && (
-            <ProfileOverview
-              githubSummary={state.githubSummary}
-              githubErrorMessage={state.githubErrorMessage}
-              interactionErrorMessage={state.interactionErrorMessage}
-              interactionReady={state.interactionStatus === 'ready'}
-              isLikePending={state.isLikePending}
-              likeErrorMessage={state.likeErrorMessage}
-              liked={state.liked}
-              onToggleLike={toggleLike}
-              post={state.post}
-            />
-          )}
+            {state.status === 'ready' && (
+              <ProfileOverview
+                githubSummary={state.githubSummary}
+                githubErrorMessage={state.githubErrorMessage}
+                interactionErrorMessage={state.interactionErrorMessage}
+                interactionReady={state.interactionStatus === 'ready'}
+                isLikePending={state.isLikePending}
+                likeErrorMessage={state.likeErrorMessage}
+                liked={state.liked}
+                onToggleLike={toggleLike}
+                post={state.post}
+              />
+            )}
+          </div>
+
+          <div className={styles.divider} aria-hidden="true" />
+          <AboutDetails />
         </div>
-
-        <div className={styles.divider} aria-hidden="true" />
-        <AboutDetails />
-      </div>
+      </HorizontalSnapRail>
     </section>
   )
 }

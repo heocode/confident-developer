@@ -19,17 +19,23 @@
 }
 
 .panel {
+  --horizontal-snap-type: none;
   position: relative;
-  display: grid;
   width: min(100%, 68.25rem);
   height: min(33.75rem, calc(100svh - clamp(12rem, 26svh, 16.5rem) - 2rem));
   min-height: 27rem;
   margin-top: clamp(2rem, 4svh, 2.5rem);
-  padding-right: clamp(1.75rem, 2.78vw, 2.5rem);
   border: 0.0625rem solid rgb(255 255 255 / 50%);
   border-radius: 1.1875rem;
   background: var(--color-surface);
   box-shadow: var(--shadow-panel);
+}
+
+.track {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding-right: clamp(1.75rem, 2.78vw, 2.5rem);
   grid-template-columns: minmax(0, 1.1fr) 0.0625rem minmax(0, 1fr);
   column-gap: clamp(1.75rem, 2.75vw, 2.5rem);
 }
@@ -191,7 +197,7 @@
     font-size: clamp(3rem, 6.5vw, 4rem);
   }
 
-  .panel {
+  .track {
     column-gap: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -209,45 +215,111 @@
 
 @media (max-width: 48rem) {
   .page {
-    height: auto;
-    min-height: 100svh;
-    padding-top: clamp(6rem, 14svh, 7rem);
-    overflow: visible;
+    height: 100svh;
+    min-height: 0;
+    padding: clamp(6rem, 14svh, 7rem) 0 0;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: clamp(1rem, 2.5svh, 1.5rem);
+    overflow: hidden;
   }
 
   .page > h1 {
+    padding-inline: var(--page-gutter);
     font-size: clamp(2.4rem, 11vw, 4rem);
   }
 
   .panel {
-    display: grid;
-    height: auto;
+    --about-mobile-content-block-inset: clamp(1rem, 2.5svh, 1.5rem);
+    --about-mobile-content-inline-inset: max(
+      var(--page-gutter),
+      calc((100vw - 34rem) / 2)
+    );
+    --about-mobile-slide-width: 100vw;
+    --horizontal-snap-overflow-y: hidden;
+    --horizontal-snap-padding-start: 0rem;
+    --horizontal-snap-padding-end: 0rem;
+    --horizontal-snap-touch-action: pan-x pan-y pinch-zoom;
+    --horizontal-snap-type: x mandatory;
+    width: 100vw;
+    height: 100%;
     min-height: 0;
-    margin-top: 2rem;
+    margin-top: 0;
+    border: 0.0625rem solid rgb(255 255 255 / 50%);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 1.1875rem 1.1875rem 0 0;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    height: 100%;
     padding: 0;
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 0;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .profile,
+  .details {
+    width: var(--about-mobile-slide-width);
+    height: 100%;
+    min-height: 0;
+    flex: 0 0 var(--about-mobile-slide-width);
+    overflow-y: auto;
+    overscroll-behavior-block: contain;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+    scrollbar-width: thin;
   }
 
   .profile {
-    --profile-overview-padding: clamp(1rem, 4vw, 1.5rem);
-    --profile-resume-block-inset: 1rem;
-    --profile-resume-inline-inset: 1rem;
+    --profile-avatar-size: clamp(8.5rem, 38vw, 10rem);
+    --profile-name-font-size: clamp(1.75rem, 8vw, 2.125rem);
+    --profile-overview-padding: var(--about-mobile-content-block-inset)
+      var(--about-mobile-content-inline-inset)
+      max(var(--about-mobile-content-block-inset), env(safe-area-inset-bottom));
+    --profile-post-actions-font-size: 0.875rem;
+    --profile-post-author-font-size: 1rem;
+    --profile-post-body-font-size: 0.875rem;
+    --profile-post-date-font-size: 0.75rem;
+    --profile-post-meta-font-size: 0.875rem;
+    --profile-resume-block-inset: var(--about-mobile-content-block-inset);
+    --profile-resume-inline-inset: var(--about-mobile-content-inline-inset);
+    --profile-role-font-size: 1rem;
+    --profile-stat-label-font-size: 0.9375rem;
+    --profile-stat-value-font-size: 1.375rem;
+  }
+
+  .profile > :first-child {
+    height: auto;
+    min-height: 100%;
+    align-content: center;
   }
 
   .divider {
-    width: calc(100% - 2rem);
-    height: 0.0625rem;
-    margin: 0 1rem;
+    display: none;
   }
 
   .details {
-    padding: 1rem;
-    grid-template-rows: none;
+    padding: var(--about-mobile-content-block-inset)
+      var(--about-mobile-content-inline-inset)
+      max(var(--about-mobile-content-block-inset), env(safe-area-inset-bottom));
+    grid-template-rows: auto auto auto minmax(max-content, 1fr);
+    gap: clamp(0.625rem, 1.8svh, 1rem);
+    scroll-snap-align: start;
   }
 
   .details article {
-    min-height: 7rem;
-    padding: 1.25rem;
+    min-height: 0;
+    padding: clamp(0.875rem, 3.5vw, 1.25rem);
+  }
+
+  .links {
+    align-self: end;
   }
 }

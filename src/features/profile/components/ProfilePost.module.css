@@ -55,7 +55,7 @@
 }
 
 .postAuthor strong {
-  font-size: 1.125rem;
+  font-size: var(--profile-post-author-font-size, 1.125rem);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -67,19 +67,19 @@
 }
 
 .postAuthor span {
-  font-size: 0.975rem;
+  font-size: var(--profile-post-meta-font-size, 0.975rem);
 }
 
 .postHeader time {
   flex: none;
-  font-size: 0.825rem;
+  font-size: var(--profile-post-date-font-size, 0.825rem);
   white-space: nowrap;
 }
 
 .postText {
   max-width: 23.3125rem;
   margin: 0.125rem 0 0;
-  font-size: 0.975rem;
+  font-size: var(--profile-post-body-font-size, 0.975rem);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: var(--profile-post-actions-font-size, 0.9rem);
   font-weight: 600;
   line-height: 1;
 }
@@ -154,20 +154,24 @@
   }
 
   .postAuthor strong {
-    font-size: 0.9375rem;
+    font-size: var(--profile-post-author-font-size, 0.9375rem);
   }
 
   .postAuthor span,
   .postText {
-    font-size: 0.8125rem;
+    font-size: var(--profile-post-meta-font-size, 0.8125rem);
+  }
+
+  .postText {
+    font-size: var(--profile-post-body-font-size, 0.8125rem);
   }
 
   .postHeader time {
-    font-size: 0.7rem;
+    font-size: var(--profile-post-date-font-size, 0.7rem);
   }
 
   .postActions {
-    font-size: 0.8125rem;
+    font-size: var(--profile-post-actions-font-size, 0.8125rem);
   }
 }
 
