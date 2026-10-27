@@ -18,13 +18,25 @@
   text-align: center;
 }
 
-.panel {
-  --horizontal-snap-type: none;
+.content {
+  --route-surface-inline-inset: max(
+    var(--page-gutter),
+    calc((100vw - 68.25rem) / 2)
+  );
   position: relative;
+  isolation: isolate;
   width: min(100%, 68.25rem);
   height: min(33.75rem, calc(100svh - clamp(12rem, 26svh, 16.5rem) - 2rem));
   min-height: 27rem;
   margin-top: clamp(2rem, 4svh, 2.5rem);
+}
+
+.panel {
+  --horizontal-snap-type: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   border: 0.0625rem solid rgb(255 255 255 / 50%);
   border-radius: 1.1875rem;
   background: var(--color-surface);
@@ -147,6 +159,47 @@
   --social-links-gap: 1.5rem;
 }
 
+@media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
+  .page[data-route-motion-phase='entering'],
+  .page[data-route-motion-phase='leaving'] {
+    overflow: visible;
+  }
+
+  .page[data-route-motion-phase='entering'] > h1 {
+    animation: about-title-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) 90ms both;
+    will-change: transform, opacity;
+  }
+
+  .page[data-route-motion-phase='leaving'] > h1 {
+    animation: about-title-leave 220ms cubic-bezier(0.4, 0, 1, 1) both;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes about-title-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes about-title-leave {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -0.5rem, 0);
+  }
+}
+
 @media (max-height: 52rem) and (min-width: 48.001rem) {
   .page {
     padding-top: 6.75rem;
@@ -157,7 +210,7 @@
     font-size: clamp(2.75rem, 4.5vw, 3.75rem);
   }
 
-  .panel {
+  .content {
     height: calc(100svh - 12.5rem);
     min-height: 25rem;
     margin-top: 1.5rem;
@@ -226,6 +279,13 @@
   .page > h1 {
     padding-inline: var(--page-gutter);
     font-size: clamp(2.4rem, 11vw, 4rem);
+  }
+
+  .content {
+    width: 100vw;
+    height: 100%;
+    min-height: 0;
+    margin-top: 0;
   }
 
   .panel {

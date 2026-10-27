@@ -42,7 +42,7 @@ export const primaryRoutes = [
   {
     id: 'about',
     label: 'About me',
-    motionPreset: 'fallback',
+    motionPreset: 'custom',
     navigationIndex: 3,
     path: '/about',
   },
