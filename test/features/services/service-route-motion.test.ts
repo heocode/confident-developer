@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 
 import type { ServiceSummaryPresentation } from '../../../src/features/services/presentation/services-page.ts'
+import { getServiceRouteItemMotion } from '../../../src/features/services/routes/service-primary-route-motion.ts'
 import {
   createServiceOpeningGeometry,
   shouldAnimateServiceTransition,
@@ -82,5 +83,51 @@ describe('Service route transition activation', () => {
       shouldAnimateServiceTransition({ ...activation, button: 1 }, () => true),
       false,
     )
+  })
+})
+
+describe('Service primary-route stagger', () => {
+  it('enters from the first row and completes on the last row', () => {
+    const motions = Array.from({ length: 4 }, (_, index) =>
+      getServiceRouteItemMotion(index, 4, 'entering'),
+    )
+
+    assert.deepEqual(
+      motions.map(({ delayMs }) => delayMs),
+      [0, 40, 80, 120],
+    )
+    assert.deepEqual(
+      motions.map(({ isTerminal }) => isTerminal),
+      [false, false, false, true],
+    )
+  })
+
+  it('leaves from the last row and completes on the first row', () => {
+    const motions = Array.from({ length: 4 }, (_, index) =>
+      getServiceRouteItemMotion(index, 4, 'leaving'),
+    )
+
+    assert.deepEqual(
+      motions.map(({ delayMs }) => delayMs),
+      [120, 80, 40, 0],
+    )
+    assert.deepEqual(
+      motions.map(({ isTerminal }) => isTerminal),
+      [true, false, false, false],
+    )
+  })
+
+  it('caps the complete stagger independently of the service count', () => {
+    const lastMotion = getServiceRouteItemMotion(9, 10, 'entering')
+
+    assert.equal(lastMotion.delayMs, 120)
+    assert.equal(lastMotion.isTerminal, true)
+  })
+
+  it('does not expose a terminal item while route motion is idle', () => {
+    assert.deepEqual(getServiceRouteItemMotion(0, 1, 'idle'), {
+      delayMs: 0,
+      isTerminal: false,
+    })
   })
 })

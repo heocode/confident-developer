@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import type { AnimationEvent } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
+import { usePrimaryRouteMotion } from '../../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
 import { ServiceOpeningLayer } from '../components/ServiceOpeningLayer.tsx'
 import {
   createServiceDetailCache,
@@ -26,8 +28,10 @@ const HANDOFF_DURATION_MS = 60
 const CLOSING_DURATION_MS = 220
 
 export function ServicesRoute() {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
   const { retry, state } = useServicesList()
+  const routeMotion = usePrimaryRouteMotion('services')
   const [detailCache] = useState(createServiceDetailCache)
   const [openingTransition, setOpeningTransition] =
     useState<ServiceOpeningState | null>(null)
@@ -237,26 +241,46 @@ export function ServicesRoute() {
 
   useEffect(() => clearOpeningTimers, [clearOpeningTimers])
 
+  const completeRouteSceneMotion = (event: AnimationEvent<HTMLDivElement>) => {
+    if (event.currentTarget !== event.target) return
+    routeMotion.complete()
+  }
+
+  const isIndexRoute = pathname.replace(/\/+$/, '') === '/services'
+
   return (
-    <section className={styles.page} aria-labelledby="services-title">
+    <section
+      className={styles.page}
+      aria-labelledby="services-title"
+      data-services-route-motion-direction={routeMotion.direction ?? undefined}
+      data-services-route-motion-phase={routeMotion.phase}
+    >
       <header className={styles.header}>
         <h1 className={styles.title} id="services-title">
           HOW I BUILD STUFF
         </h1>
       </header>
       <div className={styles.content} ref={contentRef}>
-        <Outlet
-          context={{
-            beginServiceClosing,
-            beginServiceOpening,
-            closingServiceSlug: closingTransition?.service.slug ?? null,
-            detailCache,
-            reportServiceClosingTarget,
-            reportServiceDetailResolution,
-            servicesState: state,
-            retryServices: retry,
-          } satisfies ServicesRouteContextValue}
-        />
+        <div
+          className={styles.routeScene}
+          data-services-route-kind={isIndexRoute ? 'index' : 'detail'}
+          onAnimationEnd={completeRouteSceneMotion}
+        >
+          <Outlet
+            context={{
+              beginServiceClosing,
+              beginServiceOpening,
+              closingServiceSlug: closingTransition?.service.slug ?? null,
+              completePrimaryRouteMotion: routeMotion.complete,
+              detailCache,
+              primaryRouteMotionPhase: routeMotion.phase,
+              reportServiceClosingTarget,
+              reportServiceDetailResolution,
+              servicesState: state,
+              retryServices: retry,
+            } satisfies ServicesRouteContextValue}
+          />
+        </div>
         {openingTransition ? (
           <ServiceOpeningLayer transition={openingTransition} />
         ) : null}

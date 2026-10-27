@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useLayoutEffect, useState } from 'react'
-import type { CSSProperties, MouseEvent } from 'react'
+import type { AnimationEvent, CSSProperties, MouseEvent } from 'react'
 
 import backIconUrl from '../../../assets/icons/actions/services-back.svg'
+import type { PrimaryRouteMotionPhase } from '../../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
 import { useServicePointerPreview } from '../hooks/useServicePointerPreview.ts'
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
 import { serviceMobileWidths } from '../presentation/service-tone-themes.ts'
@@ -11,17 +12,21 @@ import {
   toServiceTransitionRect,
 } from '../routes/service-route-motion.ts'
 import type { ServiceOpeningRequest } from '../routes/service-route-motion.ts'
+import { getServiceRouteItemMotion } from '../routes/service-primary-route-motion.ts'
 import styles from './ServicesIndexView.module.css'
 
 interface ServicesIndexViewProps {
   closingServiceSlug: string | null
   onClosingTargetReady: (request: ServiceOpeningRequest) => void
   onOpenService: (request: ServiceOpeningRequest) => boolean
+  onPrimaryRouteMotionComplete: () => void
+  primaryRouteMotionPhase: PrimaryRouteMotionPhase
   services: ServiceSummaryPresentation[]
 }
 
-type ServiceSurfaceStyle = CSSProperties & {
+type ServiceItemStyle = CSSProperties & {
   '--mobile-service-width': string
+  '--service-route-motion-delay': string
   '--service-tone-color': string
 }
 
@@ -29,6 +34,8 @@ export function ServicesIndexView({
   closingServiceSlug,
   onClosingTargetReady,
   onOpenService,
+  onPrimaryRouteMotionComplete,
+  primaryRouteMotionPhase,
   services,
 }: ServicesIndexViewProps) {
   const [openingServiceId, setOpeningServiceId] = useState<string | null>(null)
@@ -99,6 +106,17 @@ export function ServicesIndexView({
     if (openingStarted) setOpeningServiceId(service.id)
   }
 
+  const completeRouteMotion = (event: AnimationEvent<HTMLLIElement>) => {
+    if (
+      event.currentTarget !== event.target ||
+      event.currentTarget.dataset.serviceRouteMotionTerminal === undefined
+    ) {
+      return
+    }
+
+    onPrimaryRouteMotionComplete()
+  }
+
   return (
     <ul
       aria-busy={openingServiceId !== null}
@@ -107,9 +125,15 @@ export function ServicesIndexView({
       data-opening={openingServiceId ? '' : undefined}
       ref={listRef}
     >
-      {services.map((service) => {
-        const surfaceStyle: ServiceSurfaceStyle = {
+      {services.map((service, index) => {
+        const routeItemMotion = getServiceRouteItemMotion(
+          index,
+          services.length,
+          primaryRouteMotionPhase,
+        )
+        const itemStyle: ServiceItemStyle = {
           '--mobile-service-width': serviceMobileWidths[service.tone.key],
+          '--service-route-motion-delay': `${routeItemMotion.delayMs}ms`,
           '--service-tone-color': service.tone.color,
         }
 
@@ -117,8 +141,13 @@ export function ServicesIndexView({
           <li
             className={styles.item}
             data-service-preview-item=""
+            data-service-route-motion-terminal={
+              routeItemMotion.isTerminal ? '' : undefined
+            }
             data-service-slug={service.slug}
             key={service.id}
+            onAnimationEnd={completeRouteMotion}
+            style={itemStyle}
           >
             <Link
               aria-label={`View ${service.title} details`}
@@ -129,7 +158,6 @@ export function ServicesIndexView({
               <span
                 className={styles.surface}
                 data-service-preview-surface=""
-                style={surfaceStyle}
               >
                 <span className={styles.title} data-service-preview-title="">
                   {service.title}

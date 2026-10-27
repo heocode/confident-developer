@@ -8,6 +8,8 @@ export function ServicesIndexRoute() {
   const {
     beginServiceOpening,
     closingServiceSlug,
+    completePrimaryRouteMotion,
+    primaryRouteMotionPhase,
     reportServiceClosingTarget,
     retryServices,
     servicesState,
@@ -53,6 +55,8 @@ export function ServicesIndexRoute() {
       closingServiceSlug={closingServiceSlug}
       onClosingTargetReady={reportServiceClosingTarget}
       onOpenService={beginServiceOpening}
+      onPrimaryRouteMotionComplete={completePrimaryRouteMotion}
+      primaryRouteMotionPhase={primaryRouteMotionPhase}
       services={state.presentation.services}
     />
   )

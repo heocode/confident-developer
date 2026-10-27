@@ -1,5 +1,6 @@
 import { useOutletContext } from 'react-router-dom'
 
+import type { PrimaryRouteMotionPhase } from '../../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
 import type { ServiceDetailCache } from '../hooks/useServicesPageData.ts'
 import type { ServicesListState } from '../presentation/services-page-state.ts'
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
@@ -9,7 +10,9 @@ export interface ServicesRouteContextValue {
   beginServiceClosing: (service: ServiceSummaryPresentation) => boolean
   beginServiceOpening: (request: ServiceOpeningRequest) => boolean
   closingServiceSlug: string | null
+  completePrimaryRouteMotion: () => void
   detailCache: ServiceDetailCache
+  primaryRouteMotionPhase: PrimaryRouteMotionPhase
   reportServiceClosingTarget: (request: ServiceOpeningRequest) => void
   reportServiceDetailResolution: (slug: string) => void
   servicesState: ServicesListState

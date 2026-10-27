@@ -25,6 +25,8 @@ The dedicated Projects routes are feature-complete for the approved scope. Publi
 
 On desktop primary-route changes, the complete Projects browser slides in from beyond the destination-side viewport edge. Its initially visible leading edge begins as a small rounded bulge and unfolds into the stable browser surface during the slide; the exit mirrors that travel toward the departure edge. Nested project-tab navigation and direct visits remain immediate.
 
+The Services index uses the same directional travel language with a row cascade: published Services enter from first to last and leave from last to first. Service detail and feedback states travel as one scene, while nested `/services` navigation keeps its own opening and closing choreography.
+
 ## Requirements
 
 - Node.js 22 or newer
