@@ -8,6 +8,7 @@ import { ProjectsRoute } from '../features/projects/routes/ProjectsRoute'
 import { ServiceDetailRoute } from '../features/services/routes/ServiceDetailRoute.tsx'
 import { ServicesIndexRoute } from '../features/services/routes/ServicesIndexRoute.tsx'
 import { ServicesRoute } from '../features/services/routes/ServicesRoute.tsx'
+import { AboutPage } from '../pages/about/AboutPage.tsx'
 import { HomePage } from '../pages/home/HomePage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { PlaceholderPage } from '../pages/PlaceholderPage'
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
           { path: ':slug', element: <ServiceDetailRoute /> },
         ],
       },
-      { path: 'about', element: <PlaceholderPage title="About me" /> },
+      { path: 'about', element: <AboutPage /> },
       { path: 'references', element: <PlaceholderPage title="References" /> },
       { path: 'contact', element: <ContactRoute /> },
       { path: '*', element: <NotFoundPage /> },
