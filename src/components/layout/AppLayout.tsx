@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { CSSProperties } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { RouteTransitionContext } from './route-transitions/route-transition-con
 import { routeTransitionTiming } from './route-transitions/route-transition-timing.ts'
 import { useRouteTransitionCoordinator } from './route-transitions/useRouteTransitionCoordinator.ts'
 import { SiteNavigation } from './SiteNavigation'
+import { usePageScrollLock } from './usePageScrollLock.ts'
 
 const viewportLockedRoutes = new Set(['projects', 'services'])
 type RouteTransitionStyle = CSSProperties & {
@@ -31,17 +32,7 @@ export function AppLayout() {
     isTransitioning,
     transition,
   } = useRouteTransitionCoordinator(mainRef)
-
-  useLayoutEffect(() => {
-    const root = document.documentElement
-
-    if (isViewportLocked) root.dataset.viewportScroll = 'locked'
-    else delete root.dataset.viewportScroll
-
-    return () => {
-      delete root.dataset.viewportScroll
-    }
-  }, [isViewportLocked])
+  usePageScrollLock(isViewportLocked, 'viewport-route')
 
   return (
     <RouteTransitionContext.Provider value={contextValue}>

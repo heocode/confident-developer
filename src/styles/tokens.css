@@ -22,6 +22,10 @@
   --radius-pill: 999px;
   --radius-panel: 1rem;
   --shadow-panel: 0 1rem 3rem rgb(28 61 112 / 18%);
+  --scrollbar-thumb-color: rgb(255 255 255 / 50%);
+  --scrollbar-thumb-hover-color: rgb(255 255 255 / 72%);
+  --scrollbar-track-color: transparent;
+  --scrollbar-size: 0.625rem;
   --page-gutter: clamp(1rem, 4vw, 3rem);
   --viewport-edge-offset: clamp(1.75rem, 2.8vw, 2.5rem);
   --content-width: 85rem;

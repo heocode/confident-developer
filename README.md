@@ -76,7 +76,7 @@ npm run preview
 
 The shared application layout remains mounted across client-side route transitions. Persistent site-wide layers such as the cloud background therefore continue across navigation.
 
-The shared shell retains the full visual-viewport width independently of the native document scrollbar. Non-scrolling routes do not reserve an empty gutter, while viewport-locked Projects and Services routes hide root vertical overflow.
+The document keeps native scrolling behavior while its platform scrollbar is hidden so it never consumes layout width. A shared, reference-counted root lock coordinates viewport-locked routes, dialogs, the Contact drawer, and mobile Navigation without body mutations or padding compensation. Internal scroll regions use shared scrollbar tokens and may remain visibly scrollable when that affordance is useful.
 
 Desktop primary-navigation changes are coordinated as directional transitions between the six primary route areas. Mobile and reduced-motion navigation remains immediate, modified links retain native browser behavior, and nested Project or Service navigation does not invoke the global route transition.
 

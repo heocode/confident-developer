@@ -6,6 +6,7 @@ import { siteIdentity } from '../../data/site'
 import { primaryRoutes } from './route-transitions/primary-routes.ts'
 import { shouldHandleRouteTransitionActivation } from './route-transitions/route-transition-activation.ts'
 import { useRouteTransition } from './route-transitions/route-transition-context.ts'
+import { usePageScrollLock } from './usePageScrollLock.ts'
 
 export function SiteNavigation() {
   const location = useLocation()
@@ -13,6 +14,7 @@ export function SiteNavigation() {
   const navigationRef = useRef<HTMLElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  usePageScrollLock(isMenuOpen, 'mobile-navigation')
   const [visibility, setVisibility] = useState({ isHidden: false, pathname: location.pathname })
   const lastMeasuredScrollPosition = useRef(0)
   const animationFrame = useRef<number | null>(null)
@@ -65,8 +67,6 @@ export function SiteNavigation() {
     if (!isMenuOpen) return
 
     const mobileNavigationQuery = window.matchMedia('(max-width: 48rem)')
-    const previousBodyOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
 
     const closeMenuAtDesktopSize = (event: MediaQueryListEvent) => {
       if (!event.matches) setIsMenuOpen(false)
@@ -89,7 +89,6 @@ export function SiteNavigation() {
     document.addEventListener('keydown', closeMenuFromKeyboard)
 
     return () => {
-      document.body.style.overflow = previousBodyOverflow
       mobileNavigationQuery.removeEventListener('change', closeMenuAtDesktopSize)
       document.removeEventListener('pointerdown', closeMenuFromOutside)
       document.removeEventListener('keydown', closeMenuFromKeyboard)

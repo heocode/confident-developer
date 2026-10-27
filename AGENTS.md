@@ -91,7 +91,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 
 - Use client-side routing so navigation between portfolio pages does not reload the document.
 - Keep the shared layout mounted across route changes.
-- Keep the shared site shell sized to the full visual viewport so the document scrollbar never changes route width or horizontal alignment. Do not reserve a permanent root scrollbar gutter or add modal padding compensation; let the native document scrollbar appear only when content actually scrolls, and hide root vertical overflow while the viewport-locked Projects or Services route is mounted. The fixed navigation remains centered against the same visual viewport across that switch.
+- Keep the shared site shell sized to the full visual viewport and hide the native document scrollbar while preserving native wheel, touch, and keyboard scrolling, so document scroll never consumes layout width or changes horizontal alignment. `html` is the sole document-scroll owner. Coordinate viewport-locked routes, dialogs, the Contact drawer, and mobile Navigation through the shared reference-counted root scroll lock; never mutate body overflow, reserve a permanent root gutter, or add scrollbar padding compensation. Internal scroll regions may retain visible tokenized scrollbars when they need that affordance. The fixed navigation remains centered against the same visual viewport across lock changes.
 - Page transitions are optional and should remain subtle if introduced after the core pages are visually complete.
 
 ## Data
