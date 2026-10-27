@@ -1,15 +1,16 @@
-import type { Ref } from 'react'
-
 import unicardUrl from '../../../assets/icons/profile/unicard.svg'
 import avatarUrl from '../../../assets/images/profile/avatar.webp'
 import { siteIdentity } from '../../../data/site.ts'
 import { PROFILE_RESUME_DOWNLOAD_PATH } from '../api/profile-api.ts'
-import type { GitHubSummary, ProfilePost as ProfilePostData } from '../model/profile.types.ts'
-import styles from './HomeProfileSection.module.css'
+import type {
+  GitHubSummary,
+  ProfilePost as ProfilePostData,
+} from '../model/profile.types.ts'
+import styles from './ProfileOverview.module.css'
 import { ProfilePost } from './ProfilePost.tsx'
 
-interface ProfileCardProps {
-  cardRef: Ref<HTMLDivElement>
+export interface ProfileOverviewProps {
+  className?: string
   githubErrorMessage: string | null
   githubSummary: GitHubSummary | null
   interactionErrorMessage: string | null
@@ -21,8 +22,8 @@ interface ProfileCardProps {
   post: ProfilePostData
 }
 
-export function ProfileCard({
-  cardRef,
+export function ProfileOverview({
+  className,
   githubErrorMessage,
   githubSummary,
   interactionErrorMessage,
@@ -32,31 +33,36 @@ export function ProfileCard({
   liked,
   onToggleLike,
   post,
-}: ProfileCardProps) {
+}: ProfileOverviewProps) {
   const displayName = `${siteIdentity.firstName} ${siteIdentity.lastName}`
 
   return (
-    <div className={styles.card} ref={cardRef}>
+    <div className={[styles.overview, className].filter(Boolean).join(' ')}>
       <a
+        aria-label="Download Vadim Iskakov’s resume"
         className={styles.resumeLink}
         href={PROFILE_RESUME_DOWNLOAD_PATH}
-        aria-label="Download Vadim Iskakov’s resume"
       >
-        <img src={unicardUrl} alt="" />
+        <img alt="" src={unicardUrl} />
       </a>
 
       <div className={styles.identity}>
         <div className={styles.avatar}>
-          <img src={avatarUrl} alt={siteIdentity.profile.avatarAlt} width="180" height="180" />
-          <span className={styles.presence} role="img" aria-label="Available" />
+          <img
+            alt={siteIdentity.profile.avatarAlt}
+            height="180"
+            src={avatarUrl}
+            width="180"
+          />
+          <span aria-label="Available" className={styles.presence} role="img" />
         </div>
 
         <h3>{displayName}</h3>
         <p className={styles.role}>{siteIdentity.profile.role}</p>
 
         <dl
-          className={styles.statistics}
           aria-label="GitHub statistics"
+          className={styles.statistics}
           title={githubErrorMessage ?? undefined}
         >
           <div>
@@ -79,13 +85,13 @@ export function ProfileCard({
       <div className={styles.divider} />
 
       <ProfilePost
-        post={post}
-        liked={liked}
+        interactionErrorMessage={interactionErrorMessage}
         interactionReady={interactionReady}
         isLikePending={isLikePending}
-        interactionErrorMessage={interactionErrorMessage}
         likeErrorMessage={likeErrorMessage}
+        liked={liked}
         onToggleLike={onToggleLike}
+        post={post}
       />
     </div>
   )

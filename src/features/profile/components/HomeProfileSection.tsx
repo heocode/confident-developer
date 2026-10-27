@@ -1,16 +1,16 @@
 import type { Ref } from 'react'
 
-import { useHomeProfile } from '../hooks/useHomeProfile.ts'
+import { useProfile } from '../hooks/useProfile.ts'
 import { useProfileViewTracking } from '../hooks/useProfileViewTracking.ts'
+import { HomeProfileCard } from './HomeProfileCard.tsx'
 import styles from './HomeProfileSection.module.css'
-import { ProfileCard } from './ProfileCard.tsx'
 
 interface HomeProfileSectionProps {
   sectionRef?: Ref<HTMLElement>
 }
 
 export function HomeProfileSection({ sectionRef }: HomeProfileSectionProps) {
-  const { recordView, retry, state, toggleLike } = useHomeProfile()
+  const { recordView, retry, state, toggleLike } = useProfile()
   const cardRef = useProfileViewTracking(state.status === 'ready', recordView)
 
   return (
@@ -42,7 +42,7 @@ export function HomeProfileSection({ sectionRef }: HomeProfileSectionProps) {
         )}
 
         {state.status === 'ready' && (
-          <ProfileCard
+          <HomeProfileCard
             cardRef={cardRef}
             githubSummary={state.githubSummary}
             githubErrorMessage={state.githubErrorMessage}

@@ -18,7 +18,7 @@ import type { GitHubSummary, ProfilePost } from '../model/profile.types.ts'
 
 type ProfileInteractionStatus = 'error' | 'loading' | 'ready'
 
-export type HomeProfileState =
+export type ProfileState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
   | {
@@ -34,11 +34,11 @@ export type HomeProfileState =
       isViewPending: boolean
     }
 
-const INITIAL_STATE: HomeProfileState = { status: 'loading' }
+const INITIAL_STATE: ProfileState = { status: 'loading' }
 
-export function useHomeProfile() {
+export function useProfile() {
   const [requestVersion, setRequestVersion] = useState(0)
-  const [state, setState] = useState<HomeProfileState>(INITIAL_STATE)
+  const [state, setState] = useState<ProfileState>(INITIAL_STATE)
   const isMountedRef = useRef(false)
   const isLikePendingRef = useRef(false)
   const operationControllersRef = useRef(new Set<AbortController>())

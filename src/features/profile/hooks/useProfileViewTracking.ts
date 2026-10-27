@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
 
-export function useProfileViewTracking(enabled: boolean, recordView: () => void) {
-  const cardRef = useRef<HTMLDivElement>(null)
+export function useProfileViewTracking<
+  ElementType extends HTMLElement = HTMLDivElement,
+>(enabled: boolean, recordView: () => void) {
+  const profileRef = useRef<ElementType>(null)
   const hasTrackedViewRef = useRef(false)
 
   useEffect(() => {
@@ -10,8 +12,8 @@ export function useProfileViewTracking(enabled: boolean, recordView: () => void)
       return
     }
 
-    const card = cardRef.current
-    if (!card || hasTrackedViewRef.current) return
+    const profile = profileRef.current
+    if (!profile || hasTrackedViewRef.current) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,9 +27,9 @@ export function useProfileViewTracking(enabled: boolean, recordView: () => void)
       { threshold: [0.9] },
     )
 
-    observer.observe(card)
+    observer.observe(profile)
     return () => observer.disconnect()
   }, [enabled, recordView])
 
-  return cardRef
+  return profileRef
 }

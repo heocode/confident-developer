@@ -5,9 +5,9 @@ import avatarUrl from '../../../assets/images/profile/avatar.webp'
 import { siteIdentity } from '../../../data/site.ts'
 import type { ProfilePost as ProfilePostData } from '../model/profile.types.ts'
 import { formatProfilePostDate } from '../presentation/profile-formatters.ts'
-import styles from './HomeProfileSection.module.css'
+import styles from './ProfilePost.module.css'
 
-interface ProfilePostProps {
+export interface ProfilePostProps {
   interactionErrorMessage: string | null
   interactionReady: boolean
   isLikePending: boolean
