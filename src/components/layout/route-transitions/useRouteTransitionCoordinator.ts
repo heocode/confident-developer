@@ -13,9 +13,7 @@ import type {
   RouteTransitionContextValue,
   RouteTransitionSnapshot,
 } from './route-transition-context.ts'
-
-const routeExitSafetyDurationMs = 280
-const routeEntranceSafetyDurationMs = 480
+import { routeTransitionTiming } from './route-transition-timing.ts'
 
 interface ActiveRouteTransition extends RouteTransitionSnapshot {
   direction: NonNullable<RouteTransitionSnapshot['direction']>
@@ -150,7 +148,9 @@ export function useRouteTransitionCoordinator(
     const timeout = window.setTimeout(() => {
       if (transition.phase === 'leaving') completeExit(transitionId)
       else completeEntrance(transitionId)
-    }, transition.phase === 'leaving' ? routeExitSafetyDurationMs : routeEntranceSafetyDurationMs)
+    }, (transition.phase === 'leaving'
+      ? routeTransitionTiming.exitDurationMs
+      : routeTransitionTiming.entranceDurationMs) + routeTransitionTiming.safetyBufferMs)
 
     return () => window.clearTimeout(timeout)
   }, [completeEntrance, completeExit, transition.id, transition.phase])

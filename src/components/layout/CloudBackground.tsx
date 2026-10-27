@@ -13,9 +13,11 @@ const cloudPlacements = [
 export function CloudBackground() {
   return (
     <div className={styles.background} aria-hidden="true">
-      {cloudPlacements.map(({ className, id, src }) => (
-        <img className={`${styles.cloud} ${className}`} key={id} src={src} alt="" />
-      ))}
+      <div className={styles.gustLayer}>
+        {cloudPlacements.map(({ className, id, src }) => (
+          <img className={`${styles.cloud} ${className}`} key={id} src={src} alt="" />
+        ))}
+      </div>
     </div>
   )
 }

@@ -121,11 +121,11 @@ a {
     }
 
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'][data-route-transition-direction='forward'] {
-        animation: route-fallback-leave-forward 200ms cubic-bezier(0.4, 0, 1, 1) both;
+        animation: route-fallback-leave-forward var(--route-transition-exit-duration) cubic-bezier(0.4, 0, 1, 1) both;
     }
 
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='leaving'][data-route-transition-direction='backward'] {
-        animation: route-fallback-leave-backward 200ms cubic-bezier(0.4, 0, 1, 1) both;
+        animation: route-fallback-leave-backward var(--route-transition-exit-duration) cubic-bezier(0.4, 0, 1, 1) both;
     }
 
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='switching'] {
@@ -134,11 +134,11 @@ a {
     }
 
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'][data-route-transition-direction='forward'] {
-        animation: route-fallback-enter-forward 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: route-fallback-enter-forward var(--route-transition-entrance-duration) cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .site-main[data-route-motion-preset='fallback'][data-route-transition-phase='entering'][data-route-transition-direction='backward'] {
-        animation: route-fallback-enter-backward 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: route-fallback-enter-backward var(--route-transition-entrance-duration) cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 }
 
@@ -174,7 +174,7 @@ a {
 
     to {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
+        transform: none;
     }
 }
 
@@ -186,7 +186,7 @@ a {
 
     to {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
+        transform: none;
     }
 }
 

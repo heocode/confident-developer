@@ -1,12 +1,23 @@
 import { useLayoutEffect, useRef } from 'react'
+import type { CSSProperties } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import { CloudBackground } from './CloudBackground'
 import { RouteTransitionContext } from './route-transitions/route-transition-context.ts'
+import { routeTransitionTiming } from './route-transitions/route-transition-timing.ts'
 import { useRouteTransitionCoordinator } from './route-transitions/useRouteTransitionCoordinator.ts'
 import { SiteNavigation } from './SiteNavigation'
 
 const viewportLockedRoutes = new Set(['projects', 'services'])
+type RouteTransitionStyle = CSSProperties & {
+  '--route-transition-entrance-duration': string
+  '--route-transition-exit-duration': string
+}
+
+const routeTransitionStyle: RouteTransitionStyle = {
+  '--route-transition-entrance-duration': `${routeTransitionTiming.entranceDurationMs}ms`,
+  '--route-transition-exit-duration': `${routeTransitionTiming.exitDurationMs}ms`,
+}
 
 export function AppLayout() {
   const { pathname } = useLocation()
@@ -41,6 +52,7 @@ export function AppLayout() {
         data-route-transition-phase={transition.phase}
         data-route-transition-source={transition.source ?? undefined}
         data-route-transition-target={transition.target ?? undefined}
+        style={routeTransitionStyle}
       >
         <CloudBackground />
         <a className="skip-link" href="#main-content">

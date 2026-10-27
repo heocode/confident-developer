@@ -125,6 +125,7 @@ The portfolio is also being developed as part of COMP229 coursework. Backend cou
 
 - Use a single persistent cloud background across routes. It is fixed relative to the viewport and does not respond to page scrolling.
 - Clouds move continuously from left to right with a slow, subtle drift. Do not morph, resize, or distractingly accelerate them.
+- During desktop primary-route transitions, keep the continuous drift on the individual clouds and animate a separate persistent gust layer. The departing gust first makes a short anticipation movement opposite the navigation direction and then sweeps with the route; reset it only while invisible during the handoff, then let it enter from the destination side with continuous deceleration into the normal drift and no reverse-direction settle. Do not run the gust for mobile, reduced motion, Home section scrolling, or navigation within one primary route.
 - Prefer lightweight CSS or platform animation primitives for simple motion. Do not select or install a final animation library until a concrete interaction requires it.
 - Rive may be used for supplied animation assets when the relevant section is implemented.
 - Honor `prefers-reduced-motion`. Use an intentionally composed static version of the same background, stop continuous motion, and replace spatial transitions such as 3D flips with an immediate state change or restrained crossfade.

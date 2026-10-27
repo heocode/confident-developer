@@ -76,6 +76,8 @@ The shared shell retains the full visual-viewport width independently of the nat
 
 Desktop primary-navigation changes are coordinated as directional transitions between the six primary route areas. Mobile and reduced-motion navigation remains immediate, modified links retain native browser behavior, and nested Project or Service navigation does not invoke the global route transition.
 
+The persistent clouds retain their independent slow drift during desktop route changes. A separate gust layer adds a mirrored departure anticipation, directional sweep, invisible handoff, and continuously decelerating entrance without remounting the background.
+
 ## Backend integration
 
 The frontend currently integrates these public backend domains:
