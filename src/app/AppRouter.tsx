@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { AppLayout } from '../components/layout/AppLayout'
-import { ContactRoute } from '../features/contact/routes/ContactRoute.tsx'
 import { ProjectDetailRoute } from '../features/projects/routes/ProjectDetailRoute'
 import { ProjectsIndexRoute } from '../features/projects/routes/ProjectsIndexRoute.tsx'
 import { ProjectsRoute } from '../features/projects/routes/ProjectsRoute'
@@ -9,6 +8,7 @@ import { ServiceDetailRoute } from '../features/services/routes/ServiceDetailRou
 import { ServicesIndexRoute } from '../features/services/routes/ServicesIndexRoute.tsx'
 import { ServicesRoute } from '../features/services/routes/ServicesRoute.tsx'
 import { AboutPage } from '../pages/about/AboutPage.tsx'
+import { ContactPage } from '../pages/contact/ContactPage.tsx'
 import { HomePage } from '../pages/home/HomePage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { ReferencesPage } from '../pages/references/ReferencesPage.tsx'
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       },
       { path: 'about', element: <AboutPage /> },
       { path: 'references', element: <ReferencesPage /> },
-      { path: 'contact', element: <ContactRoute /> },
+      { path: 'contact', element: <ContactPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

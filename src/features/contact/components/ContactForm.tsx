@@ -24,6 +24,7 @@ import styles from './ContactForm.module.css'
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY?.trim() ?? ''
 
 interface ContactFormProps {
+  layout?: 'flow' | 'panel'
   autoFocus?: boolean
   titleId?: string
   onClose?: () => void
@@ -35,6 +36,7 @@ function createEmptyForm(): ContactFormValues {
 }
 
 export function ContactForm({
+  layout = 'flow',
   autoFocus = false,
   titleId = 'contact-form-title',
   onClose,
@@ -140,7 +142,7 @@ export function ContactForm({
 
   return (
     <form
-      className={styles.form}
+      className={[styles.form, layout === 'panel' ? styles.panelForm : ''].filter(Boolean).join(' ')}
       aria-labelledby={titleId}
       noValidate
       onSubmit={(event) => void handleSubmit(event)}
@@ -191,7 +193,7 @@ export function ContactForm({
         </label>
       </div>
 
-      <label className={styles.textField}>
+      <label className={`${styles.textField} ${styles.messageField}`}>
         <span>TELL ME ABOUT YOUR STUFF</span>
         <textarea
           aria-describedby={errors.message ? 'message-contact-error' : undefined}
@@ -229,28 +231,30 @@ export function ContactForm({
         onSelect={selectBudget}
       />
 
-      {TURNSTILE_SITE_KEY && (
-        <TurnstileWidget
-          action="contact_submit"
-          className={styles.turnstileSlot}
-          revision={turnstileRevision}
-          siteKey={TURNSTILE_SITE_KEY}
-          onError={() => {
-            setTurnstileToken('')
-            setTurnstileError('The security check is unavailable. Please try again.')
-          }}
-          onToken={(token) => {
-            setTurnstileToken(token)
-            if (token) setTurnstileError(null)
-          }}
-        />
-      )}
+      <div className={styles.feedback}>
+        {TURNSTILE_SITE_KEY && (
+          <TurnstileWidget
+            action="contact_submit"
+            className={styles.turnstileSlot}
+            revision={turnstileRevision}
+            siteKey={TURNSTILE_SITE_KEY}
+            onError={() => {
+              setTurnstileToken('')
+              setTurnstileError('The security check is unavailable. Please try again.')
+            }}
+            onToken={(token) => {
+              setTurnstileToken(token)
+              if (token) setTurnstileError(null)
+            }}
+          />
+        )}
 
-      {formError && (
-        <p className={styles.formError} role="alert">
-          {formError}
-        </p>
-      )}
+        {formError && (
+          <p className={styles.formError} role="alert">
+            {formError}
+          </p>
+        )}
+      </div>
 
       <button
         className={styles.submitButton}

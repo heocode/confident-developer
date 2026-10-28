@@ -64,9 +64,7 @@ export function useRouteTransitionCoordinator(
         id: current.id,
       })
 
-      if (current.target !== 'contact') {
-        mainRef.current?.focus({ preventScroll: true })
-      }
+      mainRef.current?.focus({ preventScroll: true })
     },
     [mainRef, updateTransition],
   )

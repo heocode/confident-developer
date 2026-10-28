@@ -10,18 +10,16 @@ import styles from './ContactSection.module.css'
 interface ContactSectionProps {
   headingLevel: 'h1' | 'h2'
   id: string
-  initiallyOpen?: boolean
   sectionRef?: Ref<HTMLElement>
 }
 
 export function ContactSection({
   headingLevel,
   id,
-  initiallyOpen = false,
   sectionRef,
 }: ContactSectionProps) {
   const [drawerSession, setDrawerSession] = useState(0)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(initiallyOpen)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const Heading = headingLevel
   const titleId = `${id}-title`
 
