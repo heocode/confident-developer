@@ -52,7 +52,7 @@ export function ReferenceList({
   }, [hasNextPage, isLoadingMore, loadMoreErrorMessage, onLoadNextPage])
 
   return (
-    <div className={styles.viewport} ref={viewportRef}>
+    <div className={styles.viewport} ref={viewportRef} tabIndex={0} aria-label="References">
       <div className={styles.list}>
         {ownedReference && onRequestOwnedReferenceRemoval && (
           <OwnedReferenceCard

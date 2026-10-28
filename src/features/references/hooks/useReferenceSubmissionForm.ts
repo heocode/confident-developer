@@ -65,6 +65,16 @@ export function useReferenceSubmissionForm({ testimonial, onSubmit }: ReferenceS
     )
   }
 
+  function resetFields() {
+    setDetails({
+      ...EMPTY_REFERENCE_SUBMISSION_DETAILS,
+      ratings: { ...EMPTY_REFERENCE_SUBMISSION_DETAILS.ratings },
+    })
+    setErrors({})
+    resetSecurityCheck()
+    setTurnstileRevision((revision) => revision + 1)
+  }
+
   function handleTurnstileError() {
     setTurnstileToken('')
     setTurnstileError('The security check is unavailable. Please try again.')
@@ -102,6 +112,7 @@ export function useReferenceSubmissionForm({ testimonial, onSubmit }: ReferenceS
     handleTurnstileError,
     handleTurnstileToken,
     resetSecurityCheck,
+    resetFields,
     submit,
     updateRating,
     updateTextField,

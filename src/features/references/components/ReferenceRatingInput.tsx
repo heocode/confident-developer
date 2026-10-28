@@ -38,6 +38,7 @@ export function ReferenceRatingInput({
               name={name}
               value={rating}
               checked={value === rating}
+              aria-invalid={Boolean(errorMessage)}
               onChange={() => onChange(rating)}
             />
             <img

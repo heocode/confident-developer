@@ -234,28 +234,28 @@
 
 .textFields {
   display: grid;
-  gap: 0.6875rem;
+  gap: var(--reference-text-fields-gap, 0.6875rem);
 }
 
 .textField {
   position: relative;
   display: grid;
-  gap: 0.5rem;
+  gap: var(--reference-field-label-gap, 0.5rem);
   color: var(--color-text);
-  font-size: 1.125rem;
+  font-size: var(--reference-field-font-size, 1.125rem);
   font-weight: 500;
   line-height: 1;
 }
 
 .textField input {
   width: 100%;
-  height: 3.4375rem;
-  padding: 0 1.5rem;
+  height: var(--reference-input-height, 3.4375rem);
+  padding: 0 var(--reference-input-inline-padding, 1.5rem);
   border: 0.0815rem solid rgb(255 255 255 / 50%);
-  border-radius: 1.548rem;
+  border-radius: var(--reference-input-radius, 1.548rem);
   outline: 0;
   color: var(--color-text);
-  background: rgb(255 255 255 / 12%);
+  background: var(--reference-input-background, rgb(255 255 255 / 12%));
   font: inherit;
   line-height: normal;
 }
@@ -271,8 +271,9 @@
 
 .ratingFields {
   display: grid;
-  gap: 0.6875rem;
-  margin-top: 0.9375rem;
+  grid-template-columns: var(--reference-rating-columns, none);
+  gap: var(--reference-rating-fields-gap, 0.6875rem);
+  margin-top: var(--reference-rating-margin-top, 0.9375rem);
 }
 
 .ratingField {
@@ -286,21 +287,21 @@
 .ratingField legend {
   margin-bottom: 0.25rem;
   padding: 0;
-  font-size: 1.125rem;
+  font-size: var(--reference-rating-label-font-size, 1.125rem);
   font-weight: 500;
   line-height: 1;
 }
 
 .ratingChoices {
   display: flex;
-  gap: 0.25rem;
+  gap: var(--reference-rating-choice-gap, 0.25rem);
 }
 
 .ratingChoice {
   position: relative;
   display: grid;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: var(--reference-rating-choice-size, 3.5rem);
+  height: var(--reference-rating-choice-size, 3.5rem);
   flex: none;
   place-items: center;
   cursor: pointer;
@@ -322,6 +323,8 @@
 .ratingStar,
 .ratingStarSelected {
   display: block;
+  width: var(--reference-rating-star-width, auto);
+  height: var(--reference-rating-star-height, auto);
   opacity: 0.5;
 }
 
@@ -331,7 +334,8 @@
 }
 
 .fieldError {
-  position: absolute;
+  position: var(--reference-field-error-position, absolute);
+  margin: 0;
   z-index: 1;
   top: calc(100% + 0.125rem);
   right: 0.75rem;

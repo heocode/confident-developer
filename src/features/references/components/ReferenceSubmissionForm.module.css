@@ -1,0 +1,203 @@
+.form {
+  --reference-input-background: #394e70;
+  --reference-field-font-size: clamp(0.875rem, 2.8cqh, 1.25rem);
+  --reference-field-label-gap: clamp(0.25rem, 0.9cqh, 0.375rem);
+  --reference-input-height: 100%;
+  --reference-input-radius: var(--radius-pill);
+  --reference-text-fields-gap: clamp(0.375rem, 1.2cqh, 0.875rem);
+  --reference-rating-label-font-size: clamp(0.625rem, 2cqh, 0.875rem);
+  --reference-rating-choice-size: clamp(1.25rem, 5.2cqh, 2.25rem);
+  --reference-rating-star-width: 100%;
+  --reference-rating-star-height: 100%;
+  --reference-rating-choice-gap: clamp(0.125rem, 0.6cqw, 0.625rem);
+  --reference-rating-columns: repeat(2, minmax(0, 1fr));
+  --reference-rating-fields-gap: clamp(0.375rem, 1.5cqh, 0.875rem) 1rem;
+  --reference-rating-margin-top: 0rem;
+  --reference-field-error-position: static;
+  display: grid;
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.fields {
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.controls {
+  container-type: size;
+  display: grid;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: minmax(0, 4.3fr) minmax(0, 1.5fr) minmax(0, 2fr);
+  gap: clamp(0.5rem, 2cqh, 0.875rem);
+}
+
+.fields:disabled {
+  opacity: 0.65;
+}
+
+.textFields {
+  min-height: 0;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
+.textFields > label {
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.textFields input {
+  min-height: 0;
+}
+
+.ratingFields {
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.messageField {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--reference-field-label-gap);
+}
+
+.messageField > label {
+  font-size: var(--reference-rating-label-font-size);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.messageSurface {
+  position: relative;
+  min-height: 0;
+  border: 0.0815rem solid rgb(255 255 255 / 50%);
+  border-radius: 1.625rem;
+  background: var(--reference-input-background);
+}
+
+.messageSurface textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(0.75rem, 3cqh, 1.5rem) 4.5rem clamp(0.75rem, 3cqh, 1.5rem)
+    clamp(0.75rem, 3cqh, 1.5rem);
+  border: 0;
+  border-radius: inherit;
+  color: var(--color-text);
+  background: transparent;
+  font: inherit;
+  font-size: clamp(1rem, 3cqh, 1.375rem);
+  line-height: 1.4;
+  resize: none;
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  scrollbar-width: thin;
+}
+
+.messageSurface textarea::placeholder {
+  color: rgb(255 255 255 / 50%);
+  opacity: 1;
+}
+
+.messageSurface textarea[aria-invalid='true'] {
+  outline: 0.0625rem solid var(--color-error);
+  outline-offset: -0.0625rem;
+}
+
+.form input:focus-visible,
+.messageSurface textarea:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: -0.1875rem;
+}
+
+.sendButton {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  display: grid;
+  width: clamp(2rem, 7cqh, 3.125rem);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0.125rem solid rgb(255 255 255 / 35%);
+  border-radius: 50%;
+  place-items: center;
+  background: rgb(80 106 150 / 90%);
+  cursor: pointer;
+}
+
+.sendButton img {
+  display: block;
+  width: 1.375rem;
+  height: auto;
+}
+
+.sendButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.sendButton:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: 0.125rem;
+}
+
+.feedback {
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.feedback:empty {
+  display: none;
+}
+
+.error,
+.notice {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.notice {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.notice p {
+  margin: 0;
+}
+
+.notice button {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  color: var(--color-text);
+  background: transparent;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

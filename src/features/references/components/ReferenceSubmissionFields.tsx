@@ -55,6 +55,8 @@ function TextField({
 }
 
 interface ReferenceSubmissionFieldsProps {
+  textFieldsClassName?: string
+  ratingFieldsClassName?: string
   details: ReferenceSubmissionDetails
   errors: ReferenceSubmissionErrors
   onTextFieldChange: (name: ReferenceSubmissionTextField, value: string) => void
@@ -62,6 +64,8 @@ interface ReferenceSubmissionFieldsProps {
 }
 
 export function ReferenceSubmissionFields({
+  textFieldsClassName,
+  ratingFieldsClassName,
   details,
   errors,
   onTextFieldChange,
@@ -69,7 +73,7 @@ export function ReferenceSubmissionFields({
 }: ReferenceSubmissionFieldsProps) {
   return (
     <>
-      <div className={styles.textFields}>
+      <div className={[styles.textFields, textFieldsClassName].filter(Boolean).join(' ')}>
         <TextField
           autoComplete="name"
           errorMessage={errors.name}
@@ -113,7 +117,7 @@ export function ReferenceSubmissionFields({
         />
       </div>
 
-      <div className={styles.ratingFields}>
+      <div className={[styles.ratingFields, ratingFieldsClassName].filter(Boolean).join(' ')}>
         <ReferenceRatingInput
           errorMessage={errors.overall}
           label="OVERALL EXPERIENCE"

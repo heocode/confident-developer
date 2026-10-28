@@ -15,6 +15,11 @@
   scrollbar-width: thin;
 }
 
+.viewport:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: -0.1875rem;
+}
+
 .emptyViewport {
   display: flex;
   align-items: flex-end;
@@ -76,6 +81,7 @@
 }
 
 .referenceBody {
+  container: reference-body / inline-size;
   min-width: 0;
 }
 
@@ -93,7 +99,7 @@
   width: 100%;
   min-width: 0;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   column-gap: 0.5rem;
 }
 
@@ -108,15 +114,14 @@
   --metadata-separator-gap: 0.5rem;
 
   max-width: 100%;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: var(--metadata-separator-gap);
 }
 
 .authorMeta > span:not(.statusGroup) {
-  overflow: hidden;
+  min-width: 0;
   text-transform: capitalize;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .metaItem,
@@ -328,10 +333,17 @@
 }
 
 .authorLine h3 {
+  min-width: 0;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   font-weight: 600;
   line-height: 1.2;
   text-transform: capitalize;
+  overflow-wrap: anywhere;
+}
+
+.authorLine > p {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .authorLine p,
@@ -526,9 +538,6 @@
 
   .referenceAuthorLine h3 {
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .authorMeta {
@@ -568,6 +577,56 @@
   .starActive,
   .starInactive {
     width: clamp(1.125rem, 5.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 48.001rem) {
+  @container reference-body (max-width: 22rem) {
+    .referenceHeader {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 0.25rem 0.5rem;
+    }
+
+    .authorLine {
+      display: contents;
+    }
+
+    .authorLine h3 {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .authorLine > p,
+    .authorMeta {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .authorMeta {
+      display: grid;
+      width: 100%;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.25rem;
+    }
+
+    .metaItem,
+    .statusGroup {
+      padding-left: 0;
+      grid-column: 1 / -1;
+    }
+
+    .metaItem::before,
+    .statusGroup::before {
+      display: none;
+    }
+
+    .referenceHeader time {
+      grid-column: 2;
+      grid-row: 1;
+      padding-top: 0.125rem;
+    }
   }
 }
 

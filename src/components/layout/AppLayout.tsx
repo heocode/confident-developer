@@ -11,7 +11,7 @@ import { SiteNavigation } from './SiteNavigation'
 import { useInitialHomeOpening } from './useInitialHomeOpening.ts'
 import { usePageScrollLock } from './usePageScrollLock.ts'
 
-const viewportLockedRoutes = new Set(['projects', 'services', 'about'])
+const viewportLockedRoutes = new Set(['projects', 'services', 'about', 'references'])
 type RouteTransitionStyle = CSSProperties & {
   '--route-transition-entrance-duration': string
   '--route-transition-exit-duration': string

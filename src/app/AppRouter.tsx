@@ -11,7 +11,7 @@ import { ServicesRoute } from '../features/services/routes/ServicesRoute.tsx'
 import { AboutPage } from '../pages/about/AboutPage.tsx'
 import { HomePage } from '../pages/home/HomePage'
 import { NotFoundPage } from '../pages/NotFoundPage'
-import { PlaceholderPage } from '../pages/PlaceholderPage'
+import { ReferencesPage } from '../pages/references/ReferencesPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: 'about', element: <AboutPage /> },
-      { path: 'references', element: <PlaceholderPage title="References" /> },
+      { path: 'references', element: <ReferencesPage /> },
       { path: 'contact', element: <ContactRoute /> },
       { path: '*', element: <NotFoundPage /> },
     ],
