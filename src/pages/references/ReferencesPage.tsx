@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { HorizontalSnapRail } from '../../components/scroll/HorizontalSnapRail.tsx'
 import { ReferenceFeed } from '../../features/references/components/ReferenceFeed.tsx'
 import { ReferenceRemovalModal } from '../../features/references/components/ReferenceRemovalModal.tsx'
 import { ReferenceSubmissionForm } from '../../features/references/components/ReferenceSubmissionForm.tsx'
@@ -28,32 +29,38 @@ export function ReferencesPage() {
   return (
     <section className={styles.page} aria-labelledby="references-page-title">
       <h1 id="references-page-title">WHAT PEOPLE SAY ABOUT THE STUFF</h1>
-      <div className={styles.panel}>
-        <div className={styles.feed} role="region" aria-label="Guestbook">
-          <ReferenceFeed
-            state={referencesState}
-            isRestoringOwnership={state.status === 'restoring'}
-            ownedReference={ownedReference}
-            isOwnedReferenceRemoving={state.status === 'withdrawing'}
-            onRetry={retry}
-            onLoadNextPage={loadNextPage}
-            onRequestOwnedReferenceRemoval={() => {
-              clearWithdrawError()
-              setIsRemovalModalOpen(true)
-            }}
-          />
+      <HorizontalSnapRail
+        className={styles.panel}
+        aria-label="Guestbook and reference form"
+        keyboardPageRatio={1}
+      >
+        <div className={styles.track}>
+          <div className={styles.feed} role="region" aria-label="Guestbook">
+            <ReferenceFeed
+              state={referencesState}
+              isRestoringOwnership={state.status === 'restoring'}
+              ownedReference={ownedReference}
+              isOwnedReferenceRemoving={state.status === 'withdrawing'}
+              onRetry={retry}
+              onLoadNextPage={loadNextPage}
+              onRequestOwnedReferenceRemoval={() => {
+                clearWithdrawError()
+                setIsRemovalModalOpen(true)
+              }}
+            />
+          </div>
+          <div className={styles.divider} aria-hidden="true" />
+          <div className={styles.submission} role="region" aria-label="Write a reference" tabIndex={0}>
+            <ReferenceSubmissionForm
+              state={state}
+              testimonial={draft}
+              onTestimonialChange={setDraft}
+              onSubmit={handleSubmission}
+              onRetryRestore={() => void restore()}
+            />
+          </div>
         </div>
-        <div className={styles.divider} aria-hidden="true" />
-        <div className={styles.submission}>
-          <ReferenceSubmissionForm
-            state={state}
-            testimonial={draft}
-            onTestimonialChange={setDraft}
-            onSubmit={handleSubmission}
-            onRetryRestore={() => void restore()}
-          />
-        </div>
-      </div>
+      </HorizontalSnapRail>
 
       <ReferenceRemovalModal
         errorMessage={state.status === 'withdraw-error' ? state.message : null}

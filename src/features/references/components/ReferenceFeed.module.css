@@ -15,14 +15,15 @@
   scrollbar-width: thin;
 }
 
-.viewport:focus-visible {
+.viewport:focus-visible,
+.emptyViewport:focus-visible {
   outline: 0.125rem solid var(--color-focus);
   outline-offset: -0.1875rem;
 }
 
 .emptyViewport {
   display: flex;
-  align-items: flex-end;
+  align-items: safe flex-end;
   padding: clamp(0.625rem, 1.5vw, 1.25rem);
 }
 

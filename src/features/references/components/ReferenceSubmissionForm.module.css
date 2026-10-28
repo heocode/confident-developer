@@ -201,3 +201,78 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+@media (max-width: 48rem) {
+  .form {
+    --reference-field-font-size: clamp(0.625rem, 2.6cqh, 0.75rem);
+    --reference-field-label-gap: clamp(0.125rem, 0.8cqh, 0.25rem);
+    --reference-input-height: 100%;
+    --reference-input-inline-padding: 1rem;
+    --reference-text-fields-gap: clamp(0.25rem, 1.2cqh, 0.5rem);
+    --reference-rating-label-font-size: clamp(0.5625rem, 2.3cqh, 0.6875rem);
+    --reference-rating-choice-size: clamp(1.125rem, 6cqh, 1.875rem);
+    --reference-rating-choice-gap: 0.125rem;
+    --reference-rating-fields-gap: clamp(0.25rem, 1.5cqh, 0.5rem) 0.75rem;
+    --reference-field-error-font-size: 0.6875rem;
+  }
+
+  .controls {
+    grid-template-rows: minmax(0, 4.4fr) minmax(0, 1.8fr) minmax(0, 1.8fr);
+    gap: clamp(0.375rem, 1.8cqh, 0.75rem);
+  }
+
+  .form .textFields {
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: var(--reference-text-fields-gap);
+  }
+
+  .form .textFields > label {
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--reference-field-label-gap);
+    font-size: var(--reference-field-font-size);
+  }
+
+  .form .textFields input {
+    height: var(--reference-input-height);
+    padding-inline: var(--reference-input-inline-padding);
+    border-radius: var(--reference-input-radius);
+    font-size: 1rem;
+  }
+
+  .form .ratingFields {
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: var(--reference-rating-fields-gap);
+    margin-top: 0;
+  }
+
+  .form .ratingFields legend {
+    font-size: var(--reference-rating-label-font-size);
+  }
+
+  .ratingFields label {
+    width: var(--reference-rating-choice-size);
+    height: var(--reference-rating-choice-size);
+  }
+
+  .messageSurface {
+    border-radius: 1.25rem;
+  }
+
+  .messageSurface textarea {
+    padding: clamp(0.5rem, 2cqh, 0.875rem) 3.5rem clamp(0.5rem, 2cqh, 0.875rem)
+      clamp(0.5rem, 2cqh, 0.875rem);
+    font-size: 1rem;
+  }
+
+  .sendButton {
+    top: 0.625rem;
+    right: 0.625rem;
+    width: clamp(1.75rem, 7cqh, 2.5rem);
+  }
+
+  @container reference-form-slide (max-height: 20rem) {
+    .form {
+      min-height: 20rem;
+    }
+  }
+}

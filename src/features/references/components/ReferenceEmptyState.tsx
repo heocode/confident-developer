@@ -10,7 +10,7 @@ export function ReferenceEmptyState({ emptyState }: ReferenceEmptyStateProps) {
   const updatedDate = formatReferenceDate(emptyState.updatedAt)
 
   return (
-    <div className={styles.emptyViewport}>
+    <div className={styles.emptyViewport} tabIndex={0}>
       <article className={styles.emptyReferenceCard}>
         <div className={styles.emptyAvatarWrapper}>
           <img
