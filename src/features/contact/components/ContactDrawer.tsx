@@ -53,7 +53,12 @@ export function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
         onClick={onClose}
       />
       <div className={styles.drawerContent}>
-        <ContactForm onClose={onClose} onSubmittingChange={handleSubmittingChange} />
+        <ContactForm
+          autoFocus
+          titleId="contact-dialog-title"
+          onClose={onClose}
+          onSubmittingChange={handleSubmittingChange}
+        />
       </div>
     </dialog>
   )

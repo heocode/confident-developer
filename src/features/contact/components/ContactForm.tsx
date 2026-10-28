@@ -19,20 +19,27 @@ import {
   CONTACT_SCOPE_OPTIONS,
 } from '../presentation/contact-options.ts'
 import { ContactChoiceGroup } from './ContactChoiceGroup.tsx'
-import styles from './ContactDrawer.module.css'
+import styles from './ContactForm.module.css'
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY?.trim() ?? ''
 
 interface ContactFormProps {
-  onClose: () => void
-  onSubmittingChange: (isSubmitting: boolean) => void
+  autoFocus?: boolean
+  titleId?: string
+  onClose?: () => void
+  onSubmittingChange?: (isSubmitting: boolean) => void
 }
 
 function createEmptyForm(): ContactFormValues {
   return { ...EMPTY_CONTACT_FORM, scopes: [] }
 }
 
-export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
+export function ContactForm({
+  autoFocus = false,
+  titleId = 'contact-form-title',
+  onClose,
+  onSubmittingChange,
+}: ContactFormProps) {
   const { reset, state: submissionState, submit } = useContactSubmission()
   const successHeadingRef = useRef<HTMLHeadingElement>(null)
   const [values, setValues] = useState(createEmptyForm)
@@ -45,8 +52,8 @@ export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
   const isSubmitting = submissionState.status === 'submitting'
 
   useEffect(() => {
-    onSubmittingChange(isSubmitting)
-    return () => onSubmittingChange(false)
+    onSubmittingChange?.(isSubmitting)
+    return () => onSubmittingChange?.(false)
   }, [isSubmitting, onSubmittingChange])
 
   useEffect(() => {
@@ -115,13 +122,15 @@ export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
     return (
       <div className={styles.success} role="status" aria-live="polite">
         <p className={styles.successEyebrow}>MESSAGE SENT</p>
-        <h2 id="contact-dialog-title" ref={successHeadingRef} tabIndex={-1}>
+        <h2 id={titleId} ref={successHeadingRef} tabIndex={-1}>
           Thanks for reaching out.
         </h2>
         <p>I’ll get back to you as soon as I can.</p>
-        <button type="button" onClick={onClose}>
-          Close
-        </button>
+        {onClose && (
+          <button type="button" onClick={onClose}>
+            Close
+          </button>
+        )}
       </div>
     )
   }
@@ -130,8 +139,13 @@ export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
     submissionState.status === 'error' ? submissionState.message : turnstileError
 
   return (
-    <form className={styles.form} noValidate onSubmit={(event) => void handleSubmit(event)}>
-      <h2 className={styles.visuallyHidden} id="contact-dialog-title">
+    <form
+      className={styles.form}
+      aria-labelledby={titleId}
+      noValidate
+      onSubmit={(event) => void handleSubmit(event)}
+    >
+      <h2 className={styles.visuallyHidden} id={titleId}>
         Contact me
       </h2>
 
@@ -142,7 +156,7 @@ export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
             aria-describedby={errors.name ? 'name-contact-error' : undefined}
             aria-invalid={Boolean(errors.name)}
             autoComplete="name"
-            autoFocus
+            autoFocus={autoFocus}
             maxLength={80}
             name="name"
             placeholder="Your name"
@@ -177,7 +191,7 @@ export function ContactForm({ onClose, onSubmittingChange }: ContactFormProps) {
         </label>
       </div>
 
-      <label className={`${styles.textField} ${styles.messageField}`}>
+      <label className={styles.textField}>
         <span>TELL ME ABOUT YOUR STUFF</span>
         <textarea
           aria-describedby={errors.message ? 'message-contact-error' : undefined}

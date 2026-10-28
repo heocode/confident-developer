@@ -1,0 +1,328 @@
+.form {
+  color: var(--contact-form-color, #1e1e1e);
+  display: grid;
+  width: 100%;
+  gap: var(--contact-form-gap, 1.25rem);
+}
+
+.identityFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--contact-identity-gap, 1.25rem);
+}
+
+.textField {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: var(--contact-label-gap, 0.25rem);
+  font-size: var(--contact-label-font-size, 1.125rem);
+  font-weight: 500;
+  line-height: 1.222;
+}
+
+.textField input,
+.textField textarea {
+  width: 100%;
+  border: 0.0815rem solid var(--contact-control-border-color, rgb(255 255 255 / 50%));
+  border-radius: var(--contact-control-radius, 1.548rem);
+  outline: 0;
+  color: var(--contact-control-color, #fff);
+  background: var(--contact-control-background, #4d8ffd);
+  font: inherit;
+  line-height: 1.35;
+}
+
+.textField input {
+  height: var(--contact-input-height, 3.4375rem);
+  padding: 0 var(--contact-input-inline-padding, 1.4375rem);
+}
+
+.textField textarea {
+  height: var(--contact-message-height, 10.375rem);
+  padding: var(--contact-message-padding, 0.875rem 1rem);
+  resize: none;
+}
+
+.textField input::placeholder,
+.textField textarea::placeholder {
+  color: var(--contact-placeholder-color, rgb(255 255 255 / 50%));
+  opacity: 1;
+}
+
+.textField input[aria-invalid='true'],
+.textField textarea[aria-invalid='true'] {
+  border-color: var(--contact-error-color, #b42318);
+}
+
+.choiceGroup {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choiceGroup legend {
+  margin-bottom: 0.25rem;
+  padding: 0;
+  font-size: var(--contact-label-font-size, 1.125rem);
+  font-weight: 500;
+  line-height: 1.222;
+}
+
+.choices {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--contact-choices-gap, 0.625rem 0.875rem);
+}
+
+.choice {
+  position: relative;
+  cursor: pointer;
+}
+
+.choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.choice span {
+  display: grid;
+  min-height: var(--contact-choice-height, 2.625rem);
+  place-items: center;
+  padding: var(--contact-choice-padding, 0.5rem 0.90625rem);
+  border: 0.03125rem solid var(--contact-choice-border-color, #1e1e1e);
+  border-radius: var(--contact-choice-radius, 1.1875rem);
+  color: var(--contact-choice-color, #1e1e1e);
+  background: var(--contact-choice-background, #fff);
+  font-size: var(--contact-choice-font-size, 1.125rem);
+  font-weight: 500;
+  line-height: 1.222;
+  white-space: nowrap;
+}
+
+.choice input:checked + span {
+  border-color: var(--contact-accent-color, #4d8ffd);
+  color: var(--contact-selected-color, #fff);
+  background: var(--contact-accent-color, #4d8ffd);
+}
+
+.choice input:focus-visible + span {
+  outline: 0.1875rem solid var(--contact-focus-color, #1e1e1e);
+  outline-offset: 0.1875rem;
+}
+
+.fieldError {
+  position: absolute;
+  z-index: 1;
+  right: 0.75rem;
+  bottom: -0.875rem;
+  color: var(--contact-error-color, #b42318);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.choiceGroup .fieldError {
+  bottom: -0.75rem;
+}
+
+.turnstileSlot {
+  display: flex;
+  justify-content: center;
+}
+
+.turnstileSlot:empty {
+  display: none;
+}
+
+.formError {
+  margin: -0.5rem 0 -0.5rem;
+  color: var(--contact-error-color, #b42318);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.submitButton,
+.success button {
+  width: min(22.5rem, 100%);
+  min-height: var(--contact-action-height, 3.4375rem);
+  margin: var(--contact-action-margin-top, 1.1875rem) auto 0;
+  padding: var(--contact-action-padding, 0.75rem 1.5rem);
+  border: 0.0815rem solid var(--contact-control-border-color, rgb(255 255 255 / 50%));
+  border-radius: var(--contact-action-radius, 1.548rem);
+  color: var(--contact-action-color, #fff);
+  background: var(--contact-accent-color, #4d8ffd);
+  font: inherit;
+  font-size: var(--contact-action-font-size, 1.125rem);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.success {
+  display: grid;
+  min-height: var(--contact-success-min-height, calc(100dvh - 10rem));
+  place-content: center;
+  justify-items: center;
+  color: var(--contact-form-color, #1e1e1e);
+  text-align: center;
+}
+
+.successEyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--contact-accent-color, #4d8ffd);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.success h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.success h2:focus {
+  outline: 0;
+}
+
+.success > p:not(.successEyebrow) {
+  margin: 1rem 0 2rem;
+  color: var(--contact-success-text-color, #555);
+}
+
+.success button {
+  margin-top: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 48rem) {
+  .form {
+    gap: var(--contact-form-gap, 1rem);
+  }
+
+  .choices {
+    gap: var(--contact-choices-gap, 0.5rem);
+  }
+
+  .choice span {
+    min-height: var(--contact-choice-height, 2.375rem);
+    padding: var(--contact-choice-padding, 0.4rem 0.75rem);
+    font-size: var(--contact-choice-font-size, 1rem);
+  }
+}
+
+@media (max-width: 36rem), (max-width: 48rem) and (max-height: 48rem) {
+  .form {
+    min-height: 100%;
+    align-content: space-between;
+    gap: var(--contact-form-gap, 0.875rem);
+  }
+
+  .identityFields {
+    gap: var(--contact-identity-gap, 0.75rem);
+  }
+
+  .textField,
+  .choiceGroup legend {
+    font-size: var(--contact-label-font-size, 0.875rem);
+  }
+
+  .textField {
+    gap: var(--contact-label-gap, 0.25rem);
+  }
+
+  .textField input {
+    height: var(--contact-input-height, 3rem);
+    padding-inline: var(--contact-input-inline-padding, 1rem);
+    border-radius: var(--contact-control-radius, 1.5rem);
+  }
+
+  .textField textarea {
+    height: var(--contact-message-height, clamp(7rem, 18svh, 9rem));
+    padding: var(--contact-message-padding, 0.75rem 0.875rem);
+    border-radius: var(--contact-control-radius, 1.5rem);
+  }
+
+  .choiceGroup legend {
+    margin-bottom: 0.25rem;
+  }
+
+  .choices {
+    gap: var(--contact-choices-gap, 0.5rem);
+  }
+
+  .choice span {
+    min-height: var(--contact-choice-height, 2.25rem);
+    padding: var(--contact-choice-padding, 0.375rem 0.7rem);
+    border-radius: var(--contact-choice-radius, 1.125rem);
+    font-size: var(--contact-choice-font-size, 0.875rem);
+  }
+
+  .fieldError {
+    right: 0.5rem;
+    bottom: -0.625rem;
+    font-size: 0.5rem;
+  }
+
+  .choiceGroup .fieldError {
+    bottom: -0.5625rem;
+  }
+
+  .formError {
+    margin-block: -0.25rem;
+    font-size: 0.625rem;
+  }
+
+  .submitButton,
+  .success button {
+    min-height: var(--contact-action-height, 3rem);
+    margin-top: var(--contact-action-margin-top, 0);
+    padding: var(--contact-action-padding, 0.625rem 1rem);
+    border-radius: var(--contact-action-radius, 1.5rem);
+    font-size: var(--contact-action-font-size, 1rem);
+  }
+
+  .success {
+    min-height: var(--contact-success-min-height, calc(100dvh - 4.25rem));
+  }
+
+  .success button {
+    margin-top: 0;
+  }
+}
+
+@media (max-height: 56rem) and (min-width: 48.0625rem) {
+  .form {
+    gap: var(--contact-form-gap, 1rem);
+  }
+
+  .textField textarea {
+    height: var(--contact-message-height, 8.75rem);
+  }
+
+  .choices {
+    gap-block: var(--contact-choices-row-gap, 0.5rem);
+  }
+}
