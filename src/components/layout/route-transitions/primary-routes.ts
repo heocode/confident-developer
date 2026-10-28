@@ -49,7 +49,7 @@ export const primaryRoutes = [
   {
     id: 'references',
     label: 'References',
-    motionPreset: 'fallback',
+    motionPreset: 'custom',
     navigationIndex: 4,
     path: '/references',
   },
