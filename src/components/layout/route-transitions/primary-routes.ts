@@ -56,7 +56,7 @@ export const primaryRoutes = [
   {
     id: 'contact',
     label: 'Contact Me',
-    motionPreset: 'fallback',
+    motionPreset: 'custom',
     navigationIndex: 5,
     path: '/contact',
   },
