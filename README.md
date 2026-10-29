@@ -25,7 +25,7 @@ Home Services has a one-viewport minimum height and grows with its accordion con
 
 An initial document load at the top of Home plays a non-blocking opening scene: Navigation and Hero groups fall vertically into place, then the persistent cloud field floats in and continues its normal drift. The scene does not replay after client-side navigation and resolves immediately for user scroll/navigation intent or reduced motion.
 
-The dedicated Projects routes are feature-complete for the approved scope. Published projects load from the backend into URL-backed browser tabs, and each selected project presents its ordered screenshots and metadata in one responsive horizontal rail across desktop and mobile.
+The dedicated Projects routes are feature-complete for the approved scope. Published projects load from the backend into URL-backed browser tabs, and each selected project presents its ordered screenshots and metadata in one responsive horizontal rail across desktop and mobile. A narrow-and-short viewport (up to 48rem wide and 32rem high) allows document scrolling and reserves enough browser height for readable panels. Heading typography, position and spacing stay unchanged; other viewports retain the existing composition and page scroll lock.
 
 On desktop primary-route changes, the complete Projects browser slides in from beyond the destination-side viewport edge. Its initially visible leading edge begins as a small rounded bulge and unfolds into the stable browser surface during the slide; the exit mirrors that travel toward the departure edge. Nested project-tab navigation and direct visits remain immediate.
 

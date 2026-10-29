@@ -29,6 +29,20 @@
   margin-top: clamp(1.5rem, 3.9063svh, 2.5rem);
 }
 
+.page[data-projects-document-scroll] {
+  --project-rail-touch-action: pan-x pan-y pinch-zoom;
+  height: auto;
+  min-height: 100svh;
+}
+
+.page[data-projects-document-scroll] .content {
+  flex: 0 0 auto;
+  height: calc(
+    var(--project-fallback-panel-height) + 6.25rem + env(safe-area-inset-bottom, 0px)
+  );
+  max-height: none;
+}
+
 @media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
   .page {
     --route-surface-inline-inset: max(

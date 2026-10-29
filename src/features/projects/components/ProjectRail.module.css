@@ -4,7 +4,7 @@
   --project-rail-end: var(--page-gutter);
   --horizontal-snap-padding-start: var(--project-rail-start);
   --horizontal-snap-padding-end: var(--project-rail-end);
-  --horizontal-snap-touch-action: pan-x pinch-zoom;
+  --horizontal-snap-touch-action: var(--project-rail-touch-action, pan-x pinch-zoom);
   width: 100%;
   height: 100%;
   min-height: 0;
