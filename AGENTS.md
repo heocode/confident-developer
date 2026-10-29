@@ -196,6 +196,7 @@ Main folders:
 
 ## Git Workflow
 
+- GitHub Actions validates frontend typecheck, lint, tests, and build for pushes and pull requests to `main`. Production hosting targets a Render Static Site with relative `/api` rewrites to a separate Render Node backend; configure auto-deploys as **After CI Checks Pass**, not unconditional deployment of failing commits. The frozen coursework backend deployment stays separate. Keep raw HAR, Performance traces, and audit screenshots local; the Markdown audit report may be versioned.
 - Before major commits, review `AGENTS.md` and update it when the implementation introduces or changes architectural decisions, product behavior, workflow requirements, or known constraints.
 - Do not modify `AGENTS.md` for implementation details that do not change documented project decisions.
 - If a change introduces no new decision, explicitly verify that `AGENTS.md` is still accurate before committing.

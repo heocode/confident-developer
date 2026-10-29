@@ -27,3 +27,9 @@ dist-ssr
 *.sw?
 
 makets
+
+# Local pre-release audit captures (keep reports in Git, captures on disk).
+/Trace-*.json.gz
+/*.har
+/image.png
+/image copy.png

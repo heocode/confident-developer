@@ -104,4 +104,15 @@ References exposes a shared `useReferences` loader and `ReferenceFeed` display, 
 
 ## Deployment
 
-Production hosting must preserve relative `/api/...` browser requests by proxying or rewriting them to the backend. That hosting configuration is deployment-specific and is not currently stored in this repository.
+The deployment target is a Render Static Site for this frontend and a separate Render Node Web Service for the backend. Publish `dist` after `npm ci && npm run build`; do not run Vite preview as the production server. The coursework backend service remains pinned to its separate submission branch.
+
+GitHub Actions in `.github/workflows/ci.yml` checks TypeScript, lint, tests, and the production build for pushes and pull requests to `main`. In Render, link the production service to `main` and select **After CI Checks Pass** for auto-deploys. A local commit alone does not deploy: it must be pushed to the linked GitHub branch. CI does not require production credentials.
+
+Before publishing, configure the actual backend URL, public frontend origin, Turnstile keys, and these Render rewrites in this order:
+
+1. `/api/*` → `https://<backend-service>.onrender.com/api/*`, action **Rewrite**.
+2. `/*` → `/index.html`, action **Rewrite**.
+
+Browser requests remain relative `/api/...`. Set the public `VITE_TURNSTILE_SITE_KEY` in the frontend build environment; `API_PROXY_TARGET` only controls the local proxy. Backend secrets stay in the backend service environment. Rebuild after changing a Vite public environment variable.
+
+The hosting settings are not yet applied. Follow [DEPLOYMENT.md](DEPLOYMENT.md) to configure and verify both services before enabling production auto-deploys.
