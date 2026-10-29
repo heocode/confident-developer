@@ -98,7 +98,21 @@
 }
 
 .tab:focus-visible {
-  z-index: 3;
+  outline: none;
+}
+
+.focusRing {
+  position: absolute;
+  top: 0.125rem;
+  right: 0.125rem;
+  left: 0.125rem;
+  height: calc(var(--browser-tabs-layout-height) - 0.25rem);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.tab:focus-visible .focusRing {
+  border: 0.1875rem solid var(--color-focus);
 }
 
 @media (max-width: 48rem) {

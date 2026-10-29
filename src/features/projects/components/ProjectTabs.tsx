@@ -58,6 +58,7 @@ export function ProjectTabs({ activeSlug, tabs }: ProjectTabsProps) {
             tabIndex={index === keyboardFocusIndex ? 0 : -1}
             to={`/projects/${tab.slug}`}
           >
+            <span aria-hidden="true" className={styles.focusRing} />
             <span className={styles.logoFrame}>
               <img
                 alt=""
