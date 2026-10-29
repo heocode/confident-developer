@@ -1,5 +1,98 @@
 # Предрелизный аудит: исходная точка
 
+## Production forms и Home keyboard focus: пользовательская проверка
+
+Пользователь настроил Resend и подтвердил получение письма после отправки Contact на основном домене.
+Для References подтверждены отправка пользователем, появление в административном API,
+восстановление заявки после reload, Withdraw и операции модерации/удаления по инструкции Postman.
+Это пользовательские проверки реальных форм; агент отправки и модерацию не выполнял.
+Предыдущие записи о непроверенных submissions ниже описывают более ранние этапы.
+
+A11Y-01: после Scroll to explore переход Tab визуально показывал Services вместо Projects.
+Лог focusin пользователя подтвердил `home-projects / Show details for SuperSauced`:
+порядок фокуса сохранён, проблема касается видимости сфокусированной карточки при scroll-motion.
+Добавлено мгновенное выравнивание секции Projects при входе keyboard-visible фокуса извне;
+обычные Tab внутри секции и pointer/scroll взаимодействия не меняются.
+Пользователь подтвердил исправление в local production preview после инструкции проверить Tab/Shift+Tab.
+Отдельные проверки mobile rail, reduced motion и опубликованной версии ещё требуются.
+
+## Custom domain: DNS/TLS и API проверены
+
+Владелец купил confidentdeveloper.space через Cloudflare и сообщил Render Verified после настройки DNS.
+GET smoke test с проверкой TLS подтвердил:
+
+- HTTP apex → 301 → HTTPS apex → HTML 200.
+- HTTPS www → 301 → HTTPS apex → HTML 200.
+- HTTPS apex `/projects/unicon` → HTML 200, SPA fallback работает на HTTP-уровне.
+- `/api/health` → JSON 200 success=true/database=connected.
+- `/api/v1/projects` → JSON 200 с тремя проектами, unknown project → JSON 404.
+- GET Profile interaction revision=1 с Origin основного домена → 200,
+  ACAO=https://confidentdeveloper.space, Cache-Control private,no-store.
+  Set-Cookie в этом ответе нет, поэтому выдачу/сохранение visitor cookie этой проверкой не подтверждаем.
+- До этого финальные проверки allowlist подтвердили основной origin 200 и чужой 403.
+
+Доменная маршрутизация и сертификат проверены; это не завершение проверки форм и браузерного rendering.
+Остаются production Turnstile на основном hostname, proxy/client-IP, controlled submissions/mail,
+незавершённые accessibility/device проверки и измерения/фиксы из реестра.
+Агент выполнял только GET; реальные сообщения, отзывы, лайки и view POST не отправлял.
+
+## Production Turnstile: пользовательская проверка UI
+
+После настройки production widget, frontend VITE_TURNSTILE_SITE_KEY и backend TURNSTILE_SECRET_KEY
+по инструкции пользователь сообщил, что сообщение о ненастроенной отправке исчезло и всё работает.
+Это подтверждает пользовательский UI-результат на временном frontend адресе;
+secret/token значения не запрашивались и агентом не читались.
+Siteverify успех, expiry/error lifecycle и end-to-end Contact/References submission ещё не подтверждены.
+Реальные отправки не согласованы и не выполнялись агентом.
+Следующий шаг — DNS provider и подключение confidentdeveloper.space с TLS,
+затем проверка cookies/proxy и отдельно согласованная проверка доставки.
+
+## Render Origin allowlist после изменения окружения
+
+Пользователь добавил временный frontend origin и запустил обновление backend.
+Первые GET ещё видели 403; спустя около 23 s повторные проверки direct backend и frontend rewrite
+для /api/health и /api/v1/projects вернули 200 с ACAO=https://confidentdeveloper.onrender.com.
+Проверку во время redeploy не принимаем за устойчивое конечное состояние.
+Основной origin и отрицательный контроль проверяются отдельно; CORS GET-проверка не заменяет
+серверную проверку Turnstile, protected POST, cookies или client-IP/rate-limit конфигурацию.
+Реальные submissions не отправлялись. ENV-01 локального preview не закрывается автоматически
+разрешением production Render URL.
+
+## Render frontend: опубликованный GET smoke test
+
+Frontend https://confidentdeveloper.onrender.com создан пользователем.
+Проверки через curl с включённой TLS validation:
+
+- `/`, `/projects/unicon`, `/services/product-ui-ux`, `/about`, `/references`, `/contact`, `/audit-unknown`
+  возвращают HTML 200 (490 B): SPA fallback работает на HTTP-уровне; это не полная проверка DOM/render.
+- `/api/health` возвращает JSON success/database=connected через frontend origin.
+- Public projects (3), Home services (4), GitHub summary, Profile Post и References возвращают JSON 200.
+- Неизвестный `/api/v1/projects/audit-unknown` возвращает JSON 404, а не SPA HTML.
+- JS/CSS/WOFF2/PNG и WASM отвечают 200 с соответствующими MIME.
+- JS, CSS и Rive WASM отдаются с Content-Encoding:gzip. PERF-06: риск отсутствия HTTP-сжатия
+  в local preview не воспроизвёлся на Render; ручная precompression сейчас не обоснована.
+- Статика имеет Cache-Control public,max-age=0,s-maxage=300; длительный browser immutable cache
+  для fingerprinted assets пока не настроен. Public API сохраняет свои cache headers.
+- GET `/api/v1/projects` с Origin=https://confidentdeveloper.onrender.com возвращает 403;
+  с Origin=https://confidentdeveloper.space возвращает 200 с правильным ACAO/credentials.
+  Для текущего временного адреса нужна правка CLIENT_ORIGINS; POST не отправлялся.
+- Python urllib локально не нашёл доверенный CA; повтор через системный curl проверяет TLS успешно.
+  Это локальная настройка Python, не доказательство проблемы сертификата сайта.
+
+Следующий шаг: backend CLIENT_ORIGINS=https://confidentdeveloper.space,https://confidentdeveloper.onrender.com,
+Save and deploy, повторить GET с Origin. Затем production Turnstile/public site key и настройка домена.
+Cookies, protected mutations, proxy client IP и успешные submissions всё ещё не проверены.
+
+## Render backend: первый запуск
+
+Пользователь создал Free backend https://confidentdeveloper-api.onrender.com.
+Первый старт завершался querySrv EBADNAME для буквального `<cluster>` — в MONGODB_URI
+оставалась заглушка примера. После замены пользователь сообщил успешный запуск.
+Независимые публичные GET подтвердили /api/health success=true/database=connected
+и /api/v1/projects success=true, slugs unicon/supersauced/domsot.
+Это подтверждает запуск и чтение контента; Origin/cookies/Turnstile/mail и IP proxy поведение
+в production frontend topology ещё не проверены. POST/настройки удалённого сервиса агентом не выполнялись.
+
 ## Подготовка CI/CD и переход к размещению
 
 Пользователь предложил сразу production-размещение с дальнейшими исправлениями и автоматическим

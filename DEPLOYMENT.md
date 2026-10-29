@@ -1,8 +1,14 @@
 # Render deployment and continuous delivery
 
-Status: preparation only. Services, domains, production credentials and automatic deployments have not been configured by this change.
+Status: CI is published and both initial GitHub Actions runs passed. Backend/frontend are live; confidentdeveloper.space is connected and TLS, HTTP-to-HTTPS, www-to-apex, direct route HTML and relative API GETs were independently verified. Both frontend origins are allowed and an untrusted origin was rejected. The owner confirmed Contact email receipt and the References submission, reload restoration, withdrawal and moderation/deletion flows. Full acceptance, proxy/client-IP and remaining accessibility/device checks are still in progress.
 
-Confirmed launch choices: primary frontend domain **https://confidentdeveloper.space**, backend **Free** initially. Free backend sleep/cold start remains an accepted launch limitation. Backend service URL and DNS provider still need to be identified. Use the apex domain as primary unless the owner later chooses `www`.
+Confirmed launch choices: primary frontend domain **https://confidentdeveloper.space**, backend **Free** initially at **https://confidentdeveloper-api.onrender.com**. Free backend sleep/cold start remains an accepted launch limitation. DNS is managed through Cloudflare. Use the apex domain as primary unless the owner later chooses `www`.
+
+Domain ownership update: the owner purchased `confidentdeveloper.space` through Cloudflare and configured DNS. Render reports verified. The agent checked public HTTPS and redirects; the purchase and DNS changes were performed by the owner.
+
+Frontend Render URL: **https://confidentdeveloper.onrender.com**. Backend `CLIENT_ORIGINS` is configured to include both `https://confidentdeveloper.space,https://confidentdeveloper.onrender.com`. The actual widget hostname allowlist must also cover the address used for Turnstile tests.
+
+The owner configured real Turnstile keys and Resend, then performed authorized Contact and References tests on the primary domain. Contact email arrived; References appeared in the administrative API, persisted after reload, and supported withdrawal and moderation/deletion. These are owner-reported browser/Postman checks; the agent did not send submissions or moderate records.
 
 ## Release sequence and completion criteria
 
@@ -78,7 +84,7 @@ Add these **Rewrite**, not Redirect, rules in this order, replacing the backend 
 
 | Source | Destination |
 | --- | --- |
-| `/api/*` | `https://<backend-service>.onrender.com/api/*` |
+| `/api/*` | `https://confidentdeveloper-api.onrender.com/api/*` |
 | `/*` | `/index.html` |
 
 Add `confidentdeveloper.space` under the frontend Static Site's Custom Domains. Configure only its relevant DNS records according to the actual DNS provider and Render's instructions; preserve email MX/TXT and other unrelated records. Verify the domain and TLS before announcing it. Render automatically adds `www` with a redirect to the apex when adding an apex domain. Exact DNS targets come from the created Static Site; do not invent them before creation.

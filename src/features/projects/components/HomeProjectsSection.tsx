@@ -1,4 +1,4 @@
-import type { Ref } from 'react'
+import type { FocusEvent, Ref } from 'react'
 
 import styles from './HomeProjectsSection.module.css'
 import { HomeProjectCard } from './HomeProjectCard.tsx'
@@ -11,11 +11,20 @@ interface HomeProjectsSectionProps {
 export function HomeProjectsSection({ sectionRef }: HomeProjectsSectionProps) {
   const { retry, state } = useHomeProjects()
 
+  const revealForKeyboardFocus = (event: FocusEvent<HTMLElement>) => {
+    if (!event.target.matches(':focus-visible')) return
+    if (event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)) return
+
+    // Native focus scrolling can center a low card control beyond the section's exit phase.
+    event.currentTarget.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'nearest' })
+  }
+
   return (
     <section
       className={styles.section}
       id="home-projects"
       aria-labelledby="home-projects-title"
+      onFocusCapture={revealForKeyboardFocus}
       ref={sectionRef}
     >
       <header className={styles.header}>
