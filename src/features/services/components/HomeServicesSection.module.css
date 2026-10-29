@@ -1,10 +1,9 @@
 .section {
   position: relative;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(min-content, 1fr);
   gap: clamp(2rem, 7.8svh, 5rem);
-  height: 100svh;
-  min-height: 0;
+  min-height: 100svh;
   padding-top: var(--viewport-edge-offset);
   overflow: hidden;
   color: var(--color-text);
@@ -69,7 +68,7 @@
 }
 
 .item {
-  height: clamp(5.5rem, 15.625svh, 10rem);
+  min-height: clamp(5.5rem, 15.625svh, 10rem);
 }
 
 :global([data-home-services-motion]) .item,
@@ -94,7 +93,7 @@
 .trigger {
   display: block;
   width: 100%;
-  height: 100%;
+  min-height: inherit;
   padding: 0;
   border: 0;
   color: inherit;
@@ -116,7 +115,7 @@
   gap: var(--service-content-gap);
   width: max-content;
   max-width: calc(100vw - var(--page-gutter));
-  height: 100%;
+  min-height: inherit;
   padding: 0 clamp(1.5rem, 3vw, 3rem) 0 var(--page-gutter);
   overflow: hidden;
   border: 0.0625rem solid var(--color-service-border);
@@ -215,12 +214,7 @@
     --mobile-service-compact-height: clamp(5.75rem, min(25.4vw, 14svh), 8.25rem);
     --mobile-service-edge-gap: clamp(1rem, 4vw, 1.25rem);
 
-    height: var(--mobile-service-compact-height);
-    transition: height 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
-  }
-
-  .item.active {
-    height: calc(clamp(9.5rem, min(40vw, 22svh), 12.75rem) + var(--mobile-service-edge-gap));
+    min-height: var(--mobile-service-compact-height);
   }
 
   .surface {
@@ -228,17 +222,20 @@
     --service-content-gap: 0.75rem;
 
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--mobile-service-compact-height) minmax(0, 1fr);
+    grid-template-rows: var(--mobile-service-compact-height) 0fr;
     align-content: start;
     width: var(--mobile-service-width);
     max-width: none;
     padding: 0 var(--mobile-service-padding);
     row-gap: 0;
-    transition: width 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    transition:
+      width 420ms cubic-bezier(0.2, 0.75, 0.2, 1),
+      grid-template-rows 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
   }
 
   .active .surface {
     width: calc(100vw - var(--page-gutter));
+    grid-template-rows: var(--mobile-service-compact-height) 1fr;
   }
 
   .title {
@@ -265,19 +262,22 @@
     grid-column: 1 / -1;
     grid-row: 2;
     width: 100%;
-    max-height: 0;
+    min-height: 0;
     font-size: clamp(0.9rem, 4vw, 1.25rem);
     line-height: 1.2;
-    transition: max-height 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    transition: none;
   }
 
   .active .description {
     width: 100%;
-    max-height: calc(5rem + var(--mobile-service-edge-gap));
   }
 
   .descriptionText {
     width: 100%;
+    min-height: calc(
+      clamp(9.5rem, min(40vw, 22svh), 12.75rem) +
+      var(--mobile-service-edge-gap) - var(--mobile-service-compact-height)
+    );
     padding: 0.25rem 0 var(--mobile-service-edge-gap);
     transform: translate3d(0, -0.5rem, 0);
   }

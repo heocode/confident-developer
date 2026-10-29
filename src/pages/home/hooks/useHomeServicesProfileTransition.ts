@@ -86,12 +86,16 @@ export function useHomeServicesProfileTransition(
       scheduleTransitionUpdate()
     }
 
+    const servicesResizeObserver = new ResizeObserver(scheduleTransitionUpdate)
+
     updateTransition()
+    servicesResizeObserver.observe(servicesSection)
     window.addEventListener('scroll', scheduleTransitionUpdate, { passive: true })
     window.addEventListener('resize', scheduleTransitionUpdate)
     reducedMotionQuery.addEventListener('change', handleMotionPreferenceChange)
 
     return () => {
+      servicesResizeObserver.disconnect()
       window.removeEventListener('scroll', scheduleTransitionUpdate)
       window.removeEventListener('resize', scheduleTransitionUpdate)
       reducedMotionQuery.removeEventListener('change', handleMotionPreferenceChange)
