@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import type { AnimationEvent } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import type { AnimationEvent, CSSProperties } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { usePrimaryRouteMotion } from '../../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
+import { usePageScrollLock } from '../../../components/layout/usePageScrollLock.ts'
+import { useShortMobileViewport } from '../../../components/layout/useShortMobileViewport.ts'
 import { ServiceOpeningLayer } from '../components/ServiceOpeningLayer.tsx'
 import {
   createServiceDetailCache,
@@ -10,6 +12,7 @@ import {
   useServicesList,
 } from '../hooks/useServicesPageData.ts'
 import { SERVICE_DETAIL_BLOCK_EXIT_DURATION_MS } from '../presentation/service-detail-motion.ts'
+import { SERVICE_SHOWCASE_LAYOUT_TOKENS } from '../presentation/service-showcase-layout.ts'
 import type { ServiceSummaryPresentation } from '../presentation/services-page.ts'
 import {
   createServiceOpeningGeometry,
@@ -26,9 +29,20 @@ import styles from './ServicesRoute.module.css'
 const OPENING_DURATION_MS = 300
 const HANDOFF_DURATION_MS = 60
 const CLOSING_DURATION_MS = 220
+const documentScrollStyle = {
+  '--service-fallback-showcase-height': `${SERVICE_SHOWCASE_LAYOUT_TOKENS.baseHeight}px`,
+} as CSSProperties
 
 export function ServicesRoute() {
   const { pathname } = useLocation()
+  const isIndexRoute = pathname.replace(/\/+$/, '') === '/services'
+  const isShortMobileViewport = useShortMobileViewport()
+  const usesDocumentScroll = isShortMobileViewport
+  usePageScrollLock(!usesDocumentScroll, 'services-route')
+
+  useLayoutEffect(() => {
+    if (isShortMobileViewport) window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [isShortMobileViewport, pathname])
   const navigate = useNavigate()
   const { retry, state } = useServicesList()
   const routeMotion = usePrimaryRouteMotion('services')
@@ -78,6 +92,11 @@ export function ServicesRoute() {
       if (!content || openingTransition || closingTransition) return false
 
       clearOpeningTimers()
+      if (usesDocumentScroll) {
+        void prefetchServiceDetail(request.service.slug, detailCache).catch(() => undefined)
+        void navigate(`/services/${request.service.slug}`)
+        return true
+      }
       const geometry = createServiceOpeningGeometry(
         request,
         toServiceTransitionRect(content.getBoundingClientRect()),
@@ -130,6 +149,7 @@ export function ServicesRoute() {
       detailCache,
       navigate,
       openingTransition,
+      usesDocumentScroll,
     ],
   )
 
@@ -140,7 +160,7 @@ export function ServicesRoute() {
       const reducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches
-      if (reducedMotion) {
+      if (reducedMotion || isShortMobileViewport) {
         void navigate('/services')
         return true
       }
@@ -158,7 +178,7 @@ export function ServicesRoute() {
 
       return true
     },
-    [closingTransition, navigate, openingTransition],
+    [closingTransition, isShortMobileViewport, navigate, openingTransition],
   )
 
   const reportServiceClosingTarget = useCallback(
@@ -246,14 +266,15 @@ export function ServicesRoute() {
     routeMotion.complete()
   }
 
-  const isIndexRoute = pathname.replace(/\/+$/, '') === '/services'
-
   return (
     <section
       className={styles.page}
       aria-labelledby="services-title"
       data-services-route-motion-direction={routeMotion.direction ?? undefined}
       data-services-route-motion-phase={routeMotion.phase}
+      data-services-document-scroll={usesDocumentScroll ? '' : undefined}
+      data-services-route-kind={isIndexRoute ? 'index' : 'detail'}
+      style={usesDocumentScroll ? documentScrollStyle : undefined}
     >
       <header className={styles.header}>
         <h1 className={styles.title} id="services-title">

@@ -1,5 +1,26 @@
 # Предрелизный аудит: исходная точка
 
+## Services index: narrow/short viewport
+
+Пользователь подтвердил Projects и сообщил, что при тех же условиях Services не помещаются.
+Используется то же условие <=48rem по ширине и <=32rem по высоте, выделенное в общий
+useShortMobileViewport без изменения поведения Projects.
+Services index и открытая услуга в этом диапазоне получают height:auto и document scrolling;
+title/spacing/row geometry и обычные desktop/mobile размеры не менялись.
+Services сам владеет conditional shared root lock. Для деталей content получает явную высоту
+из baseHeight showcase, текущей высоты service header, gap, padding и border;
+вне диапазона детали остаются viewport-locked.
+Opening/closing в этом диапазоне выполняются прямой навигацией и reset document top,
+чтобы не строить expansion/collapse из scrolled index; прочие режимы сохраняют анимацию
+и текущую непрозрачную подложку. Modified links остаются native.
+Требуется проверка полного списка при 200%, открытия нижней услуги, Back/Forward,
+100%, обычного мобильного окна и mobile menu. Пользователь подтвердил список; затем image.png
+показал clipping открытой услуги и отсутствие page scrolling. Fallback распространён на детали;
+После инструкции проверить открытый Product & UI/UX Design при 200%, обе прокрутки
+и доступность Tools/Used In пользователь подтвердил результат и разрешил commit.
+TypeScript, lint, все 205 тестов и production build прошли.
+Отдельные проверки всех услуг/устройств не заявляются. Изменения ещё не опубликованы.
+
 ## Projects: fallback для narrow/short viewport
 
 Предыдущие незакоммиченные попытки исправления Projects полностью отменены по просьбе пользователя.

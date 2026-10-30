@@ -43,6 +43,30 @@
   min-height: 0;
 }
 
+.page[data-services-document-scroll] {
+  height: auto;
+  min-height: 100svh;
+}
+
+.page[data-services-document-scroll] .content {
+  flex: 0 0 auto;
+}
+
+.page[data-services-document-scroll] .routeScene {
+  height: auto;
+}
+
+.page[data-services-document-scroll][data-services-route-kind='detail'] .content {
+  height: calc(
+    var(--service-fallback-showcase-height) + var(--services-row-height) +
+    0.625rem + 1rem + 0.125rem
+  );
+}
+
+.page[data-services-document-scroll][data-services-route-kind='detail'] .routeScene {
+  height: 100%;
+}
+
 @media (min-width: 48.001rem) and (prefers-reduced-motion: no-preference) {
   .page[data-services-route-motion-phase='entering'] .title {
     animation: services-route-title-enter 280ms cubic-bezier(0.16, 1, 0.3, 1)
