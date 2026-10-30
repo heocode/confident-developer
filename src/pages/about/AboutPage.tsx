@@ -1,5 +1,7 @@
 import { RouteSurfaceMotion } from '../../components/layout/route-transitions/route-surface/RouteSurfaceMotion.tsx'
 import { usePrimaryRouteMotion } from '../../components/layout/route-transitions/usePrimaryRouteMotion.ts'
+import { usePageScrollLock } from '../../components/layout/usePageScrollLock.ts'
+import { useShortMobileViewport } from '../../components/layout/useShortMobileViewport.ts'
 import { HorizontalSnapRail } from '../../components/scroll/HorizontalSnapRail.tsx'
 import { ProfileOverview } from '../../features/profile/components/ProfileOverview.tsx'
 import { useProfile } from '../../features/profile/hooks/useProfile.ts'
@@ -8,6 +10,8 @@ import styles from './AboutPage.module.css'
 import { AboutDetails } from './components/AboutDetails.tsx'
 
 export function AboutPage() {
+  const usesDocumentScroll = useShortMobileViewport()
+  usePageScrollLock(!usesDocumentScroll, 'about-route')
   const routeMotion = usePrimaryRouteMotion('about')
   const { recordView, retry, state, toggleLike } = useProfile()
   const profileRef = useProfileViewTracking(state.status === 'ready', recordView)
@@ -18,6 +22,7 @@ export function AboutPage() {
       aria-labelledby="about-page-title"
       data-route-motion-direction={routeMotion.direction ?? undefined}
       data-route-motion-phase={routeMotion.phase}
+      data-about-document-scroll={usesDocumentScroll ? '' : undefined}
     >
       <h1 id="about-page-title">WHO BUILDS THE STUFF?</h1>
 

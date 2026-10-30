@@ -383,3 +383,29 @@
     align-self: end;
   }
 }
+
+.page[data-about-document-scroll] {
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: auto auto;
+}
+
+.page[data-about-document-scroll] .content,
+.page[data-about-document-scroll] .content > :first-child,
+.page[data-about-document-scroll] .panel,
+.page[data-about-document-scroll] .track {
+  height: auto;
+  min-height: 0;
+}
+
+.page[data-about-document-scroll] .profile,
+.page[data-about-document-scroll] .details {
+  height: auto;
+  overflow: visible;
+  overscroll-behavior-block: auto;
+}
+
+.page[data-about-document-scroll] .profile > :first-child {
+  height: 100%;
+  min-height: 0;
+}
