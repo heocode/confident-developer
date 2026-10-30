@@ -1,5 +1,22 @@
 # Предрелизный аудит: исходная точка
 
+## PERF-02: проба native lazy-loading пейзажа
+
+После commit PERF-01 (a8298a0) пользователь разрешил проверить пейзаж.
+Исходный localhost.har: contact-landscape-DV-9c7ce.webp, 140810 B content / 141080 B transfer,
+локальная длительность 9.036 ms; это историческая запись, а не новое production timing.
+Файл и сейчас имеет 140810 B. Единственное изменение — loading="lazy" на существующем img.
+width/height, CSS, раскрытие Contact и сам asset не менялись; AGENTS.md остаётся точным.
+Browser сам выбирает расстояние упреждающей загрузки: отсутствие запроса сразу после reload
+не гарантируется для всех viewport/network условий. Загрузка до появления пейзажа допустима.
+Без подключённого браузера новый Network/LCP/CLS/scroll результат агентом не измерен.
+Требуется user-проверка initial Home без scroll, обычной и быстрой прокрутки, включая Fast 4G,
+а также reload с восстановленной позицией у Contact. Ускорение Hero/LCP не заявляется.
+TypeScript, lint, пять тестов Contact transition и production build прошли.
+Пользователь разрешил добавить изменение. Результаты browser-проверки initial request,
+быстрой прокрутки и Fast 4G пока не сообщались; функциональный/performance итог остаётся открытым.
+Изменение ещё не опубликовано.
+
 ## PERF-01: локальная реализация, browser-замер ещё требуется
 
 Пользователь разрешил начать с раннего Turnstile Home. Проверка browser skill/runtime
@@ -1213,7 +1230,7 @@ https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
 
 ### PERF-02: отложенная загрузка пейзажа Home Contact
 
-Статус: кандидат на улучшение; реализации пока нет.
+Статус: native loading="lazy" добавлен локально; ожидается browser-проверка запроса и раскрытия.
 
 Наблюдение: декоративный пейзаж последней секции Home — обычный img без `loading="lazy"`.
 В HAR запрос начинается примерно одновременно с портретом Hero, имеет Low priority

@@ -44,6 +44,7 @@ export function ContactSection({
         aria-hidden="true"
         width="2880"
         height="758"
+        loading="lazy"
       />
 
       <footer className={styles.footer}>
