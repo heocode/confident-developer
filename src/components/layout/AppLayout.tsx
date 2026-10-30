@@ -9,9 +9,7 @@ import { routeTransitionTiming } from './route-transitions/route-transition-timi
 import { useRouteTransitionCoordinator } from './route-transitions/useRouteTransitionCoordinator.ts'
 import { SiteNavigation } from './SiteNavigation'
 import { useInitialHomeOpening } from './useInitialHomeOpening.ts'
-import { usePageScrollLock } from './usePageScrollLock.ts'
 
-const viewportLockedRoutes = new Set(['contact'])
 type RouteTransitionStyle = CSSProperties & {
   '--route-transition-entrance-duration': string
   '--route-transition-exit-duration': string
@@ -24,8 +22,6 @@ const routeTransitionStyle: RouteTransitionStyle = {
 
 export function AppLayout() {
   const { pathname } = useLocation()
-  const routeSection = pathname.split('/')[1]
-  const isViewportLocked = viewportLockedRoutes.has(routeSection)
   const isInitialHomeOpening = useInitialHomeOpening(pathname)
   const mainRef = useRef<HTMLElement>(null)
   const {
@@ -35,7 +31,6 @@ export function AppLayout() {
     isTransitioning,
     transition,
   } = useRouteTransitionCoordinator(mainRef)
-  usePageScrollLock(isViewportLocked, 'viewport-route')
 
   return (
     <RouteTransitionContext.Provider value={contextValue}>

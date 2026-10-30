@@ -24,6 +24,7 @@ import styles from './ContactForm.module.css'
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY?.trim() ?? ''
 
 interface ContactFormProps {
+  usesDocumentScroll?: boolean
   layout?: 'flow' | 'panel'
   autoFocus?: boolean
   titleId?: string
@@ -36,6 +37,7 @@ function createEmptyForm(): ContactFormValues {
 }
 
 export function ContactForm({
+  usesDocumentScroll = false,
   layout = 'flow',
   autoFocus = false,
   titleId = 'contact-form-title',
@@ -142,7 +144,11 @@ export function ContactForm({
 
   return (
     <form
-      className={[styles.form, layout === 'panel' ? styles.panelForm : ''].filter(Boolean).join(' ')}
+      className={[
+        styles.form,
+        layout === 'panel' ? styles.panelForm : '',
+        usesDocumentScroll ? styles.documentFlow : '',
+      ].filter(Boolean).join(' ')}
       aria-labelledby={titleId}
       noValidate
       onSubmit={(event) => void handleSubmit(event)}

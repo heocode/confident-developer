@@ -1,5 +1,21 @@
 # Предрелизный аудит: исходная точка
 
+## Contact: document scrolling в narrow/short viewport
+
+По запросу пользователя Contact использует тот же диапазон <=48rem × <=32rem:
+page/content/panel растут по содержимому, внутренний panel scroll заменён document scrolling,
+heading/spacing/frame сохраняются. Contact владеет conditional shared root lock;
+последняя безусловная route-блокировка удалена из AppLayout, поскольку все dedicated routes
+теперь сами выбирают режим. Независимые menu/dialog locks сохраняются.
+ContactForm получает явный document-flow режим только со страницы: auto rows, заданные
+читаемые input/message/action размеры, рост для ошибок и Turnstile feedback.
+Home drawer и API lifecycle не менялись. Требуется проверить при 200% все поля, Scope/Budget,
+Send, ошибки пустой формы, вертикальную прокрутку над панелью, затем 100%/mobile и Home drawer.
+После предоставления preview и инструкции проверки пользователь разрешил commit.
+Подробные результаты отдельных browser-сценариев не сообщались.
+TypeScript, lint, 205 тестов и production build прошли.
+Реальная отправка не выполнялась. Изменение ещё не опубликовано.
+
 ## References: document scrolling в narrow/short viewport
 
 По запросу пользователя применено общее условие <=48rem × <=32rem:

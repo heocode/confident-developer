@@ -140,3 +140,23 @@
     border-radius: 1.1875rem 1.1875rem 0 0;
   }
 }
+
+.page[data-contact-document-scroll] {
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: auto auto;
+}
+
+.page[data-contact-document-scroll] .content,
+.page[data-contact-document-scroll] .content > :first-child,
+.page[data-contact-document-scroll] .panel {
+  height: auto;
+  max-height: none;
+}
+
+.page[data-contact-document-scroll] .panel {
+  --contact-success-min-height: 20rem;
+  container-type: inline-size;
+  overflow: visible;
+  overscroll-behavior-block: auto;
+}

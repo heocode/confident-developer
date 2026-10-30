@@ -465,3 +465,21 @@
     }
   }
 }
+
+.panelForm.documentFlow {
+  --contact-input-height: 2.5rem;
+  --contact-message-height: 9rem;
+  --contact-action-height: 2.5rem;
+  container-type: inline-size;
+  height: auto;
+  min-height: 0;
+  grid-template-rows: repeat(6, auto);
+}
+
+.documentFlow .textField {
+  grid-template-rows: auto auto;
+}
+
+.documentFlow .submitButton {
+  height: auto;
+}
