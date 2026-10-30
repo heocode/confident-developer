@@ -201,3 +201,34 @@
     scroll-padding-block: var(--references-mobile-block-inset);
   }
 }
+
+.page[data-references-document-scroll] {
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: auto auto;
+}
+
+.page[data-references-document-scroll] .content,
+.page[data-references-document-scroll] .content > :first-child,
+.page[data-references-document-scroll] .panel,
+.page[data-references-document-scroll] .track {
+  height: auto;
+  max-height: none;
+}
+
+.page[data-references-document-scroll] .feed,
+.page[data-references-document-scroll] .submission {
+  height: auto;
+  overflow: visible;
+  overscroll-behavior-block: auto;
+}
+
+.page[data-references-document-scroll] .submission {
+  container-type: inline-size;
+}
+
+.page[data-references-document-scroll] .feed > * {
+  overflow: visible;
+  overscroll-behavior-block: auto;
+  scrollbar-gutter: auto;
+}

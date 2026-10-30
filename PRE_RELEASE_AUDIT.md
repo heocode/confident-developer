@@ -1,5 +1,25 @@
 # Предрелизный аудит: исходная точка
 
+## References: document scrolling в narrow/short viewport
+
+По запросу пользователя применено общее условие <=48rem × <=32rem:
+References сам управляет shared root lock и освобождает его в этом диапазоне.
+Frame/track растут по содержимому, guestbook и inline form остаются двумя горизонтальными
+слайдами, heading/spacing сохраняются. Внутренний вертикальный скролл feed/form снят;
+textarea по-прежнему прокручивает длинный текст внутри своего поля.
+Форма получает document-flow layout с content-driven rows, input height 2.75rem,
+местом для testimonial/Send и растущими feedback/errors. Size containment снят только
+для вертикального измерения в этом режиме, чтобы форма не схлопывалась.
+ReferenceList наблюдает sentinel относительно document viewport, а не растущего feed root,
+чтобы не загружать все страницы отзывов сразу. Default поведение Home/других размеров не менялось.
+Требуется проверить обе slide-позиции, поля/ratings/testimonial, feedback, pagination,
+возврат к обычному viewport и независимый lock удаления. Реальные отзывы не отправлялись.
+После инструкции проверить оба слайда при 200%, доступность полей/Send и сравнить
+с обычным размером пользователь подтвердил результат и разрешил commit.
+TypeScript, lint, 205 тестов и production build прошли. Pagination с несколькими страницами,
+модальное удаление и отдельные устройства в рамках этого фикса не подтверждались.
+Изменения ещё не опубликованы.
+
 ## About: document scrolling вместо внутреннего Profile scroll
 
 Пользовательский image.png показывает внутреннюю полосу прокрутки Profile при увеличении;

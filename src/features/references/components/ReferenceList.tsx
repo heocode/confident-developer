@@ -11,6 +11,7 @@ import { OwnedReferenceCard } from './OwnedReferenceCard.tsx'
 import { ReferenceCard } from './ReferenceCard.tsx'
 
 interface ReferenceListProps {
+  usesDocumentScroll?: boolean
   items: PublicReference[]
   pagination: ReferencePagination
   isLoadingMore: boolean
@@ -22,6 +23,7 @@ interface ReferenceListProps {
 }
 
 export function ReferenceList({
+  usesDocumentScroll = false,
   items,
   pagination,
   isLoadingMore,
@@ -44,12 +46,12 @@ export function ReferenceList({
       ([entry]) => {
         if (entry?.isIntersecting) onLoadNextPage()
       },
-      { root, rootMargin: '10rem 0px' },
+      { root: usesDocumentScroll ? null : root, rootMargin: '10rem 0px' },
     )
 
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPage, isLoadingMore, loadMoreErrorMessage, onLoadNextPage])
+  }, [hasNextPage, isLoadingMore, loadMoreErrorMessage, onLoadNextPage, usesDocumentScroll])
 
   return (
     <div className={styles.viewport} ref={viewportRef} tabIndex={0} aria-label="References">

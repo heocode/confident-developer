@@ -12,6 +12,7 @@ const EMPTY_PAGINATION = {
 }
 
 interface ReferenceFeedProps {
+  usesDocumentScroll?: boolean
   state: ReferencesState
   isRestoringOwnership: boolean
   ownedReference?: OwnedReference
@@ -22,6 +23,7 @@ interface ReferenceFeedProps {
 }
 
 export function ReferenceFeed({
+  usesDocumentScroll = false,
   state,
   isRestoringOwnership,
   ownedReference,
@@ -33,6 +35,7 @@ export function ReferenceFeed({
   if (ownedReference || (!isRestoringOwnership && state.status === 'ready')) {
     return (
       <ReferenceList
+        usesDocumentScroll={usesDocumentScroll}
         items={state.status === 'ready' ? state.items : []}
         pagination={state.status === 'ready' ? state.pagination : EMPTY_PAGINATION}
         isLoadingMore={state.status === 'ready' && state.isLoadingMore}

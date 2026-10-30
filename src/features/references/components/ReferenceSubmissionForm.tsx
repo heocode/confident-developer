@@ -10,6 +10,7 @@ import { ReferenceTurnstile } from './ReferenceTurnstile.tsx'
 import styles from './ReferenceSubmissionForm.module.css'
 
 interface ReferenceSubmissionFormProps {
+  usesDocumentScroll?: boolean
   state: ReferenceSubmissionState
   testimonial: string
   onTestimonialChange: (value: string) => void
@@ -18,6 +19,7 @@ interface ReferenceSubmissionFormProps {
 }
 
 export function ReferenceSubmissionForm({
+  usesDocumentScroll = false,
   state,
   testimonial,
   onTestimonialChange,
@@ -49,7 +51,7 @@ export function ReferenceSubmissionForm({
 
   return (
     <form
-      className={styles.form}
+      className={`${styles.form}${usesDocumentScroll ? ` ${styles.documentFlow}` : ''}`}
       noValidate
       onSubmit={handleSubmit}
       ref={formRef}

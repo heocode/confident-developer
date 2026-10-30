@@ -276,3 +276,43 @@
     }
   }
 }
+
+.form.documentFlow,
+.documentFlow .fields,
+.documentFlow .controls {
+  height: auto;
+  min-height: 0;
+}
+
+.form.documentFlow {
+  grid-template-rows: auto auto;
+}
+
+.documentFlow .controls {
+  container-type: inline-size;
+  grid-template-rows: auto auto auto;
+}
+
+.form.documentFlow .textFields {
+  grid-template-rows: repeat(4, auto);
+}
+
+.form.documentFlow .textFields > label {
+  grid-template-rows: auto auto;
+}
+
+.form.documentFlow .textFields input {
+  height: 2.75rem;
+}
+
+.form.documentFlow .ratingFields {
+  grid-template-rows: repeat(2, auto);
+}
+
+.documentFlow .messageField {
+  grid-template-rows: auto auto;
+}
+
+.documentFlow .messageSurface {
+  min-height: 9rem;
+}
